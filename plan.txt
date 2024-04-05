@@ -6,4 +6,6 @@ world selection
 
 mc:
 
-ms paint :joy: :joy: :joy: 
+ms paint
+
+https://github.com/orgs/supabase/discussions/5047
