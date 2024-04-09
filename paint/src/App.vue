@@ -1,16 +1,21 @@
-<script setup lang="ts">
+<script setup>
 import { ref, onMounted } from 'vue'
-import { supabase } from './lib/supabaseClient.js'
-import { RouterView } from 'vue-router'
-import NavBar from './components/NavBar.vue'
+import { supabase } from './lib/supabaseClient'
 
-const {data, error} = await supabase
-.from('')
+const countries = ref([])
+
+async function getCountries() {
+  const { data } = await supabase.from('Users').select()
+  countries.value = data
+}
+
+onMounted(() => {
+  getCountries()
+})
 </script>
 
 <template>
-  <div>
-    <NavBar />
-    <RouterView />
-  </div>
+  <ul>
+    <li v-for="country in countries" :key="country.id">{{ country.name }}</li>
+  </ul>
 </template>
