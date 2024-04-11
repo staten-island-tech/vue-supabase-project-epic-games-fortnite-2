@@ -1,6 +1,6 @@
 <template>
     <div>
-
+        EPIC USER LOG
     </div>
 </template>
 

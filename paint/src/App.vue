@@ -1,6 +1,8 @@
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { supabase } from './lib/supabaseClient'
+import { routerView } from 'vue-router'
+import NavBar from './components/NavBar.vue'
 
 const countries = ref([])
 
@@ -15,7 +17,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <ul>
-    <li v-for="country in countries" :key="country.id">{{ country.name }}</li>
-  </ul>
+<NavBar/>
+
+<router-view></router-view>
 </template>
