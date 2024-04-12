@@ -6,12 +6,12 @@ interface boardDisplay {
   columns: number;
   tileSize: number;
 }
-/* interface playerPos {
+ interface playerPos {
   x: number;
   y: number;
-} */
+} 
 
-const buttons = [
+const keys = [
   {
     direction: "left",
     keyCode: 37,
@@ -37,13 +37,12 @@ const ctx = ref();
 const boardConfig: boardDisplay = {
   rows: 20,
   columns: 20,
-  tileSize: 25
+  tileSize: 20
 }
 
 let playerLocation/* : playerPos */ = {
   x: ref(10),
   y: ref(10),
-  
 }
 
 
@@ -54,22 +53,50 @@ onMounted(()=>{
   canvas.value.width = boardConfig.columns * boardConfig.tileSize
   ctx.value.fillStyle="black";
   ctx.value.fillRect(boardConfig.rows *playerLocation.x.value,boardConfig.rows * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize )
-  
 })  
 
- function move(){
+ function moveLeft(){
+  if(playerLocation.x.value != 0){
   ctx.value.fillStyle="white";
   ctx.value.fillRect(0,0, boardConfig.rows*boardConfig.tileSize, boardConfig.columns*boardConfig.tileSize )
   playerLocation.x.value --
   ctx.value.fillStyle="black";
   ctx.value.fillRect(boardConfig.rows *playerLocation.x.value,boardConfig.rows * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize )
-} 
+}}
+
+function moveUp(){
+  if(playerLocation.y.value != 0){
+  ctx.value.fillStyle="white";
+  ctx.value.fillRect(0,0, boardConfig.rows*boardConfig.tileSize, boardConfig.columns*boardConfig.tileSize )
+  playerLocation.y.value --
+  ctx.value.fillStyle="black";
+  ctx.value.fillRect(boardConfig.rows *playerLocation.x.value,boardConfig.rows * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize )
+} }
+function moveDown(){
+  if(playerLocation.y.value != boardConfig.rows-1){
+  ctx.value.fillStyle="white";
+  ctx.value.fillRect(0,0, boardConfig.rows*boardConfig.tileSize, boardConfig.columns*boardConfig.tileSize )
+  playerLocation.y.value ++
+  ctx.value.fillStyle="black";
+  ctx.value.fillRect(boardConfig.rows *playerLocation.x.value,boardConfig.rows * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize )
+} }
+function moveRight(){
+  if(playerLocation.x.value !=boardConfig.columns-1 ){
+  ctx.value.fillStyle="white";
+  ctx.value.fillRect(0,0, boardConfig.rows*boardConfig.tileSize, boardConfig.columns*boardConfig.tileSize )
+  playerLocation.x.value ++
+  ctx.value.fillStyle="black";
+  ctx.value.fillRect(boardConfig.rows *playerLocation.x.value,boardConfig.rows * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize )
+} }
+
+
 
 </script>
 
-<template @keyup="move">
+<template>
+  <input type="text" @keydown.left="moveLeft" @keydown.up="moveUp" @keydown.down="moveDown"@keydown.right="moveRight">
 <canvas id="canvas"></canvas>
-<button @click="move"> heyfhiw</button>
+<button @click=""> heyfhiw</button>
 </template>
 
 <style lang="scss" scoped>
