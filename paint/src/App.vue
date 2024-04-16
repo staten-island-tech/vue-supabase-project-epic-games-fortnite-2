@@ -3,13 +3,17 @@ import { ref, onMounted } from 'vue'
 import { supabase } from './lib/supabaseClient'
 import NavBar from './components/NavBar.vue'
 
-// const countries = ref([])
+const session = ref()
 
-// async function getCountries() {
-//   const { data } = await supabase.from('Users').select()
-//   countries.value = data
-// }
+onMounted(() => {
+  supabase.auth.getSession().then(({ data }) => {
+    session.value = data.session
+  })
 
+  supabase.auth.onAuthStateChange((_, _session) => {
+    session.value = _session
+  })
+})
 
 </script>
 

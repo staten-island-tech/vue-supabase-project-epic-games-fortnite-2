@@ -1,19 +1,19 @@
 <template>
   <div>
-    <form class="row flex-center flex" @submit.prevent="handleLogin">
+    <form class="row flex-center flex" @submit.prevent="signUp(email, pass)">
     <div class="col-6 form-widget">
       <h1 class="header">Supabase + Vue 3</h1>
       <p class="description">Sign in via magic link with your email below</p>
       <div>
         <input class="inputField" required type="email" placeholder="Your email" v-model="email" />
-        <input type="password" required placeholder="password" v-model="password">
+        <input type="password" required placeholder="password" v-model="pass">
+        <p>make sure your password has at least 8 characters</p>
       </div>
       <div>
         <input
           type="submit"
           class="button block"
-          :value="loading ? 'Loading' : 'Send magic link'"
-          :disabled="loading"
+          :value="'Register'"
         />
       </div>
     </div>
