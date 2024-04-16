@@ -53,6 +53,9 @@ onMounted(()=>{
   canvas.value.width = boardConfig.columns * boardConfig.tileSize
   ctx.value.fillStyle="black";
   ctx.value.fillRect(boardConfig.rows *playerLocation.x.value,boardConfig.rows * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize )
+  window.addEventListener("keydown", function(){
+     mover(this.event)
+   })
 })  
 
  function moveLeft(){
@@ -91,12 +94,26 @@ function moveRight(){
 
 
 
+    function mover(event) {
+    const direction = keys.find(c => c.keyCode === event.keyCode)
+    console.log(direction?.direction)
+    if(direction?.direction === "left"){
+      moveLeft()
+    }else if(direction?.direction === "right"){
+      moveRight()
+    }else if( direction?.direction === "top"){
+      moveUp()
+    }else if(direction?.direction === "bottom"){
+      moveDown()
+    }
+   
+  } 
+
 </script>
 
 <template>
-  <input type="text" @keydown.left="moveLeft" @keydown.up="moveUp" @keydown.down="moveDown"@keydown.right="moveRight">
 <canvas id="canvas"></canvas>
-<button @click=""> heyfhiw</button>
+
 </template>
 
 <style lang="scss" scoped>
