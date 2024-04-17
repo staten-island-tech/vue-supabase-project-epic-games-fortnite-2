@@ -20,5 +20,5 @@ onMounted(() => {
 <template>
 <NavBar/>
 
-<router-view></router-view>
+<router-view :session="session"></router-view>
 </template>
