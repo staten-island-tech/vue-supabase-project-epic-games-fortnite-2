@@ -22,6 +22,7 @@
 </template>
 
 <script setup lang="ts">
+import router from '@/router';
 import { supabase } from '../lib/supabaseClient'
 
 let email: string
@@ -32,6 +33,7 @@ const signUp = async function (email: string, password: string) {
     email: email,
     password: password
   })
+  router.push({path: '/login'})
 }
 
 </script>
