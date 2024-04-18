@@ -35,6 +35,7 @@ const signIn = async function (email: string, pass: string) {
       email: email,
       password: pass
     })
+    console.log(data)
     router.push({path: '/worlds'})
     if (error) throw error
   } catch (error) {
