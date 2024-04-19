@@ -23,9 +23,12 @@
 </template>
 
 <script setup lang="ts">
-import router from '@/router';
+import router from '@/router'
 import { supabase } from '../lib/supabaseClient'
+import { useSessionStore } from '@/stores/user'
+import { storeToRefs } from 'pinia'
 
+const sessionStore = useSessionStore()
 let email: string
 let pass: string
 
@@ -36,7 +39,12 @@ const signIn = async function (email: string, pass: string) {
       password: pass
     })
     console.log(data)
-    router.push({path: '/worlds'})
+    sessionStore.$patch({
+      sessionToken: data.session?.access_token,
+      refreshToken: data.session?.refresh_token,
+      userID: data.user?.id
+    })
+    router.push({ path: '/worlds' })
     if (error) throw error
   } catch (error) {
     console.log(error)

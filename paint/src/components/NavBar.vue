@@ -12,11 +12,15 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
 import { supabase } from '../lib/supabaseClient'
+import { useSessionStore } from '@/stores/user';
+
+const sessionStore = useSessionStore()
 
 const logOut = async function () {
   try {
     const { error } = await supabase.auth.signOut()
     if (error) throw error
+    sessionStore.$reset()
   } catch (error) {
     console.log(error)
   }
