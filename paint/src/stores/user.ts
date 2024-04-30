@@ -7,9 +7,11 @@ export const useSessionStore = defineStore('session', () => {
     sessionToken.value = ''
     refreshToken.value= ''
     userID.value = ''
+    expires.value = 0
   }
   const sessionToken = ref('')
   const refreshToken = ref('')
   const userID = ref('')
-  return { sessionToken, refreshToken, userID, $reset }
+  const expires = ref(0)
+  return { sessionToken, refreshToken, userID, expires, $reset }
 })

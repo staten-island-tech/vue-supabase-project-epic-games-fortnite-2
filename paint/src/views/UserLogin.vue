@@ -26,7 +26,6 @@
 import router from '@/router'
 import { supabase } from '../lib/supabaseClient'
 import { useSessionStore } from '@/stores/user'
-import { storeToRefs } from 'pinia'
 
 const sessionStore = useSessionStore()
 let email: string
@@ -42,7 +41,8 @@ const signIn = async function (email: string, pass: string) {
     sessionStore.$patch({
       sessionToken: data.session?.access_token,
       refreshToken: data.session?.refresh_token,
-      userID: data.user?.id
+      userID: data.user?.id,
+      expires: data.session?.expires_at
     })
     router.push({ path: '/worlds' })
     if (error) throw error

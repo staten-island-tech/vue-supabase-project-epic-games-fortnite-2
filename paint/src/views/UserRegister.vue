@@ -25,8 +25,10 @@
 
 <script setup lang="ts">
 import router from '@/router'
+import { useSessionStore } from '@/stores/user'
 import { supabase } from '../lib/supabaseClient'
 
+const sessionStore = useSessionStore()
 let email: string
 let pass: string
 
@@ -40,7 +42,13 @@ const signUp = async function (email: string, password: string) {
       throw Error
     } else {
       console.log(data)
-      router.push({ path: '/login' })
+      sessionStore.$patch({
+        sessionToken: data.session?.access_token,
+        refreshToken: data.session?.refresh_token,
+        userID: data.user?.id,
+        expires: data.session?.expires_at
+      })
+      router.push({ path: '/worlds' })
     }
   } catch (error) {
     console.log(error)
