@@ -1,13 +1,14 @@
 <template>
-  <div>Worlds</div>
+  <div v-if="sessionStore.expires > Math.floor(Date.now() / 1000)">worlds</div>
+  <div v-else>Please log in first to access your worlds!</div>
 </template>
 
 <script setup lang="ts">
 import { onMounted, toRefs } from 'vue'
 import { supabase } from '../lib/supabaseClient'
+import { useSessionStore } from '@/stores/user'
 
-const props = defineProps(['session'])
-const { session } = toRefs(props)
+const sessionStore = useSessionStore()
 </script>
 
 <style scoped></style>
