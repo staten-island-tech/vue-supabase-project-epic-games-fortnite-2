@@ -51,11 +51,12 @@ onMounted(()=>{
   ctx.value = canvas.value.getContext("2d");
   canvas.value.height = boardConfig.rows * boardConfig.tileSize
   canvas.value.width = boardConfig.columns * boardConfig.tileSize
-  ctx.value.fillStyle="black";
+  ctx.value.fillStyle="black"; //ctx => basically where the player is
   ctx.value.fillRect(boardConfig.rows *playerLocation.x.value,boardConfig.rows * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize )
   window.addEventListener("keydown", function(){
      mover(this.event)
    })
+   
 })  
 
  function moveLeft(){
@@ -65,6 +66,7 @@ onMounted(()=>{
   playerLocation.x.value --
   ctx.value.fillStyle="black";
   ctx.value.fillRect(boardConfig.rows *playerLocation.x.value,boardConfig.rows * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize )
+    console.log(playerLocation.x)
 }}
 
 function moveUp(){
@@ -93,7 +95,6 @@ function moveRight(){
 } }
 
 
-
     function mover(event) {
     const direction = keys.find(c => c.keyCode === event.keyCode)
     console.log(direction?.direction)
@@ -108,6 +109,8 @@ function moveRight(){
     }
    
   } 
+
+
 
 </script>
 
