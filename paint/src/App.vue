@@ -11,12 +11,6 @@ interface boardDisplay {
   y: number;
 } 
 
-
-
-let placedStuff = [
-  
-]
-
 const keys = [
   {
     direction: "left",
@@ -37,18 +31,16 @@ const keys = [
 ];
 
 
-
-
 const canvas = ref();
 const ctx = ref();
 
 const boardConfig: boardDisplay = {
-  rows: 25,
-  columns: 25,
-  tileSize: 25
+  rows: 20,
+  columns: 20,
+  tileSize: 20
 }
 
-let playerLocation : playerPos  = {
+let playerLocation/* : playerPos */ = {
   x: ref(10),
   y: ref(10),
 }
@@ -67,18 +59,11 @@ onMounted(()=>{
    
 })  
 
-
-function replace(){
-  for( let i=0; i < placedStuff.length; i++ ){
-    placedStuff.forEach((block) => rplace(block.x,block.y,block.block))
-  }
-}
  function moveLeft(){
-   if(playerLocation.x.value != 0){
+  if(playerLocation.x.value != 0){
   ctx.value.fillStyle="white";
   ctx.value.fillRect(0,0, boardConfig.rows*boardConfig.tileSize, boardConfig.columns*boardConfig.tileSize )
   playerLocation.x.value --
-  replace()
   ctx.value.fillStyle="black";
   ctx.value.fillRect(boardConfig.rows *playerLocation.x.value,boardConfig.rows * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize )
     console.log(playerLocation.x)
@@ -89,7 +74,6 @@ function moveUp(){
   ctx.value.fillStyle="white";
   ctx.value.fillRect(0,0, boardConfig.rows*boardConfig.tileSize, boardConfig.columns*boardConfig.tileSize )
   playerLocation.y.value --
-  replace()
   ctx.value.fillStyle="black";
   ctx.value.fillRect(boardConfig.rows *playerLocation.x.value,boardConfig.rows * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize )
 } }
@@ -98,7 +82,6 @@ function moveDown(){
   ctx.value.fillStyle="white";
   ctx.value.fillRect(0,0, boardConfig.rows*boardConfig.tileSize, boardConfig.columns*boardConfig.tileSize )
   playerLocation.y.value ++
-  replace()
   ctx.value.fillStyle="black";
   ctx.value.fillRect(boardConfig.rows *playerLocation.x.value,boardConfig.rows * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize )
 } }
@@ -107,30 +90,14 @@ function moveRight(){
   ctx.value.fillStyle="white";
   ctx.value.fillRect(0,0, boardConfig.rows*boardConfig.tileSize, boardConfig.columns*boardConfig.tileSize )
   playerLocation.x.value ++
-  replace()
   ctx.value.fillStyle="black";
   ctx.value.fillRect(boardConfig.rows *playerLocation.x.value,boardConfig.rows * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize )
 } }
 
-function place(){
-  ctx.value.fillStyle = "green";
-  let x = playerLocation.x.value
-  let y = playerLocation.y.value
-  placedStuff.push({
-    x:(x+1),
-    y:(y),
-    block: "Green"
-  }) 
-  ctx.value.fillRect(boardConfig.rows *(x +1),boardConfig.rows*(y), boardConfig.tileSize, boardConfig.tileSize)  
-}
-
-function rplace(x:number,y:number,block:string){
-  ctx.value.fillStyle = block;
-  ctx.value.fillRect(boardConfig.rows*x,boardConfig.rows*y, boardConfig.tileSize, boardConfig.tileSize)
-   }
 
     function mover(event) {
     const direction = keys.find(c => c.keyCode === event.keyCode)
+    console.log(direction?.direction)
     if(direction?.direction === "left"){
       moveLeft()
     }else if(direction?.direction === "right"){
@@ -143,12 +110,12 @@ function rplace(x:number,y:number,block:string){
    
   } 
 
- 
+
+
 </script>
 
 <template>
 <canvas id="canvas"></canvas>
-<button @click="place">place green box</button>
 
 </template>
 
