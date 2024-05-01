@@ -1,6 +1,6 @@
 <template>
   <div v-if="sessionStore.expires > Math.floor(Date.now() / 1000)">worlds</div>
-  <div v-else>Please log in first to access your worlds!</div>
+  <div v-else>Please <router-link to="/login">log in</router-link> first to access your worlds!</div>
 </template>
 
 <script setup lang="ts">
