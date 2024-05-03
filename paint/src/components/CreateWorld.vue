@@ -14,25 +14,22 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { supabase } from '../lib/supabaseClient'
-import { useSessionStore } from '@/stores/user';
+import { useSessionStore } from '@/stores/user'
 
 const sessionStore = useSessionStore()
 const textInput = ref('')
 
 async function createWorld(input: string) {
+  let uuid = crypto.randomUUID()
   try {
-    const { error } = await supabase
-      .from('worlds')
-      .insert({ data: input })
+    const { error } = await supabase.from('worlds').insert({ id: uuid, data: input })
     if (error) throw error
   } catch (error) {
     console.log(error)
   }
   try {
     const { error } = await supabase
-      .from('profiles')
-      .update({ worlds: input })
-      .eq('id', sessionStore.$id)
+    .rpc('array_append')
     if (error) throw error
   } catch (error) {
     console.log(error)
