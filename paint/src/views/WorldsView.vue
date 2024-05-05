@@ -2,6 +2,7 @@
   <div v-if="sessionStore.expires > Math.floor(Date.now() / 1000)">
     <button @click="toggleCreateScreen()">create a world</button>
     <CreateWorld v-show="showCreate" @close="toggleCreateScreen" />
+    <h1 v-for="world in worlds" :key="world">{{ world }}</h1>
   </div>
   <div v-else>
     Please <router-link to="/login">log in</router-link> first to access your worlds!
@@ -16,6 +17,7 @@ import CreateWorld from '../components/CreateWorld.vue'
 
 const sessionStore = useSessionStore()
 const showCreate = ref(false)
+const worlds = ref(new Array)
 
 onMounted(async () => {
   if (sessionStore.expires < Math.floor(Date.now() / 1000)) {
@@ -28,6 +30,16 @@ onMounted(async () => {
       console.log(error)
     }
   }
+  else {
+  try {
+    const { data, error } = await supabase.from('profiles').select('worlds_own')
+    if (error) throw error
+    data.forEach((world)=> {
+      worlds.value.push(world.worlds_own)
+    })
+  } catch (error) {
+    console.log(error)
+  }}
 })
 
 function toggleCreateScreen() {

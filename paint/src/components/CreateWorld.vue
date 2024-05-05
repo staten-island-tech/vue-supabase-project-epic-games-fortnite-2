@@ -29,7 +29,7 @@ async function createWorld(input: string) {
   }
   try {
     const { error } = await supabase
-    .rpc('array_append')
+    .rpc('append_uuid_to_user', {id: uuid, userid: sessionStore.userID})
     if (error) throw error
   } catch (error) {
     console.log(error)
