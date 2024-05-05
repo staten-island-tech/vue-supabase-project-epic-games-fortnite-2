@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { supabase } from './lib/supabaseClient.js'
+import { BlockList } from 'net';
 interface boardDisplay {
   rows: number;
   columns: number;
@@ -11,11 +12,8 @@ interface boardDisplay {
   y: number;
 } 
 
+let placedStuff: object[] = []
 
-
-let placedStuff = [
-  
-]
 
 const keys = [
   {
@@ -64,7 +62,11 @@ onMounted(()=>{
   window.addEventListener("keydown", function(){
      mover(this.event)
    })
-  window.addEventListener("keydown", ) 
+  window.addEventListener("keydown", function(keydown){
+    if(keydown.code === "Space"){
+      place()
+    }
+  } ) 
 })  
 
 
@@ -82,7 +84,6 @@ function replace(){
   ctx.value.fillStyle="black";
   ctx.value.fillRect(boardConfig.rows *playerLocation.x.value,boardConfig.rows * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize )
 }}
-
 function moveUp(){
   if(playerLocation.y.value != 0){
   ctx.value.fillStyle="white";
@@ -116,11 +117,11 @@ function place(){
   let x = playerLocation.x.value
   let y = playerLocation.y.value
   placedStuff.push({
-    x:(x+1),
+    x:(x),
     y:(y),
     block: "Green"
   })  
-  ctx.value.fillRect(boardConfig.rows *(x +1),boardConfig.rows*(y), boardConfig.tileSize, boardConfig.tileSize)  
+  ctx.value.fillRect(boardConfig.rows *(x),boardConfig.rows*(y), boardConfig.tileSize, boardConfig.tileSize)  
 }
 
 function rplace(x:number,y:number,block:string){
@@ -147,7 +148,6 @@ function rplace(x:number,y:number,block:string){
 
 <template>
 <canvas id="canvas"></canvas>
-<button @click="place">place green box</button>
 
 </template>
 
