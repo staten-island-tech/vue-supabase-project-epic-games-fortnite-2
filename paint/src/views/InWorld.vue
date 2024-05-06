@@ -151,7 +151,7 @@ function rplace(x:number,y:number,block:string){
 
 </template>
 
-<style lang="scss" scoped>
+<style lang="css" scoped>
 
 
   #canvas{
