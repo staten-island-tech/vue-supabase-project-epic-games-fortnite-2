@@ -14,6 +14,12 @@ interface boardDisplay {
 
 let placedStuff: object[] = []
 
+interface gameData {
+  worldsize: object,
+  playerPos: number[],
+  placedBLocks: object
+}
+
 
 const keys = [
   {
@@ -51,6 +57,11 @@ let playerLocation : playerPos  = {
   y: ref(10),
 }
 
+let gameData : gameData = ref({
+  worldsize: {boardConfig},
+  playerPos: [playerLocation.x.value, playerLocation.y.value],
+  placedBLocks: [placedStuff]
+})
 
 onMounted(()=>{
   canvas.value = document.getElementById("canvas");
@@ -74,6 +85,8 @@ function replace(){
   for( let i=0; i < placedStuff.length; i++ ){
     placedStuff.forEach((block) => rplace(block.x,block.y,block.block))
   }
+  console.log(gameData.value)
+
 }
  function moveLeft(){
    if(playerLocation.x.value != 0){
