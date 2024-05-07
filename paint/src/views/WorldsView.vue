@@ -2,7 +2,7 @@
   <div v-if="sessionStore.expires > Math.floor(Date.now() / 1000)">
     <button @click="toggleCreateScreen()">create a world</button>
     <CreateWorld v-show="showCreate" @close="toggleCreateScreen" />
-    <h1 v-for="world in worlds" :key="world">{{ world }}</h1>
+    <h1 v-for="world in worlds[0]" :key="world">{{ world }}</h1>
   </div>
   <div v-else>
     Please <router-link to="/login">log in</router-link> first to access your worlds!

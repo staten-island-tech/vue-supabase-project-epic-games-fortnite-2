@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, type Ref } from 'vue'
-/* import { supabase } from './lib/supabaseClient.js'
-import { BlockList } from 'net'; */
+
 interface boardDisplay {
   rows: number;
   columns: number;
@@ -15,7 +14,7 @@ interface boardDisplay {
 let placedStuff: {x:number, y:number, block:string}[] = []
 
 
-interface gameData {
+interface data {
   worldsize: object,
   placedBLocks: object
 }
@@ -34,7 +33,7 @@ let playerLocation : playerPos  = {
   y: ref(13),
 }
 
-let gameData : gameData = {
+let gameData : data = {
   worldsize: {boardConfig},
   placedBLocks: [placedStuff]
 }
