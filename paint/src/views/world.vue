@@ -12,15 +12,13 @@ interface boardDisplay {
   y: Ref<number>;
 } 
 
-let placedStuff: object[] = [{
-  
-}]
+let placedStuff: {x:number, y:number, block:string}[] = []
+
 
 interface gameData {
   worldsize: object,
   placedBLocks: object
 }
-
 
 const canvas = ref();
 const ctx = ref();
