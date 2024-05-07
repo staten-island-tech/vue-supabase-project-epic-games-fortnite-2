@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, type Ref } from 'vue'
 /* import { supabase } from './lib/supabaseClient.js'
 import { BlockList } from 'net'; */
 interface boardDisplay {
@@ -8,34 +8,17 @@ interface boardDisplay {
   tileSize: number;
 }
  interface playerPos {
-  x: number;
-  y: number;
+  x: Ref<number>;
+  y: Ref<number>;
 } 
 
-let placedStuff: object[] = []
+let placedStuff: {x:number, y:number, block:string}[] = []
 
 
-const keys = [
-  {
-    direction: "left",
-    keyCode: 37,
-  },
-  {
-    direction: "top",
-    keyCode: 38,
-  },
-  {
-    direction: "right",
-    keyCode: 39,
-  },
-  {
-    direction: "bottom",
-    keyCode: 40,
-  }
-];
-
-
-
+interface gameData {
+  worldsize: object,
+  placedBLocks: object
+}
 
 const canvas = ref();
 const ctx = ref();
@@ -47,10 +30,14 @@ const boardConfig: boardDisplay = {
 }
 
 let playerLocation : playerPos  = {
-  x: ref(10),
-  y: ref(10),
+  x: ref(12),
+  y: ref(13),
 }
 
+let gameData : gameData = {
+  worldsize: {boardConfig},
+  placedBLocks: [placedStuff]
+}
 
 onMounted(()=>{
   canvas.value = document.getElementById("canvas");
@@ -59,9 +46,10 @@ onMounted(()=>{
   canvas.value.width = boardConfig.columns * boardConfig.tileSize
   ctx.value.fillStyle="black";
   ctx.value.fillRect(boardConfig.rows *playerLocation.x.value,boardConfig.rows * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize )
-  window.addEventListener("keydown", function(){
-     mover(this.event)
+  window.addEventListener("keydown", function(keydown){
+     mover(keydown)
    })
+   
   window.addEventListener("keydown", function(keydown){
     if(keydown.code === "Space"){
       place()
@@ -74,6 +62,7 @@ function replace(){
   for( let i=0; i < placedStuff.length; i++ ){
     placedStuff.forEach((block) => rplace(block.x,block.y,block.block))
   }
+
 }
  function moveLeft(){
    if(playerLocation.x.value != 0){
@@ -129,15 +118,14 @@ function rplace(x:number,y:number,block:string){
   ctx.value.fillRect(boardConfig.rows*x,boardConfig.rows*y, boardConfig.tileSize, boardConfig.tileSize)
    }
 
-    function mover(event) {
-    const direction = keys.find(c => c.keyCode === event.keyCode)
-    if(direction?.direction === "left"){
+    function mover(key: KeyboardEvent) {
+    if(key.code === "ArrowLeft"){
       moveLeft()
-    }else if(direction?.direction === "right"){
+    }else if(key.code === "ArrowRight"){
       moveRight()
-    }else if( direction?.direction === "top"){
+    }else if( key.code === "ArrowUp"){
       moveUp()
-    }else if(direction?.direction === "bottom"){
+    }else if(key.code === "ArrowDown"){
       moveDown()
     }
    
