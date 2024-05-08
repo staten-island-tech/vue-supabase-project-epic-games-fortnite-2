@@ -6,11 +6,12 @@ interface boardDisplay {
   rows: number;
   columns: number;
   tileSize: number;
-}
+} 
  interface playerPos {
   x: Ref<number>;
   y: Ref<number>;
-} 
+}
+
 
 let placedStuff: {x:number, y:number, block:string}[] = []
 
@@ -39,6 +40,15 @@ let gameData : gameData = {
   placedBLocks: [placedStuff]
 }
 
+
+
+const keyPresses:{key:string, color:string}[] = [
+  {
+   key: "Space",
+   color: "Green"
+  },
+]
+
 onMounted(()=>{
   canvas.value = document.getElementById("canvas");
   ctx.value = canvas.value.getContext("2d");
@@ -50,10 +60,13 @@ onMounted(()=>{
      mover(keydown)
    })
    
-  window.addEventListener("keydown", function(keydown){
-    if(keydown.code === "Space"){
-      place()
+  window.addEventListener("keydown", function(keydown: KeyboardEvent){
+    const keyPressed = keyPresses.find(c => c.key === keydown.code);
+    if(keyPressed != undefined){
+      place(keyPressed.color)
     }
+    console.log(keyPressed)
+
   } ) 
 })  
 
@@ -62,10 +75,13 @@ function replace(){
   for( let i=0; i < placedStuff.length; i++ ){
     placedStuff.forEach((block) => rplace(block.x,block.y,block.block))
   }
-
+  function rplace(x:number,y:number,block:string){
+    ctx.value.fillStyle = block;
+    ctx.value.fillRect(boardConfig.rows*x,boardConfig.rows*y, boardConfig.tileSize, boardConfig.tileSize)
+     }
 }
- function moveLeft(){
-   if(playerLocation.x.value != 0){
+function moveLeft(){
+  if(playerLocation.x.value != 0){
   ctx.value.fillStyle="white";
   ctx.value.fillRect(0,0, boardConfig.rows*boardConfig.tileSize, boardConfig.columns*boardConfig.tileSize )
   playerLocation.x.value --
@@ -101,22 +117,18 @@ function moveRight(){
   ctx.value.fillRect(boardConfig.rows *playerLocation.x.value,boardConfig.rows * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize )
 } }
 
-function place(){
-  ctx.value.fillStyle = "green";
+
+ function place(block: string){
+  ctx.value.fillStyle = `${block}`;
   let x = playerLocation.x.value
   let y = playerLocation.y.value
   placedStuff.push({
     x:(x),
     y:(y),
-    block: "Green"
+    block:`${block}`
   })  
   ctx.value.fillRect(boardConfig.rows *(x),boardConfig.rows*(y), boardConfig.tileSize, boardConfig.tileSize)  
 }
-
-function rplace(x:number,y:number,block:string){
-  ctx.value.fillStyle = block;
-  ctx.value.fillRect(boardConfig.rows*x,boardConfig.rows*y, boardConfig.tileSize, boardConfig.tileSize)
-   }
 
     function mover(key: KeyboardEvent) {
     if(key.code === "ArrowLeft"){
