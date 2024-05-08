@@ -9,51 +9,47 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      users: {
+      profiles: {
         Row: {
-          created_at: string
-          id: number
-        }
-        Insert: {
-          created_at?: string
-          id?: number
-        }
-        Update: {
-          created_at?: string
-          id?: number
-        }
-        Relationships: []
-      }
-      Users: {
-        Row: {
-          created_at: string
-          password: string | null
           user_id: string
+          username: string | null
+          worlds_own: string[] | null
         }
         Insert: {
-          created_at?: string
-          password?: string | null
-          user_id?: string
+          user_id: string
+          username?: string | null
+          worlds_own?: string[] | null
         }
         Update: {
-          created_at?: string
-          password?: string | null
           user_id?: string
+          username?: string | null
+          worlds_own?: string[] | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "profiles_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       worlds: {
         Row: {
           created_at: string
-          id: number
+          data: string | null
+          id: string
         }
         Insert: {
           created_at?: string
-          id?: number
+          data?: string | null
+          id: string
         }
         Update: {
           created_at?: string
-          id?: number
+          data?: string | null
+          id?: string
         }
         Relationships: []
       }
@@ -62,7 +58,13 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      append_world_uuid_to_user: {
+        Args: {
+          id: string
+          userid: string
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never

@@ -4,8 +4,10 @@
       <router-link to="/">Home</router-link>
       <router-link to="/login">Login</router-link>
       <router-link to="/register">Register</router-link>
-      <button v-if="sessionStore.expires > Math.floor(Date.now() / 1000)"
-      @click="logOut">Log Out</button>
+      <div v-if="sessionStore.expires > Math.floor(Date.now() / 1000)">
+        <button @click="logOut">Log Out</button>
+        <router-link to="/worlds">Worlds</router-link>
+      </div>
     </nav>
   </div>
 </template>
@@ -13,8 +15,8 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
 import { supabase } from '../lib/supabaseClient'
-import { useSessionStore } from '@/stores/user';
-import router from '@/router';
+import { useSessionStore } from '@/stores/user'
+import router from '@/router'
 
 const sessionStore = useSessionStore()
 
