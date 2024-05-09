@@ -47,6 +47,10 @@ const keyPresses:{key:string, color:string}[] = [
    key: "Space",
    color: "Green"
   },
+  {
+    key: "KeyD",
+    color: "Red"
+  }
 ]
 
 onMounted(()=>{
