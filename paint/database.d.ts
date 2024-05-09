@@ -65,6 +65,13 @@ export type Database = {
         }
         Returns: undefined
       }
+      delete_world_uuid_from_user: {
+        Args: {
+          userid: string
+          worldid: string
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never
