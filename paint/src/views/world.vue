@@ -43,12 +43,12 @@ let gameData : gameData = {
 
 const keyPresses:{key:string, color:string}[] = [
   {
-   key: "Digit1",
-   color: "Green"
-  },
-  {
     key: "KeyX",
     color: "White"
+  },
+  {
+   key: "Digit1",
+   color: "Green"
   },
   {
     key: "Digit2",
