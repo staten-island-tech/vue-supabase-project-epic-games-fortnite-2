@@ -41,12 +41,19 @@ let gameData : gameData = {
 }
 
 
-
 const keyPresses:{key:string, color:string}[] = [
   {
-   key: "Space",
+   key: "Digit1",
    color: "Green"
   },
+  {
+    key: "KeyX",
+    color: "White"
+  },
+  {
+    key: "Digit2",
+    color: "Red"
+  }
 ]
 
 onMounted(()=>{
@@ -65,8 +72,6 @@ onMounted(()=>{
     if(keyPressed != undefined){
       place(keyPressed.color)
     }
-    console.log(keyPressed)
-
   } ) 
 })  
 
