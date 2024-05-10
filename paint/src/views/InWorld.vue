@@ -33,7 +33,7 @@ let playerLocation : playerPos  = {
   y: ref(13),
 }
 
-let gameData : data = {
+const gameData : data = {
   worldsize: {boardConfig},
   placedBLocks: [placedStuff]
 }

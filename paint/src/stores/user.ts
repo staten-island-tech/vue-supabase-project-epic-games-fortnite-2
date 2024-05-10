@@ -13,5 +13,6 @@ export const useSessionStore = defineStore('session', () => {
   const refreshToken = ref('')
   const userID = ref('')
   const expires = ref(0)
-  return { sessionToken, refreshToken, userID, expires, $reset }
+  const currentWorldID = ref('')
+  return { sessionToken, refreshToken, userID, expires, currentWorldID, $reset }
 })
