@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, type Ref } from 'vue'
-/* import { supabase } from './lib/supabaseClient.js'
-import { BlockList } from 'net'; */
+
 interface boardDisplay {
   rows: number;
   columns: number;

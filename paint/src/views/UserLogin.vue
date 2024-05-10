@@ -2,8 +2,7 @@
   <div>
     <form class="row flex-center flex" @submit.prevent="signIn(email, pass)">
       <div class="col-6 form-widget">
-        <h1 class="header">Supabase + Vue 3</h1>
-        <p class="description">Log In</p>
+        <h1 class="header">Log In</h1>
         <div>
           <input
             class="inputField"
