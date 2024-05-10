@@ -2,8 +2,7 @@
 import { ref, onMounted, type Ref } from 'vue'
 
 interface boardDisplay {
-  rows: number;
-  columns: number;
+  boardSize: number
   tileSize: number;
 }
 interface playerPos {
@@ -24,8 +23,7 @@ const canvas = ref();
 const ctx = ref();
 
 const boardConfig: boardDisplay = {
-  rows: 25,
-  columns: 25,
+  boardSize: 25,
   tileSize: 25
 }
 
@@ -38,6 +36,38 @@ let gameData: data = {
   worldsize: { boardConfig },
   placedBLocks: [placedStuff]
 }
+
+const directions: {direction:string, facing: {x: number, y:number}}[] = [
+  {
+    direction:"left",
+    facing:{
+      x: -1,
+      y: 0
+    }
+  },
+  {
+    direction:"right",
+    facing:{
+      x: +1,
+      y: 0
+    }
+  },
+  {
+    direction:"up",
+    facing:{
+      x: 0,
+      y: -1
+    }
+  },
+  {
+    direction:"down",
+    facing:{
+      x: 0,
+      y: +1
+    }
+  },
+  
+]
 
 const keyPresses: { key: string, color: string }[] = [
   {
@@ -57,12 +87,12 @@ const keyPresses: { key: string, color: string }[] = [
 onMounted(() => {
   canvas.value = document.getElementById("canvas");
   ctx.value = canvas.value.getContext("2d");
-  canvas.value.height = boardConfig.rows * boardConfig.tileSize
-  canvas.value.width = boardConfig.columns * boardConfig.tileSize;
+  canvas.value.height = boardConfig.boardSize * boardConfig.tileSize
+  canvas.value.width = boardConfig.boardSize * boardConfig.tileSize
   ctx.value.fillStyle = "white";
-  ctx.value.fillRect(0, 0, boardConfig.rows * boardConfig.tileSize, boardConfig.columns * boardConfig.tileSize)
+  ctx.value.fillRect(0, 0, canvas.value.height, canvas.value.width)
   ctx.value.fillStyle = "black";
-  ctx.value.fillRect(boardConfig.rows * playerLocation.x.value, boardConfig.rows * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
+  ctx.value.fillRect(boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
   window.addEventListener("keydown", function (keydown) {
     mover(keydown)
   })
@@ -84,62 +114,78 @@ function replace() {
 }
 function rplace(x: number, y: number, block: string) {
   ctx.value.fillStyle = block;
-  ctx.value.fillRect(boardConfig.rows * x, boardConfig.rows * y, boardConfig.tileSize, boardConfig.tileSize)
+  ctx.value.fillRect(boardConfig.tileSize * x, boardConfig.tileSize * y, boardConfig.tileSize, boardConfig.tileSize)
+
 }
 
 function moveLeft() {
   if (playerLocation.x.value != 0) {
     ctx.value.fillStyle = "white";
-    ctx.value.fillRect(boardConfig.rows * playerLocation.x.value, boardConfig.rows * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
+    ctx.value.fillRect(boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
     replace()
     playerLocation.x.value--
     ctx.value.fillStyle = "black";
-    ctx.value.fillRect(boardConfig.rows * playerLocation.x.value, boardConfig.rows * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
+    ctx.value.fillRect(boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
   }
+  currentDirection = "left"
+
 }
 function moveUp() {
   if (playerLocation.y.value != 0) {
     ctx.value.fillStyle = "white";
-    ctx.value.fillRect(boardConfig.rows * playerLocation.x.value, boardConfig.rows * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
+    ctx.value.fillRect(boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
     replace()
     playerLocation.y.value--
     ctx.value.fillStyle = "black";
-    ctx.value.fillRect(boardConfig.rows * playerLocation.x.value, boardConfig.rows * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
+    ctx.value.fillRect(boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
   }
+  currentDirection = "up"
+
 }
 function moveDown() {
-  if (playerLocation.y.value != boardConfig.rows - 1) {
+  if (playerLocation.y.value != boardConfig.boardSize - 1) {
     ctx.value.fillStyle = "white";
-    ctx.value.fillRect(boardConfig.rows * playerLocation.x.value, boardConfig.rows * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
+    ctx.value.fillRect(boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
     replace()
     playerLocation.y.value++
     ctx.value.fillStyle = "black";
-    ctx.value.fillRect(boardConfig.rows * playerLocation.x.value, boardConfig.rows * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
+    ctx.value.fillRect(boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
   }
+  currentDirection = "down"
 }
 function moveRight() {
-  if (playerLocation.x.value != boardConfig.columns - 1) {
+  if (playerLocation.x.value != boardConfig.boardSize - 1) {
     ctx.value.fillStyle = "white";
-    ctx.value.fillRect(boardConfig.rows * playerLocation.x.value, boardConfig.rows * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
+    ctx.value.fillRect(boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
     replace()
     playerLocation.x.value++
     ctx.value.fillStyle = "black";
-    ctx.value.fillRect(boardConfig.rows * playerLocation.x.value, boardConfig.rows * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
+    ctx.value.fillRect(boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
   }
+  currentDirection = "right"
 }
 
 
+let currentDirection = ""
+
 function place(block: string) {
+ let placingDirection = directions.find(direction => direction.direction === currentDirection && direction.direction === currentDirection);
+if(placingDirection != undefined){
   ctx.value.fillStyle = `${block}`;
-  let x = playerLocation.x.value
-  let y = playerLocation.y.value
-  ctx.value.fillRect(boardConfig.rows * (x), boardConfig.rows * (y), boardConfig.tileSize, boardConfig.tileSize)
+  let x = playerLocation.x.value + placingDirection.facing.x
+  let y = playerLocation.y.value + placingDirection.facing.y
+  console.log(placedStuff)
+  if (placedStuff.find(block => block.x === x && block.y === y)) {
+    placedStuff.splice(placedStuff.findIndex(block => block.x === x && block.y === y), 1)
+  }
+  ctx.value.fillRect(boardConfig.tileSize * (x), boardConfig.tileSize * (y), boardConfig.tileSize, boardConfig.tileSize)
   placedStuff.push({
     x: (x),
     y: (y),
     block: `${block}`
-  })
+  })}
 }
+
 
 function mover(key: KeyboardEvent) {
   if (key.code === "ArrowLeft") {
