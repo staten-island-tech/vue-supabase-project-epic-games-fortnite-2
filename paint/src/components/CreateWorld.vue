@@ -18,6 +18,7 @@ import { useSessionStore } from '@/stores/user'
 
 const sessionStore = useSessionStore()
 const textInput = ref('')
+const emits = defineEmits(['close'])
 
 async function createWorld(input: string) {
   let uuid = crypto.randomUUID()
@@ -29,8 +30,9 @@ async function createWorld(input: string) {
   }
   try {
     const { error } = await supabase
-    .rpc('append_uuid_to_user', {id: uuid, userid: sessionStore.userID})
+    .rpc('append_world_uuid_to_user', {id: uuid, userid: sessionStore.userID})
     if (error) throw error
+    emits('close')
   } catch (error) {
     console.log(error)
   }
