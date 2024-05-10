@@ -3,9 +3,9 @@
     <button @click="toggleCreateScreen()">create a world</button>
     <CreateWorld v-show="showCreate" @close="toggleCreateScreen" />
     <h1>{{ worlds }}</h1>
-    <div v-if="worlds[0].worlds_own !== undefined">
+    <div v-if="worlds[0] !== undefined">
       <div class="world-container" v-for="(world, i) in worlds[0].worlds_own" :key="world">
-        <h1>{{ world }} <button @click="deleteWorld(worlds[i])">delet world</button></h1>
+        <h1>{{ world }} <button @click="deleteWorld(world)">delet world</button></h1>
       </div>
     </div>
     <h1 v-else>u might want to create a world using that SHINY button</h1>
