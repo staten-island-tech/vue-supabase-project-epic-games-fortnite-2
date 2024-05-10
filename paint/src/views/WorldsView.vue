@@ -4,7 +4,7 @@
     <CreateWorld v-show="showCreate" @close="toggleCreateScreen" />
     <h1>{{ worlds }}</h1>
     <div v-if="worlds[0] !== undefined">
-      <div class="world-container" v-for="(world, i) in worlds[0].worlds_own" :key="world">
+      <div class="world-container" v-for="(world) in worlds[0].worlds_own" :key="world">
         <h1>{{ world }} <button @click="deleteWorld(world)">delet world</button></h1>
       </div>
     </div>
@@ -40,6 +40,7 @@ onMounted(async () => {
   } else {
     getWorlds()
   }
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const channelA = supabase //listen for changes in db, update worlds
     .channel('schema-db-changes')
     .on(
@@ -85,7 +86,6 @@ async function deleteWorld(world: UUID) {
   try {
     const { error } = await supabase.from('worlds').delete().eq('id', world)
     if (error) throw error
-    getWorlds()
   } catch (error) {
     console.log('Unable to delete world:')
     console.log(error)
@@ -96,7 +96,6 @@ async function deleteWorld(world: UUID) {
       userid: sessionStore.userID
     })
     if (error) throw error
-    getWorlds()
   } catch (error) {
     console.log('Unable to delete world from user db:')
     console.log(error)
