@@ -16,7 +16,7 @@ interface playerPos {
 let placedStuff: { x: number, y: number, block: string }[] = []
 
 
-interface gameData {
+interface data {
   worldsize: object,
   placedBLocks: object
 }
@@ -35,11 +35,10 @@ let playerLocation: playerPos = {
   y: ref(13),
 }
 
-let gameData: gameData = {
+let gameData: data = {
   worldsize: { boardConfig },
   placedBLocks: [placedStuff]
 }
-
 
 const keyPresses: { key: string, color: string }[] = [
   {
