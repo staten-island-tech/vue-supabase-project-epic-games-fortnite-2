@@ -165,7 +165,6 @@ function moveRight() {
   currentDirection = "right"
 }
 
-
 let currentDirection = ""
 
 function place(block: string) {
