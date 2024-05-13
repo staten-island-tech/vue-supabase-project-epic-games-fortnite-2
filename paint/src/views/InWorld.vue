@@ -1,24 +1,10 @@
 <script setup lang="ts">
-import { ref, onMounted, type Ref } from 'vue'
-
-interface boardDisplay {
-  boardSize: number
-  tileSize: number
-}
-interface playerPos {
-  x: Ref<number>
-  y: Ref<number>
-}
-
-let placedStuff: { x: number; y: number; block: string }[] = []
-
-interface data {
-  worldsize: object
-  placedBLocks: object
-}
+import { ref, onMounted } from 'vue'
+import { type boardDisplay, type playerPos, type data } from 'database'
 
 const canvas = ref()
 const ctx = ref()
+let placedStuff: { x: number; y: number; block: string }[] = []
 
 const boardConfig: boardDisplay = {
   boardSize: 25,
@@ -82,6 +68,9 @@ const keyPresses: { key: string; color: string }[] = [
 ]
 
 onMounted(() => {
+  setInterval(() => {
+    console.log(gameData)
+  }, 500)
   canvas.value = document.getElementById('canvas')
   ctx.value = canvas.value.getContext('2d')
   canvas.value.height = boardConfig.boardSize * boardConfig.tileSize

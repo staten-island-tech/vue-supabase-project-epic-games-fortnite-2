@@ -4,8 +4,10 @@
     <CreateWorld v-show="showCreate" @close="toggleCreateScreen" />
     <h1>{{ worlds }}</h1>
     <div v-if="worlds[0] !== undefined">
-      <div class="world-container" v-for="(world) in worlds[0].worlds_own" :key="world">
-        <h1>{{ world }} <button @click="deleteWorld(world)">delet world</button></h1>
+      <div class="world-container" v-for="world in worlds[0].worlds_own" :key="world">
+        <h1 @click="enterWorld(world)">
+          {{ world }} <button @click="deleteWorld(world)">delet world</button>
+        </h1>
       </div>
     </div>
     <h1 v-else>u might want to create a world using that SHINY button</h1>
@@ -41,7 +43,7 @@ onMounted(async () => {
     getWorlds()
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const channelA = supabase //listen for changes in db, update worlds
+  const listenToDBChanges = supabase //listen for changes in db, update worlds
     .channel('schema-db-changes')
     .on(
       'postgres_changes',
@@ -68,6 +70,10 @@ function toggleCreateScreen() {
       showCreate.value = true
       break
   }
+}
+
+async function enterWorld(world: UUID) {
+
 }
 
 async function getWorlds() {

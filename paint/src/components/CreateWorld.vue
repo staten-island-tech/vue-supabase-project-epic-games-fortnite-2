@@ -3,8 +3,8 @@
     <div class="modal">
       <h2>Create a World</h2>
       <button class="btn-close" @click="$emit('close')">X</button>
-      <form @submit.prevent="createWorld(textInput)">
-        <input type="text" name="input" id="input" v-model="textInput" />
+      <form @submit.prevent="createWorld(name)">
+        <input type="text" name="input" id="input" v-model="name" />
         <button type="submit">Create</button>
       </form>
     </div>
@@ -15,15 +15,22 @@
 import { ref } from 'vue'
 import { supabase } from '../lib/supabaseClient'
 import { useSessionStore } from '@/stores/user'
+import type { data } from 'database'
 
 const sessionStore = useSessionStore()
-const textInput = ref('')
+const name = ref('')
 const emits = defineEmits(['close'])
 
-async function createWorld(input: string) {
+async function createWorld(name: string) {
   let uuid = crypto.randomUUID()
+  let worldData = data() {
+    return {
+      worldsize: { boardConfig },
+  placedBLocks: [placedStuff]
+    }
+  },
   try {
-    const { error } = await supabase.from('worlds').insert({ id: uuid, data: input })
+    const { error } = await supabase.from('worlds').insert({ id: uuid, data: worldData })
     if (error) throw error
   } catch (error) {
     console.log(error)
