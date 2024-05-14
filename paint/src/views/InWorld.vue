@@ -24,13 +24,13 @@ const canvas = ref();
 const ctx = ref();
 
 const boardConfig: boardDisplay = {
-  boardSize: 25,
-  tileSize: 25
+  boardSize: 5,
+  tileSize: 2
 }
 
 let playerLocation: playerPos = {
-  x: ref(12),
-  y: ref(13),
+  x: ref(Math.round(boardConfig.boardSize / 2)),
+  y: ref(Math.round(boardConfig.boardSize / 2)),
 }
 
 let gameData: data = {
@@ -38,36 +38,36 @@ let gameData: data = {
   placedBLocks: [placedStuff]
 }
 
-const directions: {direction:string, facing: {x: number, y:number}}[] = [
+const directions: { direction: string, facing: { x: number, y: number } }[] = [
   {
-    direction:"ArrowLeft",
-    facing:{
+    direction: "ArrowLeft",
+    facing: {
       x: -1,
       y: 0
     }
   },
   {
-    direction:"ArrowRight",
-    facing:{
+    direction: "ArrowRight",
+    facing: {
       x: +1,
       y: 0
     }
   },
   {
-    direction:"ArrowUp",
-    facing:{
+    direction: "ArrowUp",
+    facing: {
       x: 0,
       y: -1
     }
   },
   {
-    direction:"ArrowDown",
-    facing:{
+    direction: "ArrowDown",
+    facing: {
       x: 0,
       y: +1
     }
   },
-  
+
 ]
 
 const keyPresses: { key: string, color: string }[] = [
@@ -118,110 +118,49 @@ function rplace(x: number, y: number, block: string) {
 
 }
 
-function moveLeft() {
-  if (playerLocation.x.value != 0) {
-    ctx.value.fillStyle = "white";
-    ctx.value.fillRect(boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
-    replace()
-    playerLocation.x.value--
-    ctx.value.fillStyle = "black";
-    ctx.value.fillRect(boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
-  }
-  currentDirection = "ArrowLeft"
-
-}
-function moveUp() {
-  if (playerLocation.x.value != 0 && playerLocation.y.value != 0 && playerLocation.x.value != boardConfig.boardSize - 1 && playerLocation.y.value != boardConfig.boardSize -1) {
-    ctx.value.fillStyle = "white";
-    ctx.value.fillRect(boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
-    replace()
-    playerLocation.y.value--
-    ctx.value.fillStyle = "black";
-    ctx.value.fillRect(boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
-  }
-  currentDirection = "ArrowUp"
- 
-    }
-
-
-function moveDown() {
-  if (playerLocation.y.value != boardConfig.boardSize - 1) {
-    ctx.value.fillStyle = "white";
-    ctx.value.fillRect(boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
-    replace()
-    playerLocation.y.value++
-    ctx.value.fillStyle = "black";
-    ctx.value.fillRect(boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
-  }
-  currentDirection = "ArrowDown"
- 
-    }
-
-function moveRight() {
-  if (playerLocation.x.value != boardConfig.boardSize - 1) {
-    ctx.value.fillStyle = "white";
-    ctx.value.fillRect(boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
-    replace()
-    playerLocation.x.value++
-    ctx.value.fillStyle = "black";
-    ctx.value.fillRect(boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
-  }
-  
-  currentDirection = "ArrowRight" 
-}
-
-let currentDirection = "";
+let currentDirection = "ArrowRight";
 
 function mover(key: KeyboardEvent) {
-  /*   if (key.code === "ArrowLeft") {
-    moveLeft()
-  } else if (key.code === "ArrowRight") {
-    moveRight()
-  } else if (key.code === "ArrowUp") {
-    moveUp()
-  } else if (key.code === "ArrowDown") {
-    moveDown()
-  }    
- */
   let movingDirection = directions.find(direction => direction.direction === key.code);
-  if(movingDirection != undefined){
-  move(movingDirection) 
-} 
+  if (movingDirection != undefined) {
+    move(movingDirection)
+  }
 }
 
-function move(direction: { direction: string; facing: { x: number; y: number; }; } ){
-  if(playerLocation.x.value != 0 && playerLocation.y.value != 0 && playerLocation.x.value != boardConfig.boardSize - 1 && playerLocation.y.value != boardConfig.boardSize -1){
-    ctx.value.fillStyle = "white";
-    ctx.value.fillRect(boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
-    replace()
-    playerLocation.x.value += direction.facing.x
-    playerLocation.y.value += direction.facing.y
-    ctx.value.fillStyle = "black";
-    ctx.value.fillRect(boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
-    currentDirection = `${direction.direction}`
-    console.log(`${direction.direction}`)
-  } 
-
+function move(direction: { direction: string; facing: { x: number; y: number; }; }) {
+  ctx.value.fillStyle = "white";
+  ctx.value.fillRect(boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
+  replace()
+  playerLocation.x.value += direction.facing.x
+  if (playerLocation.x.value < 0 || playerLocation.x.value === boardConfig.boardSize) {
+    playerLocation.x.value -= direction.facing.x
+  }
+  playerLocation.y.value += direction.facing.y
+  if (playerLocation.y.value < 0 || playerLocation.y.value === boardConfig.boardSize) {
+    playerLocation.y.value -= direction.facing.y
+  }
+  ctx.value.fillStyle = "black";
+  ctx.value.fillRect(boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
+  currentDirection = `${direction.direction}`
 }
-
 
 
 function place(block: string) {
- let placingDirection = directions.find(direction => direction.direction === currentDirection);
-/*   console.log(currentDirection)
- */  if(placingDirection != undefined){
-   ctx.value.fillStyle = `${block}`;
-   let x = playerLocation.x.value + placingDirection.facing.x
-   let y = playerLocation.y.value + placingDirection.facing.y
-   if (placedStuff.find(block => block.x === x && block.y === y)) {
-     placedStuff.splice(placedStuff.findIndex(block => block.x === x && block.y === y), 1)
+  let placingDirection = directions.find(direction => direction.direction === currentDirection);
+  if (placingDirection != undefined) {
+    ctx.value.fillStyle = `${block}`;
+    let x = playerLocation.x.value + placingDirection.facing.x
+    let y = playerLocation.y.value + placingDirection.facing.y
+    if (placedStuff.find(block => block.x === x && block.y === y)) {
+      placedStuff.splice(placedStuff.findIndex(block => block.x === x && block.y === y), 1)
     }
     ctx.value.fillRect(boardConfig.tileSize * (x), boardConfig.tileSize * (y), boardConfig.tileSize, boardConfig.tileSize)
-  placedStuff.push({
-    x: (x),
-    y: (y),
-    block: `${block}`
-  })}
+    placedStuff.push({
+      x: (x),
+      y: (y),
+      block: `${block}`
+    })
+  }
 }
 
 
