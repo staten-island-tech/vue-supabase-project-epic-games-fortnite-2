@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+import { dir } from 'console';
 import { type boardDisplay, type playerPos, type data } from 'database'
 
 const canvas = ref()
@@ -12,8 +13,8 @@ const boardConfig: boardDisplay = {
 }
 
 let playerLocation: playerPos = {
-  x: ref(12),
-  y: ref(13)
+  x: ref(Math.round(boardConfig.boardSize / 2)),
+  y: ref(Math.round(boardConfig.boardSize / 2)),
 }
 
 let gameData: data = {
@@ -21,35 +22,36 @@ let gameData: data = {
   placedBLocks: [placedStuff]
 }
 
-const directions: { direction: string; facing: { x: number; y: number } }[] = [
+const directions: { direction: string, facing: { x: number, y: number } }[] = [
   {
-    direction: 'left',
+    direction: "ArrowLeft",
     facing: {
       x: -1,
       y: 0
     }
   },
   {
-    direction: 'right',
+    direction: "ArrowRight",
     facing: {
       x: +1,
       y: 0
     }
   },
   {
-    direction: 'up',
+    direction: "ArrowUp",
     facing: {
       x: 0,
       y: -1
     }
   },
   {
-    direction: 'down',
+    direction: "ArrowDown",
     facing: {
       x: 0,
       y: +1
     }
-  }
+  },
+
 ]
 
 const keyPresses: { key: string; color: string }[] = [
@@ -87,9 +89,8 @@ onMounted(() => {
   window.addEventListener('keydown', function (keydown) {
     mover(keydown)
   })
-
-  window.addEventListener('keydown', function (keydown: KeyboardEvent) {
-    const keyPressed = keyPresses.find((c) => c.key === keydown.code)
+  window.addEventListener("keydown", function (keydown: KeyboardEvent) {
+    const keyPressed = keyPresses.find(c => c.key === keydown.code);
     if (keyPressed != undefined) {
       place(keyPressed.color)
     }
@@ -114,134 +115,53 @@ function rplace(x: number, y: number, block: string) {
   )
 }
 
-function moveLeft() {
-  if (playerLocation.x.value != 0) {
-    ctx.value.fillStyle = 'white'
-    ctx.value.fillRect(
-      boardConfig.tileSize * playerLocation.x.value,
-      boardConfig.tileSize * playerLocation.y.value,
-      boardConfig.tileSize,
-      boardConfig.tileSize
-    )
-    replace()
-    playerLocation.x.value--
-    ctx.value.fillStyle = 'black'
-    ctx.value.fillRect(
-      boardConfig.tileSize * playerLocation.x.value,
-      boardConfig.tileSize * playerLocation.y.value,
-      boardConfig.tileSize,
-      boardConfig.tileSize
-    )
+let currentDirection = "ArrowRight";
+
+function mover(key: KeyboardEvent) {
+  let movingDirection = directions.find(direction => direction.direction === key.code);
+  if (movingDirection != undefined) {
+    move(movingDirection)
   }
-  currentDirection = 'left'
-}
-function moveUp() {
-  if (playerLocation.y.value != 0) {
-    ctx.value.fillStyle = 'white'
-    ctx.value.fillRect(
-      boardConfig.tileSize * playerLocation.x.value,
-      boardConfig.tileSize * playerLocation.y.value,
-      boardConfig.tileSize,
-      boardConfig.tileSize
-    )
-    replace()
-    playerLocation.y.value--
-    ctx.value.fillStyle = 'black'
-    ctx.value.fillRect(
-      boardConfig.tileSize * playerLocation.x.value,
-      boardConfig.tileSize * playerLocation.y.value,
-      boardConfig.tileSize,
-      boardConfig.tileSize
-    )
-  }
-  currentDirection = 'up'
-}
-function moveDown() {
-  if (playerLocation.y.value != boardConfig.boardSize - 1) {
-    ctx.value.fillStyle = 'white'
-    ctx.value.fillRect(
-      boardConfig.tileSize * playerLocation.x.value,
-      boardConfig.tileSize * playerLocation.y.value,
-      boardConfig.tileSize,
-      boardConfig.tileSize
-    )
-    replace()
-    playerLocation.y.value++
-    ctx.value.fillStyle = 'black'
-    ctx.value.fillRect(
-      boardConfig.tileSize * playerLocation.x.value,
-      boardConfig.tileSize * playerLocation.y.value,
-      boardConfig.tileSize,
-      boardConfig.tileSize
-    )
-  }
-  currentDirection = 'down'
-}
-function moveRight() {
-  if (playerLocation.x.value != boardConfig.boardSize - 1) {
-    ctx.value.fillStyle = 'white'
-    ctx.value.fillRect(
-      boardConfig.tileSize * playerLocation.x.value,
-      boardConfig.tileSize * playerLocation.y.value,
-      boardConfig.tileSize,
-      boardConfig.tileSize
-    )
-    replace()
-    playerLocation.x.value++
-    ctx.value.fillStyle = 'black'
-    ctx.value.fillRect(
-      boardConfig.tileSize * playerLocation.x.value,
-      boardConfig.tileSize * playerLocation.y.value,
-      boardConfig.tileSize,
-      boardConfig.tileSize
-    )
-  }
-  currentDirection = 'right'
 }
 
-let currentDirection = ''
+function move(direction: { direction: string; facing: { x: number; y: number; }; }) {
+  ctx.value.fillStyle = "white";
+  ctx.value.fillRect(boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
+  replace()
+  playerLocation.x.value += direction.facing.x
+  if (playerLocation.x.value < 0 || playerLocation.x.value === boardConfig.boardSize) {
+    playerLocation.x.value -= direction.facing.x
+  }
+  playerLocation.y.value += direction.facing.y
+  if (playerLocation.y.value < 0 || playerLocation.y.value === boardConfig.boardSize) {
+    playerLocation.y.value -= direction.facing.y
+  }
+  ctx.value.fillStyle = "black";
+  ctx.value.fillRect(boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
+  currentDirection = `${direction.direction}`
+}
+
 
 function place(block: string) {
-  let placingDirection = directions.find(
-    (direction) =>
-      direction.direction === currentDirection && direction.direction === currentDirection
-  )
+  let placingDirection = directions.find(direction => direction.direction === currentDirection);
   if (placingDirection != undefined) {
-    ctx.value.fillStyle = `${block}`
+    ctx.value.fillStyle = `${block}`;
     let x = playerLocation.x.value + placingDirection.facing.x
     let y = playerLocation.y.value + placingDirection.facing.y
-    console.log(placedStuff)
-    if (placedStuff.find((block) => block.x === x && block.y === y)) {
-      placedStuff.splice(
-        placedStuff.findIndex((block) => block.x === x && block.y === y),
-        1
-      )
+    if (placedStuff.find(block => block.x === x && block.y === y)) {
+      placedStuff.splice(placedStuff.findIndex(block => block.x === x && block.y === y), 1)
     }
-    ctx.value.fillRect(
-      boardConfig.tileSize * x,
-      boardConfig.tileSize * y,
-      boardConfig.tileSize,
-      boardConfig.tileSize
-    )
+    ctx.value.fillRect(boardConfig.tileSize * (x), boardConfig.tileSize * (y), boardConfig.tileSize, boardConfig.tileSize)
     placedStuff.push({
-      x: x,
-      y: y,
+      x: (x),
+      y: (y),
       block: `${block}`
     })
   }
 }
 
-function mover(key: KeyboardEvent) {
-  if (key.code === 'ArrowLeft') {
-    moveLeft()
-  } else if (key.code === 'ArrowRight') {
-    moveRight()
-  } else if (key.code === 'ArrowUp') {
-    moveUp()
-  } else if (key.code === 'ArrowDown') {
-    moveDown()
-  }
-}
+
+
 </script>
 
 <template>
