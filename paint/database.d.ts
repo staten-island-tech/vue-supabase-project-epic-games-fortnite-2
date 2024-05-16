@@ -14,6 +14,12 @@ export interface data {
   placedBLocks: object
 }
 
+export interface placed {
+  x: number
+  y: number
+  block: string
+}
+
 export type Json =
   | string
   | number
@@ -54,17 +60,17 @@ export type Database = {
       worlds: {
         Row: {
           created_at: string
-          data: string | null
+          data: any | null
           id: string
         }
         Insert: {
           created_at?: string
-          data?: string | null
+          data?: any | null
           id: string
         }
         Update: {
           created_at?: string
-          data?: string | null
+          data?: any | null
           id?: string
         }
         Relationships: []

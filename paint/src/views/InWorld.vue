@@ -5,12 +5,8 @@ import { type boardDisplay, type playerPos, type data } from 'database'
 
 const canvas = ref()
 const ctx = ref()
-let placedStuff: { x: number; y: number; block: string }[] = []
 
-const boardConfig: boardDisplay = {
-  boardSize: 25,
-  tileSize: 25
-}
+
 
 let playerLocation: playerPos = {
   x: ref(Math.round(boardConfig.boardSize / 2)),
