@@ -24,8 +24,8 @@ const canvas = ref();
 const ctx = ref();
 
 const boardConfig: boardDisplay = {
-  boardSize: 5,
-  tileSize: 2
+  boardSize: 25,
+  tileSize: 25
 }
 
 let playerLocation: playerPos = {
