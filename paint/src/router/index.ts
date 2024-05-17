@@ -13,7 +13,7 @@ const router = createRouter({
     { path: '/login', name: 'login', component: UserLogin },
     { path: '/register', name: 'register', component: UserRegister },
     { path: '/worlds', name:'worlds', component: WorldsView },
-    { path: '/world', name:'world', component: InWorld },
+    { path: '/world/:id', name:'world', component: InWorld },
   ]
 })
 

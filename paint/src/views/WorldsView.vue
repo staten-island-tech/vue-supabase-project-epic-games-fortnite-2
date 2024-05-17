@@ -23,6 +23,7 @@ import { supabase } from '../lib/supabaseClient'
 import { useSessionStore } from '@/stores/user'
 import CreateWorld from '../components/CreateWorld.vue'
 import type { UUID } from 'crypto'
+import router from '@/router'
 
 const sessionStore = useSessionStore()
 const showCreate = ref(false)
@@ -73,7 +74,10 @@ function toggleCreateScreen() {
 }
 
 async function enterWorld(world: UUID) {
-
+  router.push({
+    name: 'world',
+    params: { world: world }
+  })
 }
 
 async function getWorlds() {
