@@ -60,18 +60,21 @@ export type Database = {
       worlds: {
         Row: {
           created_at: string
-          data: any | null
+          data: Json | null
           id: string
+          name: string | null
         }
         Insert: {
           created_at?: string
-          data?: any | null
+          data?: Json | null
           id: string
+          name?: string | null
         }
         Update: {
           created_at?: string
-          data?: any | null
+          data?: Json | null
           id?: string
+          name?: string | null
         }
         Relationships: []
       }
