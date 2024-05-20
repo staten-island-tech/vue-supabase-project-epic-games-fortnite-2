@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ref, onMounted type Ref} from 'vue'
+import { ref, onMounted  type Ref} from 'vue'
 import { dir } from 'console';
-/* import { type boardDisplay, type playerPos, type data } from 'database'
- */
+import { type boardDisplay, type playerPos, type data } from 'database'
+ 
 interface boardDisplay {
   boardSize: number
   tileSize: number;
