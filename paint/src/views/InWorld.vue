@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { dir } from 'console';
-import { type boardDisplay, type playerPos, type data } from 'database'
+import { type boardDisplay, type playerPos, type data } from 'paint/database.d.ts'
 
 const canvas = ref()
 const ctx = ref()

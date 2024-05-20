@@ -76,7 +76,7 @@ function toggleCreateScreen() {
 async function enterWorld(world: UUID) {
   router.push({
     name: 'world',
-    params: { world: world }
+    params: { id: world }
   })
 }
 
