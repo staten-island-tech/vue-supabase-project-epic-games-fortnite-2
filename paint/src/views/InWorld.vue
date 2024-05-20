@@ -15,6 +15,7 @@ interface playerPos {
 let placedStuff: { x: number, y: number, block: string }[] = []
 
 
+
 interface data {
   worldsize: object,
   placedBLocks: object
@@ -84,16 +85,20 @@ const keyPresses: { key: string, color: string }[] = [
     color: "Red"
   }
 ]
+let img = new Image()
+img.src = "/79344124_p0_master1200.jpg"
+console.log(img.src)
 
 onMounted(() => {
   canvas.value = document.getElementById("canvas");
   ctx.value = canvas.value.getContext("2d");
-  canvas.value.height = boardConfig.boardSize * boardConfig.tileSize
+ canvas.value.height = boardConfig.boardSize * boardConfig.tileSize
   canvas.value.width = boardConfig.boardSize * boardConfig.tileSize
   ctx.value.fillStyle = "white";
   ctx.value.fillRect(0, 0, canvas.value.height, canvas.value.width)
-  ctx.value.fillStyle = "black";
-  ctx.value.fillRect(boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
+  ctx.value.drawImage(img, boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
+ /*  ctx.value.fillStyle = "black";
+  ctx.value.fillRect(boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize) */
   window.addEventListener("keydown", function (keydown) {
     mover(keydown)
   })
@@ -122,9 +127,12 @@ let currentDirection = "ArrowRight";
 
 function mover(key: KeyboardEvent) {
   let movingDirection = directions.find(direction => direction.direction === key.code);
-  if (movingDirection != undefined) {
+  if (movingDirection != undefined ) {
+    if(currentDirection != movingDirection.direction){
+       currentDirection = `${movingDirection.direction}`
+    }else{
     move(movingDirection)
-  }
+  }}
 }
 
 function move(direction: { direction: string; facing: { x: number; y: number; }; }) {
@@ -139,8 +147,10 @@ function move(direction: { direction: string; facing: { x: number; y: number; };
   if (playerLocation.y.value < 0 || playerLocation.y.value === boardConfig.boardSize) {
     playerLocation.y.value -= direction.facing.y
   }
-  ctx.value.fillStyle = "black";
-  ctx.value.fillRect(boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
+ /*  ctx.value.fillStyle = "black";
+  ctx.value.fillRect(boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize) */
+  ctx.value.drawImage(img, boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
+
   currentDirection = `${direction.direction}`
 }
 
@@ -169,7 +179,6 @@ function place(block: string) {
 
 <template>
   <canvas id="canvas"></canvas>
-
 </template>
 
 <style lang="scss" scoped>
