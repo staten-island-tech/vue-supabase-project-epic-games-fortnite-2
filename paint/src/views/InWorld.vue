@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { dir } from 'console';
-import { type boardDisplay, type playerPos, type data } from 'paint/database.d.ts'
+import { type boardDisplay, type playerPos, type data } from 'database'
+import { supabase } from '@/lib/supabaseClient';
 
 const canvas = ref()
 const ctx = ref()
 
-
+onMounted(() => {
+  supabase.
+}),
 
 let playerLocation: playerPos = {
   x: ref(Math.round(boardConfig.boardSize / 2)),
