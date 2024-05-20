@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import { ref, onMounted type Ref} from 'vue'
 import { dir } from 'console';
-import { ref, onMounted, type Ref } from 'vue'
-
+/* import { type boardDisplay, type playerPos, type data } from 'database'
+ */
 interface boardDisplay {
   boardSize: number
   tileSize: number;
@@ -71,18 +72,18 @@ const directions: { direction: string, facing: { x: number, y: number } }[] = [
 
 ]
 
-const keyPresses: { key: string, color: string }[] = [
+const keyPresses: { key: string; color: string }[] = [
   {
-    key: "KeyX",
-    color: "White"
+    key: 'KeyX',
+    color: 'White'
   },
   {
-    key: "Digit1",
-    color: "Green"
+    key: 'Digit1',
+    color: 'Green'
   },
   {
-    key: "Digit2",
-    color: "Red"
+    key: 'Digit2',
+    color: 'Red'
   }
 ]
 let img = new Image()
@@ -90,16 +91,23 @@ img.src = "/79344124_p0_master1200.jpg"
 console.log(img.src)
 
 onMounted(() => {
-  canvas.value = document.getElementById("canvas");
-  ctx.value = canvas.value.getContext("2d");
- canvas.value.height = boardConfig.boardSize * boardConfig.tileSize
+  setInterval(() => {
+    console.log(gameData)
+  }, 500)
+  canvas.value = document.getElementById('canvas')
+  ctx.value = canvas.value.getContext('2d')
+  canvas.value.height = boardConfig.boardSize * boardConfig.tileSize
   canvas.value.width = boardConfig.boardSize * boardConfig.tileSize
-  ctx.value.fillStyle = "white";
+  ctx.value.fillStyle = 'white'
   ctx.value.fillRect(0, 0, canvas.value.height, canvas.value.width)
-  ctx.value.drawImage(img, boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
- /*  ctx.value.fillStyle = "black";
-  ctx.value.fillRect(boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize) */
-  window.addEventListener("keydown", function (keydown) {
+  ctx.value.fillStyle = 'black'
+  ctx.value.fillRect(
+    boardConfig.tileSize * playerLocation.x.value,
+    boardConfig.tileSize * playerLocation.y.value,
+    boardConfig.tileSize,
+    boardConfig.tileSize
+  )
+  window.addEventListener('keydown', function (keydown) {
     mover(keydown)
   })
   window.addEventListener("keydown", function (keydown: KeyboardEvent) {
@@ -110,17 +118,22 @@ onMounted(() => {
   })
 })
 
-
 function replace() {
-  const replacing = placedStuff.find(block => block.x === playerLocation.x.value && block.y === playerLocation.y.value);
+  const replacing = placedStuff.find(
+    (block) => block.x === playerLocation.x.value && block.y === playerLocation.y.value
+  )
   if (replacing != undefined) {
     rplace(replacing.x, replacing.y, replacing.block)
   }
 }
 function rplace(x: number, y: number, block: string) {
-  ctx.value.fillStyle = block;
-  ctx.value.fillRect(boardConfig.tileSize * x, boardConfig.tileSize * y, boardConfig.tileSize, boardConfig.tileSize)
-
+  ctx.value.fillStyle = block
+  ctx.value.fillRect(
+    boardConfig.tileSize * x,
+    boardConfig.tileSize * y,
+    boardConfig.tileSize,
+    boardConfig.tileSize
+  )
 }
 
 let currentDirection = "ArrowRight";

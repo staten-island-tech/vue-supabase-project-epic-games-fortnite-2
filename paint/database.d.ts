@@ -1,3 +1,19 @@
+import { type Ref } from 'vue'
+
+export interface boardDisplay {
+  boardSize: number
+  tileSize: number
+}
+export interface playerPos {
+  x: Ref<number>
+  y: Ref<number>
+}
+
+export interface data {
+  worldsize: object
+  placedBLocks: object
+}
+
 export type Json =
   | string
   | number
