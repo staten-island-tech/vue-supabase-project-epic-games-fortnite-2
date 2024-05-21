@@ -17,6 +17,7 @@ let placedStuff: { x: number, y: number, block: string }[] = []
 
 
 
+
 interface data {
   worldsize: object,
   placedBLocks: object
