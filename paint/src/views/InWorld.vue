@@ -30,11 +30,10 @@ let gameData = ref<data>({
   placedBLocks: [new Array()]
 })
 
-
-
+let boardSize = gameData.value.worldsize.boardSize
 let playerLocation: playerPos = {
-  x: ref(Math.round(gameData.value.worldsize.boardSize / 2)),
-  y: ref(Math.round(gameData.value.worldsize.boardSize / 2))
+  x: ref(Math.round(boardSize / 2)),
+  y: ref(Math.round(boardSize / 2))
 }
 
 const directions: { direction: string; facing: { x: number; y: number } }[] = [
