@@ -24,7 +24,7 @@ const emits = defineEmits(['close'])
 async function createWorld(name: string) {
   let uuid = crypto.randomUUID()
   let worldData = data() {
-    return {
+    return:{ //i added a colon in front of return
       worldsize: { boardConfig },
   placedBLocks: [placedStuff]
     }
