@@ -16,26 +16,24 @@ onMounted(async () => {
     const { data, error } = await supabase.from('worlds').select('data').eq('id', params.id)
     if (error) throw error
     console.log(data)
+    console.log()
+    console.log()
     gameData.value = data[0].data as any
+    // placedStuff = data[0].data.placedBLocks as any
+    // boardConfig = data[0].data.worldsize.boardConfig as any
   } catch (error) {
     console.log(error)
   }
 })
 
-let gameData = ref<data>({
-  worldsize: {
-    tileSize: 0,
-    boardSize: 0
-  },
-  placedBLocks: [[]]
-})
-let placedStuff = gameData.value.placedBLocks
-let boardConfig = gameData.value.worldsize.boardConfig
+let gameData = ref<data>()
+let placedStuff = ref<{ x: number; y: number; block: string }[]>([])
+let boardConfig: boardDisplay
 let playerLocation: playerPos = {
   x: ref(Math.round(25 / 2)),
   y: ref(Math.round(25 / 2))
 }
-
+boardConfig = { tileSize: 25, boardSize: 25 }
 const directions: { direction: string; facing: { x: number; y: number } }[] = [
   {
     direction: 'ArrowLeft',
@@ -111,7 +109,7 @@ onMounted(() => {
 })
 
 function replace() {
-  const replacing = placedStuff.find(
+  const replacing = placedStuff.value.find(
     (block) => block.x === playerLocation.x.value && block.y === playerLocation.y.value
   )
   if (replacing != undefined) {
@@ -170,9 +168,9 @@ function place(block: string) {
     ctx.value.fillStyle = `${block}`
     let x = playerLocation.x.value + placingDirection.facing.x
     let y = playerLocation.y.value + placingDirection.facing.y
-    if (placedStuff.find((block) => block.x === x && block.y === y)) {
-      placedStuff.splice(
-        placedStuff.findIndex((block) => block.x === x && block.y === y),
+    if (placedStuff.value.find((block) => block.x === x && block.y === y)) {
+      placedStuff.value.splice(
+        placedStuff.value.findIndex((block) => block.x === x && block.y === y),
         1
       )
     }
@@ -182,7 +180,7 @@ function place(block: string) {
       boardConfig.tileSize,
       boardConfig.tileSize
     )
-    placedStuff.push({
+    placedStuff.value.push({
       x: x,
       y: y,
       block: `${block}`
@@ -192,7 +190,10 @@ function place(block: string) {
 </script>
 
 <template>
-  <h1>{{ gameData.worldsize.boardConfig }}</h1>
+  <h1>{{ gameData }}</h1>
+
+  <h1>dfsafs: {{ boardConfig }}</h1>
+  <h1>placed: {{ placedStuff }}</h1>
   <canvas id="canvas"></canvas>
 </template>
 
