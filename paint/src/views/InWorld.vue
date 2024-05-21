@@ -24,16 +24,16 @@ onMounted(async () => {
 
 let gameData = ref<data>({
   worldsize: {
-    tileSize: new Number(),
-    boardSize: new Number()
+    tileSize: 0,
+    boardSize: 0
   },
-  placedBLocks: [new Array()]
+  placedBLocks: [[]]
 })
-
-let boardSize = gameData.value.worldsize.boardSize
+let placedStuff = gameData.value.placedBLocks
+let boardConfig = gameData.value.worldsize.boardConfig
 let playerLocation: playerPos = {
-  x: ref(Math.round(boardSize / 2)),
-  y: ref(Math.round(boardSize / 2))
+  x: ref(Math.round(25 / 2)),
+  y: ref(Math.round(25 / 2))
 }
 
 const directions: { direction: string; facing: { x: number; y: number } }[] = [
@@ -192,6 +192,7 @@ function place(block: string) {
 </script>
 
 <template>
+  <h1>{{ gameData.worldsize.boardConfig }}</h1>
   <canvas id="canvas"></canvas>
 </template>
 
