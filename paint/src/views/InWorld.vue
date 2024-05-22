@@ -119,6 +119,11 @@ onMounted(() => {
     }
   })
 })
+function replaceBoard(){
+  for (let i = 0; i < placedStuff.length; i++) {
+    placedStuff.forEach((block) => rplace(block.x,block.y,block.block))
+  }
+}
 
 function replace() {
   const replacing = placedStuff.find(
