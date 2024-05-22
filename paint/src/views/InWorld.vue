@@ -92,6 +92,9 @@ const keyPresses: { key: string; color: string }[] = [
     color: 'Red'
   }
 ]
+let img = new Image()
+img.src = "/79344124_p0_master1200.jpg"
+console.log(img.src)
 
 onMounted(() => {
   setInterval(() => {
@@ -103,13 +106,14 @@ onMounted(() => {
   canvas.value.width = boardConfig.boardSize * boardConfig.tileSize
   ctx.value.fillStyle = 'white'
   ctx.value.fillRect(0, 0, canvas.value.height, canvas.value.width)
-  ctx.value.fillStyle = 'black'
+ /*  ctx.value.fillStyle = 'black'
   ctx.value.fillRect(
     boardConfig.tileSize * playerLocation.x.value,
     boardConfig.tileSize * playerLocation.y.value,
     boardConfig.tileSize,
     boardConfig.tileSize
-  )
+  ) */
+  ctx.value.drawImage(img, boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
   window.addEventListener('keydown', function (keydown) {
     mover(keydown)
   })
@@ -120,6 +124,11 @@ onMounted(() => {
     }
   })
 })
+function replaceBoard(){
+  for (let i = 0; i < placedStuff.value.length; i++) {
+    placedStuff.forEach((block) => rplace(block.x,block.y,block.block))
+  }
+}
 
 function replace() {
   const replacing = placedStuff.value.find(
@@ -142,10 +151,13 @@ function rplace(x: number, y: number, block: string) {
 let currentDirection = 'ArrowRight'
 
 function mover(key: KeyboardEvent) {
-  let movingDirection = directions.find((direction) => direction.direction === key.code)
-  if (movingDirection != undefined) {
+  let movingDirection = directions.find(direction => direction.direction === key.code);
+  if (movingDirection != undefined ) {
+    if(currentDirection != movingDirection.direction){
+       currentDirection = `${movingDirection.direction}`
+    }else{
     move(movingDirection)
-  }
+  }}
 }
 
 function move(direction: { direction: string; facing: { x: number; y: number } }) {
@@ -165,13 +177,10 @@ function move(direction: { direction: string; facing: { x: number; y: number } }
   if (playerLocation.y.value < 0 || playerLocation.y.value === boardConfig.boardSize) {
     playerLocation.y.value -= direction.facing.y
   }
-  ctx.value.fillStyle = 'black'
-  ctx.value.fillRect(
-    boardConfig.tileSize * playerLocation.x.value,
-    boardConfig.tileSize * playerLocation.y.value,
-    boardConfig.tileSize,
-    boardConfig.tileSize
-  )
+ /*  ctx.value.fillStyle = "black";
+  ctx.value.fillRect(boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize) */
+  ctx.value.drawImage(img, boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
+
   currentDirection = `${direction.direction}`
 }
 
