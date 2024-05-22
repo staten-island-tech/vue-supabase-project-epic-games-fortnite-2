@@ -34,7 +34,9 @@ async function createWorld(name: string) {
   }
   console.log(worldData)
   try {
-    const { error } = await supabase.from('worlds').insert({ name: name, id: uuid, data: worldData })
+    const { error } = await supabase
+      .from('worlds')
+      .insert({ name: name, id: uuid, data: worldData })
     if (error) throw error
   } catch (error) {
     console.log(error)

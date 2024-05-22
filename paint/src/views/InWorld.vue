@@ -17,12 +17,12 @@ onMounted(async () => {
   try {
     const { data, error } = await supabase.from('worlds').select('data').eq('id', params.id)
     if (error) throw error
-    console.log(data)
-    console.log()
-    console.log()
     gameData.value = data[0].data as any
     placedStuff.value = data[0].data.placedBLocks as any
     boardConfig = data[0].data.worldsize.boardConfig as any
+    data[0].data.placedBLocks.forEach((item: any) => {
+      replaceBoard()
+    })
   } catch (error) {
     console.log(error)
   }
@@ -31,20 +31,27 @@ onMounted(async () => {
 async function saveExit(saveData: any) {
   try {
     const { error } = await supabase
-    .from('worlds')
-    .update({data: saveData})
-    .eq('id', sessionStore.currentWorldID)
-  } catch(error) {
+      .from('worlds')
+      .update({ data: saveData })
+      .eq('id', sessionStore.currentWorldID)
+    if (error) throw error
+    router.push('/worlds')
+  } catch (error) {
     console.log(error)
   }
 }
-
-let gameData = ref<data>()
+let boardConfig: boardDisplay = {
+  tileSize: 25,
+  boardSize: 25
+}
 let placedStuff = ref<{ x: number; y: number; block: string }[]>([])
-let boardConfig: boardDisplay
+let gameData = ref<data>({
+  worldsize: { boardConfig: boardConfig },
+  placedBLocks: placedStuff.value
+})
 let playerLocation: playerPos = {
-  x: ref(Math.round(25 / 2)),
-  y: ref(Math.round(25 / 2))
+  x: ref(Math.round(boardConfig.tileSize / 2)),
+  y: ref(Math.round(boardConfig.tileSize / 2))
 }
 boardConfig = { tileSize: 25, boardSize: 25 }
 const directions: { direction: string; facing: { x: number; y: number } }[] = [
@@ -123,6 +130,15 @@ onMounted(() => {
       place(keyPressed.color)
     }
   })
+  window.addEventListener(
+    'keydown',
+    function (e) {
+      if (['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].indexOf(e.code) > -1) {
+        e.preventDefault()
+      }
+    },
+    false
+  )
 })
 function replaceBoard(){
   for (let i = 0; i < placedStuff.value.length; i++) {
@@ -212,11 +228,7 @@ function place(block: string) {
 </script>
 
 <template>
-  <button class="exit" @click="saveExit()">Exit And Save</button>
-  <h1>{{ gameData }}</h1>
-
-  <h1>dfsafs: {{ boardConfig }}</h1>
-  <h1>placed: {{ placedStuff }}</h1>
+  <button class="exit" @click="saveExit(gameData)">Exit And Save</button>
   <canvas id="canvas"></canvas>
 </template>
 
