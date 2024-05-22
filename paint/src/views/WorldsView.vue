@@ -78,6 +78,7 @@ async function enterWorld(world: UUID) {
     name: 'world',
     params: { id: world }
   })
+  sessionStore.currentWorldID = world
 }
 
 async function getWorlds() {

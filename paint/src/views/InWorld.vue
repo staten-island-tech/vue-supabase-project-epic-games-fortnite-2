@@ -4,12 +4,14 @@ import { dir } from 'console'
 import { type boardDisplay, type playerPos, type data } from 'database'
 import { supabase } from '@/lib/supabaseClient'
 import { useRoute, useRouter } from 'vue-router'
+import { useSessionStore } from '@/stores/user'
 
 const router = useRouter()
 const route = useRoute()
 const canvas = ref()
 const ctx = ref()
 const params = route.params
+const sessionStore = useSessionStore()
 
 onMounted(async () => {
   try {
@@ -19,12 +21,23 @@ onMounted(async () => {
     console.log()
     console.log()
     gameData.value = data[0].data as any
-    // placedStuff = data[0].data.placedBLocks as any
-    // boardConfig = data[0].data.worldsize.boardConfig as any
+    placedStuff.value = data[0].data.placedBLocks as any
+    boardConfig = data[0].data.worldsize.boardConfig as any
   } catch (error) {
     console.log(error)
   }
 })
+
+async function saveExit(saveData: any) {
+  try {
+    const { error } = await supabase
+    .from('worlds')
+    .update({data: saveData})
+    .eq('id', sessionStore.currentWorldID)
+  } catch(error) {
+    console.log(error)
+  }
+}
 
 let gameData = ref<data>()
 let placedStuff = ref<{ x: number; y: number; block: string }[]>([])
@@ -190,6 +203,7 @@ function place(block: string) {
 </script>
 
 <template>
+  <button class="exit" @click="saveExit()">Exit And Save</button>
   <h1>{{ gameData }}</h1>
 
   <h1>dfsafs: {{ boardConfig }}</h1>
