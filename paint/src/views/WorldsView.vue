@@ -10,7 +10,7 @@
         </h1>
       </div>
     </div>
-    <h1 v-else>u might want to create a world using that SHINY button</h1>
+    <h1 v-else>no worlds :(</h1>
   </div>
   <div v-else>
     Please <router-link to="/login">log in</router-link> first to access your worlds!

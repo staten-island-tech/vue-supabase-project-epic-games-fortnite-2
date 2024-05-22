@@ -60,19 +60,19 @@ export type Database = {
       worlds: {
         Row: {
           created_at: string
-          data: Json | null
+          data: data 
           id: string
           name: string | null
         }
         Insert: {
           created_at?: string
-          data?: Json | null
+          data?: data 
           id: string
           name?: string | null
         }
         Update: {
           created_at?: string
-          data?: Json | null
+          data?: data 
           id?: string
           name?: string | null
         }

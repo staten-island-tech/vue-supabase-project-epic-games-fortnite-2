@@ -20,7 +20,8 @@ onMounted(async () => {
     gameData.value = data[0].data as any
     placedStuff.value = data[0].data.placedBLocks as any
     boardConfig = data[0].data.worldsize.boardConfig as any
-    data[0].data.placedBLocks.forEach((item: any) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    data[0].data.placedBLocks.forEach((_item: any) => {
       replaceBoard()
     })
   } catch (error) {
@@ -104,9 +105,6 @@ img.src = "/79344124_p0_master1200.jpg"
 console.log(img.src)
 
 onMounted(() => {
-  setInterval(() => {
-    console.log(gameData)
-  }, 500)
   canvas.value = document.getElementById('canvas')
   ctx.value = canvas.value.getContext('2d')
   canvas.value.height = boardConfig.boardSize * boardConfig.tileSize
