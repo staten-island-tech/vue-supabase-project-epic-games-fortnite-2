@@ -17,11 +17,11 @@ onMounted(async () => {
   try {
     const { data, error } = await supabase.from('worlds').select('data').eq('id', params.id)
     if (error) throw error
-    gameData.value = data[0].data as any
+    gameData.value = data[0].data
     placedStuff.value = data[0].data.placedBLocks as any
-    boardConfig = data[0].data.worldsize.boardConfig as any
+    boardConfig = (data[0].data.worldsize as any).boardConfig
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    data[0].data.placedBLocks.forEach((_item: any) => {
+    placedStuff.value.forEach((_item) => {
       replaceBoard()
     })
   } catch (error) {
