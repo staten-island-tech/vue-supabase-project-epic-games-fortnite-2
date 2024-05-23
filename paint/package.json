@@ -1,6 +1,6 @@
 {
   "name": "paint",
-  "types": "database.d.ts",
+  "types": "paint/database.d.ts",
   "version": "0.0.0",
   "private": true,
   "type": "module",
