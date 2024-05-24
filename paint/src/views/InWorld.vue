@@ -194,8 +194,6 @@ function move(direction: { direction: string; facing: { x: number; y: number } }
  /*  ctx.value.fillStyle = "black";
   ctx.value.fillRect(boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize) */
   ctx.value.drawImage(img, boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
-
-  currentDirection = `${direction.direction}`
 }
 
 function place(block: string) {
