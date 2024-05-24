@@ -100,7 +100,7 @@ onMounted(() => {
   canvas.value.width = boardConfig.boardSize * boardConfig.tileSize
   ctx.value.fillStyle = 'white'
   ctx.value.fillRect(0, 0, canvas.value.height, canvas.value.width)
-  ctx.value.fillStyle = 'black'
+  ctx.value.fillStyle = 'black'//put draw img here?
   ctx.value.fillRect(
     boardConfig.tileSize * playerLocation.x.value,
     boardConfig.tileSize * playerLocation.y.value,
