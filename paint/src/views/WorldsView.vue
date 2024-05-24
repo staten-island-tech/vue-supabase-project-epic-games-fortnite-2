@@ -6,8 +6,9 @@
     <div v-if="worlds[0] !== undefined">
       <div class="world-container" v-for="world in worlds[0].worlds_own" :key="world">
         <h1 @click="enterWorld(world)">
-          {{ world }} <button @click="deleteWorld(world)">delet world</button>
+          {{ world }} 
         </h1>
+        <button @click="deleteWorld(world)">delet world</button>
       </div>
     </div>
     <h1 v-else>no worlds :(</h1>
