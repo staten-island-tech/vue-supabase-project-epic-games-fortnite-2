@@ -1,3 +1,5 @@
+declare module 'index'
+
 import { type Ref } from 'vue'
 
 export interface boardDisplay {
