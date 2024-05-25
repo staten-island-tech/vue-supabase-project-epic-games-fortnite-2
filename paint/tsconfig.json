@@ -2,11 +2,10 @@
   "compilerOptions": {
     "strict": true,
     "lib": ["es5", "es6", "dom"],
-    "outDir": "./dist/",
+    "outDir": "./dist/"
   },
-  "include": [
-    "/paint"
-  ],
+  "include": ["paint"],
+  "exclude": ["node_modules", "src/**/__tests__"],
   "files": [],
   "references": [
     {
