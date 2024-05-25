@@ -1,9 +1,12 @@
 {
   "compilerOptions": {
-    "strict": false,
+    "strict": true,
     "lib": ["es5", "es6", "dom"],
     "outDir": "./dist/",
   },
+  "include": [
+    "/paint"
+  ],
   "files": [],
   "references": [
     {
