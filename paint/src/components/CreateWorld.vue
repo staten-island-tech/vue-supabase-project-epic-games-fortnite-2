@@ -42,9 +42,9 @@ async function createWorld(name: string) {
     console.log(error)
   }
   try {
-    const { error } = await supabase.rpc('append_world_uuid_to_user', {
-      id: uuid,
-      userid: sessionStore.userID
+    const { error } = await supabase.rpc('append', {
+      world_id: uuid,
+      user_id: sessionStore.userID
     })
     if (error) throw error
     emits('close')

@@ -84,7 +84,7 @@ async function enterWorld(world: UUID) {
 
 async function getWorlds() {
   try {
-    const { data, error } = await supabase.from('profiles').select('worlds_own') //get worlds
+    const { data, error } = await supabase.from('profiles').select('worlds_own').eq('id', sessionStore.userID) //get worlds
     if (error) throw error
     worlds.value = data
     console.log(worlds)
@@ -103,9 +103,9 @@ async function deleteWorld(world: UUID) {
     console.log(error)
   }
   try {
-    const { error } = await supabase.rpc('delete_world_uuid_from_user', {
-      worldid: world,
-      userid: sessionStore.userID
+    const { error } = await supabase.rpc('delete', {
+      world_id: world,
+      user_id: sessionStore.userID
     })
     if (error) throw error
   } catch (error) {
