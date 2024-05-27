@@ -1,3 +1,5 @@
+declare module 'index'
+
 import { type Ref } from 'vue'
 
 export interface boardDisplay {
@@ -12,6 +14,12 @@ export interface playerPos {
 export interface data {
   worldsize: object
   placedBLocks: object
+}
+
+export interface placed {
+  x: number
+  y: number
+  block: string
 }
 
 export type Json =
@@ -54,18 +62,21 @@ export type Database = {
       worlds: {
         Row: {
           created_at: string
-          data: string | null
+          data: data 
           id: string
+          name: string | null
         }
         Insert: {
           created_at?: string
-          data?: string | null
+          data?: data 
           id: string
+          name?: string | null
         }
         Update: {
           created_at?: string
-          data?: string | null
+          data?: data 
           id?: string
+          name?: string | null
         }
         Relationships: []
       }

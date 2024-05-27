@@ -6,11 +6,12 @@
     <div v-if="worlds[0] !== undefined">
       <div class="world-container" v-for="world in worlds[0].worlds_own" :key="world">
         <h1 @click="enterWorld(world)">
-          {{ world }} <button @click="deleteWorld(world)">delet world</button>
+          {{ world }} 
         </h1>
+        <button @click="deleteWorld(world)">delet world</button>
       </div>
     </div>
-    <h1 v-else>u might want to create a world using that SHINY button</h1>
+    <h1 v-else>no worlds :(</h1>
   </div>
   <div v-else>
     Please <router-link to="/login">log in</router-link> first to access your worlds!
@@ -23,6 +24,7 @@ import { supabase } from '../lib/supabaseClient'
 import { useSessionStore } from '@/stores/user'
 import CreateWorld from '../components/CreateWorld.vue'
 import type { UUID } from 'crypto'
+import router from '@/router'
 
 const sessionStore = useSessionStore()
 const showCreate = ref(false)
@@ -73,12 +75,16 @@ function toggleCreateScreen() {
 }
 
 async function enterWorld(world: UUID) {
-
+  router.push({
+    name: 'world',
+    params: { id: world }
+  })
+  sessionStore.currentWorldID = world
 }
 
 async function getWorlds() {
   try {
-    const { data, error } = await supabase.from('profiles').select('worlds_own') //get worlds
+    const { data, error } = await supabase.from('profiles').select('worlds_own').eq('id', sessionStore.userID) //get worlds
     if (error) throw error
     worlds.value = data
     console.log(worlds)
@@ -97,9 +103,9 @@ async function deleteWorld(world: UUID) {
     console.log(error)
   }
   try {
-    const { error } = await supabase.rpc('delete_world_uuid_from_user', {
-      worldid: world,
-      userid: sessionStore.userID
+    const { error } = await supabase.rpc('delete', {
+      world_id: world,
+      user_id: sessionStore.userID
     })
     if (error) throw error
   } catch (error) {

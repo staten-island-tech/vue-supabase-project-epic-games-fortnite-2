@@ -15,29 +15,37 @@
 import { ref } from 'vue'
 import { supabase } from '../lib/supabaseClient'
 import { useSessionStore } from '@/stores/user'
-import type { data } from 'database'
+import type { data, boardDisplay, placed } from 'index.d.ts'
 
 const sessionStore = useSessionStore()
 const name = ref('')
 const emits = defineEmits(['close'])
+const boardConfig: boardDisplay = {
+  boardSize: 25,
+  tileSize: 25
+}
+let placedStuff: placed[] = []
 
 async function createWorld(name: string) {
   let uuid = crypto.randomUUID()
-  let worldData = data() {
-    return:{ //i added a colon in front of return
-      worldsize: { boardConfig },
-  placedBLocks: [placedStuff]
-    }
-  },
+  let worldData: data = {
+    worldsize: { boardConfig },
+    placedBLocks: [placedStuff]
+  }
+  console.log(worldData)
   try {
-    const { error } = await supabase.from('worlds').insert({ id: uuid, data: worldData })
+    const { error } = await supabase
+      .from('worlds')
+      .insert({ name: name, id: uuid, data: worldData })
     if (error) throw error
   } catch (error) {
     console.log(error)
   }
   try {
-    const { error } = await supabase
-    .rpc('append_world_uuid_to_user', {id: uuid, userid: sessionStore.userID})
+    const { error } = await supabase.rpc('append', {
+      world_id: uuid,
+      user_id: sessionStore.userID
+    })
     if (error) throw error
     emits('close')
   } catch (error) {
