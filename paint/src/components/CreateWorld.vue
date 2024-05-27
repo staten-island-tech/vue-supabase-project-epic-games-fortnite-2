@@ -15,7 +15,7 @@
 import { ref } from 'vue'
 import { supabase } from '../lib/supabaseClient'
 import { useSessionStore } from '@/stores/user'
-import type { data, boardDisplay, placed } from 'index.d.ts'
+import type { data, boardDisplay, placed } from 'index'
 
 const sessionStore = useSessionStore()
 const name = ref('')
