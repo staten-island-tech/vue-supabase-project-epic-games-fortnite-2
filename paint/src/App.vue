@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { supabase } from './lib/supabaseClient.js'
+import { supabase } from './lib/supabaseClient'
+import NavBar from './components/NavBar.vue'
+
+
 </script>
 
 <template>
-  <div>
-    <h1>hello world!</h1>
-  </div>
+<NavBar/>
+<RouterView/>
 </template>

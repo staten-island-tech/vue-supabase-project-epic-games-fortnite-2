@@ -28,3 +28,7 @@ coverage
 *.sw?
 
 *.tsbuildinfo
+paint/.env
+
+# Local Netlify folder
+.netlify
