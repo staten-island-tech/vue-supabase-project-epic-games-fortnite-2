@@ -104,6 +104,15 @@ let img = new Image()
 img.src = '/79344124_p0_master1200.jpg'
 console.log(img.src)
 
+let img2 = new Image()
+img2.src = '/bookryo.PNG'
+console.log(img2.src)
+let img3 = new Image()
+img3.src = '/ryo.jpg'
+console.log(img3.src)
+let img4 = new Image()
+img4.src = '/ryomiddle.PNG'
+console.log(img4.src)
 onMounted(() => {
   canvas.value = document.getElementById('canvas')
   ctx.value = canvas.value.getContext('2d')
@@ -111,13 +120,6 @@ onMounted(() => {
   canvas.value.width = boardConfig.boardSize * boardConfig.tileSize
   ctx.value.fillStyle = 'white'
   ctx.value.fillRect(0, 0, canvas.value.height, canvas.value.width)
-  /*  ctx.value.fillStyle = 'black'
-  ctx.value.fillRect(
-    boardConfig.tileSize * playerLocation.x.value,
-    boardConfig.tileSize * playerLocation.y.value,
-    boardConfig.tileSize,
-    boardConfig.tileSize
-  ) */
   ctx.value.drawImage(
     img,
     boardConfig.tileSize * playerLocation.x.value,
@@ -144,6 +146,7 @@ onMounted(() => {
     false
   )
 })
+
 function replaceBoard() {
   for (let i = 0; i < placedStuff.value.length; i++) {
     placedStuff.value.forEach((block) => rplace(block.x, block.y, block.block))
@@ -193,6 +196,7 @@ function move(direction: { direction: string; facing: { x: number; y: number } }
   playerLocation.x.value += direction.facing.x
   if (playerLocation.x.value < 0 || playerLocation.x.value === boardConfig.boardSize) {
     playerLocation.x.value -= direction.facing.x
+    ctx.value.drawImage(img, boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
   }
   playerLocation.y.value += direction.facing.y
   if (playerLocation.y.value < 0 || playerLocation.y.value === boardConfig.boardSize) {
