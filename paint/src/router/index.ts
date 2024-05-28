@@ -1,4 +1,3 @@
-import App from '@/App.vue'
 import HomeView from '@/views/HomeView.vue'
 import UserLogin from '@/views/UserLogin.vue'
 import UserRegister from '@/views/UserRegister.vue'

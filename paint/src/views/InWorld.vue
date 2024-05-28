@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { dir } from 'console'
 import type { boardDisplay, playerPos, data } from 'index.d.ts'
 import { supabase } from '@/lib/supabaseClient'
 import { useRoute, useRouter } from 'vue-router'
@@ -55,34 +54,38 @@ let playerLocation: playerPos = {
   y: ref(Math.round(boardConfig.tileSize / 2))
 }
 boardConfig = { tileSize: 25, boardSize: 25 }
-const directions: { direction: string; facing: { x: number; y: number } }[] = [
+const directions: { direction: string; facing: { x: number; y: number }; sprite: string }[] = [
   {
     direction: 'ArrowLeft',
     facing: {
       x: -1,
       y: 0
-    }
+    },
+    sprite: '/left.jpg'
   },
   {
     direction: 'ArrowRight',
     facing: {
       x: +1,
       y: 0
-    }
+    },
+    sprite: '/right.jpg'
   },
   {
     direction: 'ArrowUp',
     facing: {
       x: 0,
       y: -1
-    }
+    },
+    sprite: '/up.jpg'
   },
   {
     direction: 'ArrowDown',
     facing: {
       x: 0,
       y: +1
-    }
+    },
+    sprite: '/down.jpg'
   }
 ]
 
@@ -101,8 +104,7 @@ const keyPresses: { key: string; color: string }[] = [
   }
 ]
 let img = new Image()
-img.src = '/79344124_p0_master1200.jpg'
-console.log(img.src)
+img.src = '/up.jpg'
 
 let img2 = new Image()
 img2.src = '/bookryo.PNG'
@@ -178,13 +180,16 @@ function mover(key: KeyboardEvent) {
   if (movingDirection != undefined) {
     if (currentDirection != movingDirection.direction) {
       currentDirection = `${movingDirection.direction}`
+      img.src = movingDirection.sprite
+      ctx.value.drawImage(img, boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
+
     } else {
       move(movingDirection)
     }
   }
 }
 
-function move(direction: { direction: string; facing: { x: number; y: number } }) {
+function move(direction: { direction: string; facing: { x: number; y: number }; sprite: string }) {
   ctx.value.fillStyle = 'white'
   ctx.value.fillRect(
     boardConfig.tileSize * playerLocation.x.value,

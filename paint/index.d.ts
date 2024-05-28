@@ -1,4 +1,5 @@
-declare module 'index'
+declare module 'types'
+export as namespace myLib
 
 import { type Ref } from 'vue'
 
@@ -35,24 +36,36 @@ export type Database = {
     Tables: {
       profiles: {
         Row: {
-          user_id: string
+          avatar_url: string | null
+          full_name: string | null
+          id: string
+          updated_at: string | null
           username: string | null
+          website: string | null
           worlds_own: string[] | null
         }
         Insert: {
-          user_id: string
+          avatar_url?: string | null
+          full_name?: string | null
+          id: string
+          updated_at?: string | null
           username?: string | null
+          website?: string | null
           worlds_own?: string[] | null
         }
         Update: {
-          user_id?: string
+          avatar_url?: string | null
+          full_name?: string | null
+          id?: string
+          updated_at?: string | null
           username?: string | null
+          website?: string | null
           worlds_own?: string[] | null
         }
         Relationships: [
           {
-            foreignKeyName: "profiles_user_id_fkey"
-            columns: ["user_id"]
+            foreignKeyName: "profiles_id_fkey"
+            columns: ["id"]
             isOneToOne: true
             referencedRelation: "users"
             referencedColumns: ["id"]
@@ -62,19 +75,19 @@ export type Database = {
       worlds: {
         Row: {
           created_at: string
-          data: data 
+          data: data
           id: string
           name: string | null
         }
         Insert: {
           created_at?: string
-          data?: data 
+          data?: data
           id: string
           name?: string | null
         }
         Update: {
           created_at?: string
-          data?: data 
+          data?: data
           id?: string
           name?: string | null
         }
@@ -85,10 +98,24 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      append: {
+        Args: {
+          world_id: string
+          user_id: string
+        }
+        Returns: undefined
+      }
       append_world_uuid_to_user: {
         Args: {
           id: string
           userid: string
+        }
+        Returns: undefined
+      }
+      delete: {
+        Args: {
+          user_id: string
+          world_id: string
         }
         Returns: undefined
       }

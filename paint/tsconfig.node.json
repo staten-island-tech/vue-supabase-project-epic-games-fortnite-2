@@ -5,9 +5,7 @@
     "vitest.config.*",
     "cypress.config.*",
     "nightwatch.conf.*",
-    "playwright.config.*",
-    "src/**/*.vue",
-    "./src/lib/supabaseClient.ts"
+    "playwright.config.*"
   ],
   "compilerOptions": {
     "composite": true,
