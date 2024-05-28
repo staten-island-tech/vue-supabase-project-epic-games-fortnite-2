@@ -105,6 +105,9 @@ const keyPresses: { key: string; color: string }[] = [
 ]
 let img = new Image()
 img.src = '/up.jpg'
+img.src = '/down.jpg'
+img.src = '/left.jpg'
+img.src = '/right.jpg'
 
 onMounted(() => {
   canvas.value = document.getElementById('canvas')
@@ -176,9 +179,10 @@ function mover(key: KeyboardEvent) {
   let movingDirection = directions.find((direction) => direction.direction === key.code)
   if (movingDirection != undefined) {
     if (currentDirection != movingDirection.direction) {
-      currentDirection = `${movingDirection.direction}`
       img.src = movingDirection.sprite
+      currentDirection = `${movingDirection.direction}`
       ctx.value.drawImage(img, boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
+      console.log(img)
 
     } else {
       move(movingDirection)
