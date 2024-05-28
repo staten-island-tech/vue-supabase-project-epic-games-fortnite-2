@@ -14,7 +14,7 @@
 
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
-import { supabase } from '../lib/supabaseClient'
+import { supabase } from '@/lib/supabaseClient'
 import { useSessionStore } from '@/stores/user'
 import router from '@/router'
 
@@ -33,4 +33,24 @@ const logOut = async function () {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+@import '../assets/base.css';
+
+nav {
+  background-color: var(--color-background-mute);
+  color: var(--color-heading);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 0 25px 0 black;
+}
+
+nav * {
+  display: inline;
+  margin-left: 20px;
+}
+</style>
