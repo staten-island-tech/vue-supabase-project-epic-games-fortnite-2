@@ -104,9 +104,6 @@ const keyPresses: { key: string; color: string }[] = [
   }
 ]
 let img = new Image()
-img.src = '/up.jpg'
-img.src = '/down.jpg'
-img.src = '/left.jpg'
 img.src = '/right.jpg'
 
 onMounted(() => {
