@@ -105,7 +105,6 @@ const keyPresses: { key: string; color: string }[] = [
 ]
 let img = new Image()
 img.src = '/up.jpg'
-console.log(img.src)
 
 onMounted(() => {
   canvas.value = document.getElementById('canvas')
