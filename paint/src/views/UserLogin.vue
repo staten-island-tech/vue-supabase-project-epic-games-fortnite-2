@@ -23,7 +23,7 @@
 
 <script setup lang="ts">
 import router from '@/router'
-import { supabase } from '../lib/supabaseClient'
+import { supabase } from '@/lib/supabaseClient'
 import { useSessionStore } from '@/stores/user'
 
 const sessionStore = useSessionStore()

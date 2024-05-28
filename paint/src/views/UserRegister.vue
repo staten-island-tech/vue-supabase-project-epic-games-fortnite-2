@@ -25,7 +25,7 @@
 <script setup lang="ts">
 import router from '@/router'
 import { useSessionStore } from '@/stores/user'
-import { supabase } from '../lib/supabaseClient'
+import { supabase } from '@/lib/supabaseClient'
 
 const sessionStore = useSessionStore()
 let email: string

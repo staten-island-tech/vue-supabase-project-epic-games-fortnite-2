@@ -20,9 +20,9 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { supabase } from '../lib/supabaseClient'
+import { supabase } from '@/lib/supabaseClient'
 import { useSessionStore } from '@/stores/user'
-import CreateWorld from '../components/CreateWorld.vue'
+import CreateWorld from '@/components/CreateWorld.vue'
 import type { UUID } from 'crypto'
 import router from '@/router'
 
