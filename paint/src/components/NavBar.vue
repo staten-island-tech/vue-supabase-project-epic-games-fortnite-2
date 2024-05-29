@@ -1,15 +1,14 @@
 <template>
-  <div>
-    <nav>
-      <router-link to="/">Home</router-link>
-      <router-link to="/login">Login</router-link>
-      <router-link to="/register">Register</router-link>
-      <div v-if="sessionStore.expires > Math.floor(Date.now() / 1000)">
-        <button @click="logOut">Log Out</button>
-        <router-link to="/worlds">Worlds</router-link>
-      </div>
-    </nav>
-  </div>
+  <nav>
+    <router-link to="/">Home</router-link>
+    <router-link to="/login">Login</router-link>
+    <router-link to="/register">Register</router-link>
+    <div v-if="sessionStore.expires > Math.floor(Date.now() / 1000)">
+      <button @click="logOut">Log Out</button>
+      <router-link to="/worlds">Worlds</router-link>
+    </div>
+    <h1 class="title">Minecraft: Walmart Edition</h1>
+  </nav>
 </template>
 
 <script setup lang="ts">
@@ -52,5 +51,13 @@ nav {
 nav * {
   display: inline;
   margin-left: 20px;
+}
+
+.title {
+  float: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 </style>
