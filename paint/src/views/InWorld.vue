@@ -113,7 +113,6 @@ const keyPresses: { key: string; color: string }[] = [
 let playerSprite = new Image()
 playerSprite.src = '/left.jpg'
 
-
 onMounted(() => {
   canvas.value = document.getElementById('canvas')
   ctx.value = canvas.value.getContext('2d')
@@ -240,12 +239,18 @@ function place(block: string) {
 </script>
 
 <template>
-  <button class="exit" @click="saveExit(gameData)">Exit And Save</button>
-  <canvas id="canvas"></canvas>
+  <div class="body">
+    <button class="exit" @click="saveExit(gameData)">Exit And Save</button>
+    <canvas id="canvas"></canvas>
+  </div>
 </template>
 
 <style lang="scss" scoped>
 #canvas {
   border: 1px solid black;
+}
+
+.body {
+  margin-top: 80px;
 }
 </style>

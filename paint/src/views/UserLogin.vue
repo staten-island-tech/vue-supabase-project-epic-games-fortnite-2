@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="body">
     <form class="row flex-center flex" @submit.prevent="signIn(email, pass)">
       <div class="col-6 form-widget">
         <h1 class="header">Log In</h1>
@@ -51,4 +51,8 @@ const signIn = async function (email: string, pass: string) {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+  .body {
+    margin-top: 80px
+  }
+</style>
