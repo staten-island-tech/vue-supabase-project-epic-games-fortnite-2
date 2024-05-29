@@ -23,6 +23,13 @@ onMounted(async () => {
     placedStuff.value.forEach((_item) => {
       replaceBoard()
     })
+    ctx.value.drawImage(
+    img,
+    boardConfig.tileSize * playerLocation.x.value,
+    boardConfig.tileSize * playerLocation.y.value,
+    boardConfig.tileSize,
+    boardConfig.tileSize
+  )
   } catch (error) {
     console.log(error)
   }
@@ -104,7 +111,11 @@ const keyPresses: { key: string; color: string }[] = [
   }
 ]
 let img = new Image()
+img.src = '/left.jpg'
+img.src = '/up.jpg'
+img.src = '/down.jpg'
 img.src = '/right.jpg'
+
 
 onMounted(() => {
   canvas.value = document.getElementById('canvas')
@@ -120,13 +131,6 @@ onMounted(() => {
     boardConfig.tileSize,
     boardConfig.tileSize
   ) */
-  ctx.value.drawImage(
-    img,
-    boardConfig.tileSize * playerLocation.x.value,
-    boardConfig.tileSize * playerLocation.y.value,
-    boardConfig.tileSize,
-    boardConfig.tileSize
-  )
   window.addEventListener('keydown', function (keydown) {
     mover(keydown)
   })
@@ -175,14 +179,16 @@ let currentDirection = 'ArrowRight'
 function mover(key: KeyboardEvent) {
   let movingDirection = directions.find((direction) => direction.direction === key.code)
   if (movingDirection != undefined) {
+    console.log(movingDirection)
     if (currentDirection != movingDirection.direction) {
+      currentDirection = movingDirection.direction
       img.src = movingDirection.sprite
-      currentDirection = `${movingDirection.direction}`
       ctx.value.drawImage(img, boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
       console.log(img)
 
     } else {
       move(movingDirection)
+      console.log(img)
     }
   }
 }
