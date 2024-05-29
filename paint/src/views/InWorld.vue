@@ -24,7 +24,7 @@ onMounted(async () => {
       replaceBoard()
     })
     ctx.value.drawImage(
-    img,
+    playerSprite,
     boardConfig.tileSize * playerLocation.x.value,
     boardConfig.tileSize * playerLocation.y.value,
     boardConfig.tileSize,
@@ -110,11 +110,8 @@ const keyPresses: { key: string; color: string }[] = [
     color: 'Red'
   }
 ]
-let img = new Image()
-img.src = '/left.jpg'
-img.src = '/up.jpg'
-img.src = '/down.jpg'
-img.src = '/right.jpg'
+let playerSprite = new Image()
+playerSprite.src = '/left.jpg'
 
 
 onMounted(() => {
@@ -174,21 +171,21 @@ function rplace(x: number, y: number, block: string) {
   )
 }
 
-let currentDirection = 'ArrowRight'
+let currentDirection = 'ArrowLeft'
 
-function mover(key: KeyboardEvent) {
+
+ function mover(key: KeyboardEvent) {
   let movingDirection = directions.find((direction) => direction.direction === key.code)
   if (movingDirection != undefined) {
-    console.log(movingDirection)
     if (currentDirection != movingDirection.direction) {
+      console.log(movingDirection, currentDirection)
       currentDirection = movingDirection.direction
-      img.src = movingDirection.sprite
-      ctx.value.drawImage(img, boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
-      console.log(img)
-
+      playerSprite.src = movingDirection.sprite
+       ctx.value.drawImage(playerSprite , boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
+      console.log(playerSprite)
     } else {
       move(movingDirection)
-      console.log(img)
+      console.log(playerSprite)
     }
   }
 }
@@ -212,7 +209,7 @@ function move(direction: { direction: string; facing: { x: number; y: number }; 
   }
   /*  ctx.value.fillStyle = "black";
   ctx.value.fillRect(boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize) */
-  ctx.value.drawImage(img, boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
+  ctx.value.drawImage(playerSprite, boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
 }
 
 function place(block: string) {
