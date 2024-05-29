@@ -1,5 +1,7 @@
 <template>
-  <div v-if="sessionStore.expires > Math.floor(Date.now() / 1000)">
+  <div 
+  class="body"
+  v-if="sessionStore.expires > Math.floor(Date.now() / 1000)">
     <button @click="toggleCreateScreen()">create a world</button>
     <CreateWorld v-show="showCreate" @close="toggleCreateScreen" />
     <h1>{{ worlds }}</h1>
@@ -115,4 +117,7 @@ async function deleteWorld(world: UUID) {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.body {
+  margin-top: 80px;
+}</style>

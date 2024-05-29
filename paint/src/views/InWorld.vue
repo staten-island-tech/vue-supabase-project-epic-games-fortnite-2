@@ -24,12 +24,12 @@ onMounted(async () => {
       replaceBoard()
     })
     ctx.value.drawImage(
-    img,
-    boardConfig.tileSize * playerLocation.x.value,
-    boardConfig.tileSize * playerLocation.y.value,
-    boardConfig.tileSize,
-    boardConfig.tileSize
-  )
+      img,
+      boardConfig.tileSize * playerLocation.x.value,
+      boardConfig.tileSize * playerLocation.y.value,
+      boardConfig.tileSize,
+      boardConfig.tileSize
+    )
   } catch (error) {
     console.log(error)
   }
@@ -116,7 +116,6 @@ img.src = '/up.jpg'
 img.src = '/down.jpg'
 img.src = '/right.jpg'
 
-
 onMounted(() => {
   canvas.value = document.getElementById('canvas')
   ctx.value = canvas.value.getContext('2d')
@@ -183,9 +182,14 @@ function mover(key: KeyboardEvent) {
     if (currentDirection != movingDirection.direction) {
       currentDirection = movingDirection.direction
       img.src = movingDirection.sprite
-      ctx.value.drawImage(img, boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
+      ctx.value.drawImage(
+        img,
+        boardConfig.tileSize * playerLocation.x.value,
+        boardConfig.tileSize * playerLocation.y.value,
+        boardConfig.tileSize,
+        boardConfig.tileSize
+      )
       console.log(img)
-
     } else {
       move(movingDirection)
       console.log(img)
@@ -212,7 +216,13 @@ function move(direction: { direction: string; facing: { x: number; y: number }; 
   }
   /*  ctx.value.fillStyle = "black";
   ctx.value.fillRect(boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize) */
-  ctx.value.drawImage(img, boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
+  ctx.value.drawImage(
+    img,
+    boardConfig.tileSize * playerLocation.x.value,
+    boardConfig.tileSize * playerLocation.y.value,
+    boardConfig.tileSize,
+    boardConfig.tileSize
+  )
 }
 
 function place(block: string) {
@@ -243,12 +253,18 @@ function place(block: string) {
 </script>
 
 <template>
-  <button class="exit" @click="saveExit(gameData)">Exit And Save</button>
-  <canvas id="canvas"></canvas>
+  <div class="body">
+    <button class="exit" @click="saveExit(gameData)">Exit And Save</button>
+    <canvas id="canvas"></canvas>
+  </div>
 </template>
 
 <style lang="scss" scoped>
 #canvas {
   border: 1px solid black;
+}
+
+.body {
+  margin-top: 80px;
 }
 </style>
