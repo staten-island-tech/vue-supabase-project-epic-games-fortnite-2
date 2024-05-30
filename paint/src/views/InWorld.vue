@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, render } from 'vue'
 import type { boardDisplay, playerPos, data } from 'index.d.ts'
 import { supabase } from '@/lib/supabaseClient'
 import { useRoute, useRouter } from 'vue-router'
@@ -23,13 +23,6 @@ onMounted(async () => {
     placedStuff.value.forEach((_item) => {
       replaceBoard()
     })
-    ctx.value.drawImage(
-    playerSprite,
-    boardConfig.tileSize * playerLocation.x.value,
-    boardConfig.tileSize * playerLocation.y.value,
-    boardConfig.tileSize,
-    boardConfig.tileSize
-  )
   } catch (error) {
     console.log(error)
   }
@@ -120,6 +113,7 @@ onMounted(() => {
   canvas.value.width = boardConfig.boardSize * boardConfig.tileSize
   ctx.value.fillStyle = 'white'
   ctx.value.fillRect(0, 0, canvas.value.height, canvas.value.width)
+  renderPlayer(playerSprite.src)
   /*  ctx.value.fillStyle = 'black'
   ctx.value.fillRect(
     boardConfig.tileSize * playerLocation.x.value,
@@ -177,14 +171,10 @@ let currentDirection = 'ArrowLeft'
   let movingDirection = directions.find((direction) => direction.direction === key.code)
   if (movingDirection != undefined) {
     if (currentDirection != movingDirection.direction) {
-      console.log(movingDirection, currentDirection)
       currentDirection = movingDirection.direction
-      playerSprite.src = movingDirection.sprite
-       ctx.value.drawImage(playerSprite , boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
-      console.log(playerSprite)
+     renderPlayer(movingDirection.sprite)
     } else {
       move(movingDirection)
-      console.log(playerSprite)
     }
   }
 }
@@ -208,7 +198,7 @@ function move(direction: { direction: string; facing: { x: number; y: number }; 
   }
   /*  ctx.value.fillStyle = "black";
   ctx.value.fillRect(boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize) */
-  ctx.value.drawImage(playerSprite, boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
+  renderPlayer(playerSprite.src)
 }
 
 function place(block: string) {
@@ -235,6 +225,13 @@ function place(block: string) {
       block: `${block}`
     })
   }
+}
+
+function renderPlayer(sprite: string){
+  playerSprite.onload = function(){
+    ctx.value.drawImage(playerSprite, boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
+  };
+  playerSprite.src = sprite
 }
 </script>
 

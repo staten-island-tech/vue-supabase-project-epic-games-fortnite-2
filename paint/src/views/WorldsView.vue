@@ -10,7 +10,7 @@
         <h1 @click="enterWorld(world)">
           {{ world }} 
         </h1>
-        <button @click="deleteWorld(world)">delet world</button>
+        <button @click="deleteWorld(world)">delete world</button>
       </div>
     </div>
     <h1 v-else>no worlds :(</h1>

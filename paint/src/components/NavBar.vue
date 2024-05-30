@@ -7,7 +7,7 @@
       <button @click="logOut">Log Out</button>
       <router-link to="/worlds">Worlds</router-link>
     </div>
-    <h1 class="title">Minecraft: Walmart Edition</h1>
+    <h1 class="title">Minecraft: Wish dot com Edition</h1>
   </nav>
 </template>
 
