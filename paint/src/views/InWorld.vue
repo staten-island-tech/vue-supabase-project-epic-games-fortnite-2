@@ -23,6 +23,13 @@ onMounted(async () => {
     placedStuff.value.forEach((_item) => {
       replaceBoard()
     })
+    ctx.value.drawImage(
+    playerSprite,
+    boardConfig.tileSize * playerLocation.x.value,
+    boardConfig.tileSize * playerLocation.y.value,
+    boardConfig.tileSize,
+    boardConfig.tileSize
+  )
   } catch (error) {
     console.log(error)
   }
@@ -54,34 +61,38 @@ let playerLocation: playerPos = {
   y: ref(Math.round(boardConfig.tileSize / 2))
 }
 boardConfig = { tileSize: 25, boardSize: 25 }
-const directions: { direction: string; facing: { x: number; y: number } }[] = [
+const directions: { direction: string; facing: { x: number; y: number }; sprite: string }[] = [
   {
     direction: 'ArrowLeft',
     facing: {
       x: -1,
       y: 0
-    }
+    },
+    sprite: '/left.jpg'
   },
   {
     direction: 'ArrowRight',
     facing: {
       x: +1,
       y: 0
-    }
+    },
+    sprite: '/right.jpg'
   },
   {
     direction: 'ArrowUp',
     facing: {
       x: 0,
       y: -1
-    }
+    },
+    sprite: '/up.jpg'
   },
   {
     direction: 'ArrowDown',
     facing: {
       x: 0,
       y: +1
-    }
+    },
+    sprite: '/down.jpg'
   }
 ]
 
@@ -99,9 +110,8 @@ const keyPresses: { key: string; color: string }[] = [
     color: 'Red'
   }
 ]
-let img = new Image()
-img.src = '/79344124_p0_master1200.jpg'
-console.log(img.src)
+let playerSprite = new Image()
+playerSprite.src = '/left.jpg'
 
 onMounted(() => {
   canvas.value = document.getElementById('canvas')
@@ -117,13 +127,6 @@ onMounted(() => {
     boardConfig.tileSize,
     boardConfig.tileSize
   ) */
-  ctx.value.drawImage(
-    img,
-    boardConfig.tileSize * playerLocation.x.value,
-    boardConfig.tileSize * playerLocation.y.value,
-    boardConfig.tileSize,
-    boardConfig.tileSize
-  )
   window.addEventListener('keydown', function (keydown) {
     mover(keydown)
   })
@@ -167,20 +170,26 @@ function rplace(x: number, y: number, block: string) {
   )
 }
 
-let currentDirection = 'ArrowRight'
+let currentDirection = 'ArrowLeft'
 
-function mover(key: KeyboardEvent) {
+
+ function mover(key: KeyboardEvent) {
   let movingDirection = directions.find((direction) => direction.direction === key.code)
   if (movingDirection != undefined) {
     if (currentDirection != movingDirection.direction) {
-      currentDirection = `${movingDirection.direction}`
+      console.log(movingDirection, currentDirection)
+      currentDirection = movingDirection.direction
+      playerSprite.src = movingDirection.sprite
+       ctx.value.drawImage(playerSprite , boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
+      console.log(playerSprite)
     } else {
       move(movingDirection)
+      console.log(playerSprite)
     }
   }
 }
 
-function move(direction: { direction: string; facing: { x: number; y: number } }) {
+function move(direction: { direction: string; facing: { x: number; y: number }; sprite: string }) {
   ctx.value.fillStyle = 'white'
   ctx.value.fillRect(
     boardConfig.tileSize * playerLocation.x.value,
@@ -199,7 +208,7 @@ function move(direction: { direction: string; facing: { x: number; y: number } }
   }
   /*  ctx.value.fillStyle = "black";
   ctx.value.fillRect(boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize) */
-  ctx.value.drawImage(img, boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
+  ctx.value.drawImage(playerSprite, boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
 }
 
 function place(block: string) {
@@ -230,12 +239,18 @@ function place(block: string) {
 </script>
 
 <template>
-  <button class="exit" @click="saveExit(gameData)">Exit And Save</button>
-  <canvas id="canvas"></canvas>
+  <div class="body">
+    <button class="exit" @click="saveExit(gameData)">Exit And Save</button>
+    <canvas id="canvas"></canvas>
+  </div>
 </template>
 
 <style lang="scss" scoped>
 #canvas {
   border: 1px solid black;
+}
+
+.body {
+  margin-top: 80px;
 }
 </style>
