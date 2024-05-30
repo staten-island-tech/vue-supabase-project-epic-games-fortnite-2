@@ -4,6 +4,8 @@ import type { boardDisplay, playerPos, data } from 'index.d.ts'
 import { supabase } from '@/lib/supabaseClient'
 import { useRoute, useRouter } from 'vue-router'
 import { useSessionStore } from '@/stores/user'
+import { dir } from 'console'
+//import 'https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/a14c64362abe4a12c2dfd87f8d1673af9d1b09f4/data/1.20.2/blocks_models.json'
 
 const router = useRouter()
 const route = useRoute()
@@ -27,6 +29,7 @@ onMounted(async () => {
     console.log(error)
   }
 })
+
 
 async function saveExit(saveData: any) {
   try {
@@ -96,32 +99,30 @@ const keyPresses: { key: string; color: string }[] = [
   },
   {
     key: 'Digit1',
-    color: 'Green'
+    color: '/cobblestone.png' 
   },
   {
     key: 'Digit2',
-    color: 'Red'
+    color: 'Green'/* './paint/public/blocks/oakWood.jpg' */
   }
 ]
 let img = new Image()
 img.src = '/up.jpg'
 
-let img2 = new Image()
-img2.src = '/bookryo.PNG'
-console.log(img2.src)
-let img3 = new Image()
-img3.src = '/ryo.jpg'
-console.log(img3.src)
-let img4 = new Image()
-img4.src = '/ryomiddle.PNG'
-console.log(img4.src)
+// let block = new Image()
+// block.src = './paint/public/blocks/oakWood.jpg'
+
+let grass = new Image()
+grass.src = '/grass.jpg'
+
 onMounted(() => {
   canvas.value = document.getElementById('canvas')
   ctx.value = canvas.value.getContext('2d')
   canvas.value.height = boardConfig.boardSize * boardConfig.tileSize
   canvas.value.width = boardConfig.boardSize * boardConfig.tileSize
-  ctx.value.fillStyle = 'white'
-  ctx.value.fillRect(0, 0, canvas.value.height, canvas.value.width)
+  const grassPat = ctx.createPattern(grass, )
+  // ctx.value.fillStyle = grass
+  //ctx.value.fillRect(0, 0, canvas.value.height, canvas.value.width)
   ctx.value.drawImage(
     img,
     boardConfig.tileSize * playerLocation.x.value,
@@ -164,7 +165,9 @@ function replace() {
   }
 }
 function rplace(x: number, y: number, block: string) {
-  ctx.value.fillStyle = block
+  //ctx.value.drawImage(block, boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
+  //fix the thing drawImage, it's probably onmounted
+  ctx.value.fillStyle = block //temporary
   ctx.value.fillRect(
     boardConfig.tileSize * x,
     boardConfig.tileSize * y,
@@ -182,7 +185,6 @@ function mover(key: KeyboardEvent) {
       currentDirection = `${movingDirection.direction}`
       img.src = movingDirection.sprite
       ctx.value.drawImage(img, boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
-
     } else {
       move(movingDirection)
     }
@@ -237,11 +239,14 @@ function place(block: string) {
     })
   }
 }
+
 </script>
 
 <template>
   <button class="exit" @click="saveExit(gameData)">Exit And Save</button>
   <canvas id="canvas"></canvas>
+
+  
 </template>
 
 <style lang="scss" scoped>
