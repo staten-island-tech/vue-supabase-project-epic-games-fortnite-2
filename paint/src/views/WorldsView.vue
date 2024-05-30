@@ -20,6 +20,12 @@
   </div>
 </template>
 
+<style scoped>
+.body {
+  margin-top: 100px;
+}
+</style>
+
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { supabase } from '@/lib/supabaseClient'
@@ -117,7 +123,3 @@ async function deleteWorld(world: UUID) {
 }
 </script>
 
-<style scoped>
-.body {
-  margin-top: 80px;
-}</style>

@@ -3,8 +3,8 @@
     <router-link to="/">Home</router-link>
     <router-link to="/login">Login</router-link>
     <router-link to="/register">Register</router-link>
-    <div v-if="sessionStore.expires > Math.floor(Date.now() / 1000)">
-      <button @click="logOut">Log Out</button>
+    <div class="log-out" v-if="sessionStore.expires > Math.floor(Date.now() / 1000)">
+      <router-link to="/login" class="router-link-active router-link-exact-active" @click="logOut">Log Out</router-link>
       <router-link to="/worlds">Worlds</router-link>
     </div>
     <h1 class="title">Minecraft: Walmart Edition</h1>
@@ -15,7 +15,6 @@
 import { RouterLink } from 'vue-router'
 import { supabase } from '@/lib/supabaseClient'
 import { useSessionStore } from '@/stores/user'
-import router from '@/router'
 
 const sessionStore = useSessionStore()
 
@@ -24,10 +23,8 @@ const logOut = async function () {
     const { error } = await supabase.auth.signOut()
     if (error) throw error
     sessionStore.$reset()
-    router.push('/')
   } catch (error) {
     console.log(error)
-    router.push('/')
   }
 }
 </script>
@@ -59,5 +56,9 @@ nav * {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.log-out {
+  margin-left: 0px;
 }
 </style>
