@@ -114,13 +114,6 @@ onMounted(() => {
   ctx.value.fillStyle = 'white'
   ctx.value.fillRect(0, 0, canvas.value.height, canvas.value.width)
   renderPlayer(playerSprite.src)
-  /*  ctx.value.fillStyle = 'black'
-  ctx.value.fillRect(
-    boardConfig.tileSize * playerLocation.x.value,
-    boardConfig.tileSize * playerLocation.y.value,
-    boardConfig.tileSize,
-    boardConfig.tileSize
-  ) */
   window.addEventListener('keydown', function (keydown) {
     mover(keydown)
   })
