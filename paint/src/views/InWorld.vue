@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, render } from 'vue'
 import type { boardDisplay, playerPos, data } from 'index.d.ts'
 import { supabase } from '@/lib/supabaseClient'
 import { useRoute, useRouter } from 'vue-router'
@@ -106,23 +106,23 @@ const keyPresses: { key: string; color: string }[] = [
     color: 'Green'/* './paint/public/blocks/oakWood.jpg' */
   }
 ]
-let img = new Image()
-img.src = '/up.jpg'
-
-// let block = new Image()
-// block.src = './paint/public/blocks/oakWood.jpg'
-
-let grass = new Image()
-grass.src = '/grass.jpg'
+let playerSprite = new Image()
+playerSprite.src = '/left.jpg'
 
 onMounted(() => {
   canvas.value = document.getElementById('canvas')
   ctx.value = canvas.value.getContext('2d')
   canvas.value.height = boardConfig.boardSize * boardConfig.tileSize
   canvas.value.width = boardConfig.boardSize * boardConfig.tileSize
-  const grassPat = ctx.createPattern(grass, )
-  // ctx.value.fillStyle = grass
-  //ctx.value.fillRect(0, 0, canvas.value.height, canvas.value.width)
+  ctx.value.fillStyle = 'white'
+  ctx.value.fillRect(0, 0, canvas.value.height, canvas.value.width)
+  /*  ctx.value.fillStyle = 'black'
+  ctx.value.fillRect(
+    boardConfig.tileSize * playerLocation.x.value,
+    boardConfig.tileSize * playerLocation.y.value,
+    boardConfig.tileSize,
+    boardConfig.tileSize
+  ) */
   ctx.value.drawImage(
     img,
     boardConfig.tileSize * playerLocation.x.value,
@@ -176,15 +176,17 @@ function rplace(x: number, y: number, block: string) {
   )
 }
 
-let currentDirection = 'ArrowRight'
+let currentDirection = 'ArrowLeft'
 
-function mover(key: KeyboardEvent) {
+
+ function mover(key: KeyboardEvent) {
   let movingDirection = directions.find((direction) => direction.direction === key.code)
   if (movingDirection != undefined) {
     if (currentDirection != movingDirection.direction) {
       currentDirection = `${movingDirection.direction}`
       img.src = movingDirection.sprite
       ctx.value.drawImage(img, boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
+
     } else {
       move(movingDirection)
     }
@@ -211,7 +213,7 @@ function move(direction: { direction: string; facing: { x: number; y: number }; 
   }
   /*  ctx.value.fillStyle = "black";
   ctx.value.fillRect(boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize) */
-  ctx.value.drawImage(img, boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
+  renderPlayer(playerSprite.src)
 }
 
 function place(block: string) {
@@ -239,18 +241,19 @@ function place(block: string) {
     })
   }
 }
-
 </script>
 
 <template>
   <button class="exit" @click="saveExit(gameData)">Exit And Save</button>
   <canvas id="canvas"></canvas>
-
-  
 </template>
 
 <style lang="scss" scoped>
 #canvas {
   border: 1px solid black;
+}
+
+.body {
+  margin-top: 80px;
 }
 </style>

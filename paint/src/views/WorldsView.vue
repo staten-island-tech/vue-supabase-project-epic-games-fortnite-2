@@ -1,5 +1,7 @@
 <template>
-  <div v-if="sessionStore.expires > Math.floor(Date.now() / 1000)">
+  <div 
+  class="body"
+  v-if="sessionStore.expires > Math.floor(Date.now() / 1000)">
     <button @click="toggleCreateScreen()">create a world</button>
     <CreateWorld v-show="showCreate" @close="toggleCreateScreen" />
     <h1>{{ worlds }}</h1>
@@ -8,7 +10,7 @@
         <h1 @click="enterWorld(world)">
           {{ world }} 
         </h1>
-        <button @click="deleteWorld(world)">delet world</button>
+        <button @click="deleteWorld(world)">delete world</button>
       </div>
     </div>
     <h1 v-else>no worlds :(</h1>
@@ -20,9 +22,9 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { supabase } from '../lib/supabaseClient'
+import { supabase } from '@/lib/supabaseClient'
 import { useSessionStore } from '@/stores/user'
-import CreateWorld from '../components/CreateWorld.vue'
+import CreateWorld from '@/components/CreateWorld.vue'
 import type { UUID } from 'crypto'
 import router from '@/router'
 
@@ -115,4 +117,7 @@ async function deleteWorld(world: UUID) {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.body {
+  margin-top: 80px;
+}</style>
