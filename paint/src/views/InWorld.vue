@@ -106,6 +106,8 @@ const keyPresses: { key: string; color: string }[] = [
 let playerSprite = new Image()
 playerSprite.src = '/left.jpg'
 
+
+
 onMounted(() => {
   canvas.value = document.getElementById('canvas')
   ctx.value = canvas.value.getContext('2d')
