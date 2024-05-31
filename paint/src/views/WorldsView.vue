@@ -4,7 +4,7 @@
     <CreateWorld v-show="showCreate" @close="toggleCreateScreen" />
     <h1>{{ worlds }}</h1>
     <div v-if="hasWorlds === true">
-      <div class="world-container" v-for="world in worlds.worlds_own" :key="world">
+      <div class="world-container" v-for="world in (worlds as any).worlds_own" :key="world">
         <h1 @click="enterWorld(world)">
           {{ world }}
         </h1>
@@ -96,8 +96,8 @@ async function getWorlds() {
       .select('worlds_own')
       .eq('id', sessionStore.userID) //get worlds
     if (error) throw error
-    worlds.value = data
-    if (worlds.value.worlds_own[0] !== undefined) {
+    worlds.value = data[0]
+    if ((worlds.value as any).worlds_own[0] !== undefined) {
       hasWorlds = true
     } else {
       hasWorlds = false
