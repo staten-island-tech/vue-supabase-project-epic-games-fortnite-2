@@ -114,13 +114,6 @@ onMounted(() => {
   ctx.value.fillStyle = 'white'
   ctx.value.fillRect(0, 0, canvas.value.height, canvas.value.width)
   renderPlayer(playerSprite.src)
-  /*  ctx.value.fillStyle = 'black'
-  ctx.value.fillRect(
-    boardConfig.tileSize * playerLocation.x.value,
-    boardConfig.tileSize * playerLocation.y.value,
-    boardConfig.tileSize,
-    boardConfig.tileSize
-  ) */
   window.addEventListener('keydown', function (keydown) {
     mover(keydown)
   })
@@ -142,19 +135,19 @@ onMounted(() => {
 })
 function replaceBoard() {
   for (let i = 0; i < placedStuff.value.length; i++) {
-    placedStuff.value.forEach((block) => rplace(block.x, block.y, block.block))
+    placedStuff.value.forEach((block) => replace(block.x, block.y, block.block))
   }
 }
 
-function replace() {
+function replacer() {
   const replacing = placedStuff.value.find(
     (block) => block.x === playerLocation.x.value && block.y === playerLocation.y.value
   )
   if (replacing != undefined) {
-    rplace(replacing.x, replacing.y, replacing.block)
+    replace(replacing.x, replacing.y, replacing.block)
   }
 }
-function rplace(x: number, y: number, block: string) {
+function replace(x: number, y: number, block: string) {
   ctx.value.fillStyle = block
   ctx.value.fillRect(
     boardConfig.tileSize * x,
@@ -167,12 +160,12 @@ function rplace(x: number, y: number, block: string) {
 let currentDirection = 'ArrowLeft'
 
 
- function mover(key: KeyboardEvent) {
+function mover(key: KeyboardEvent) {
   let movingDirection = directions.find((direction) => direction.direction === key.code)
   if (movingDirection != undefined) {
     if (currentDirection != movingDirection.direction) {
       currentDirection = movingDirection.direction
-     renderPlayer(movingDirection.sprite)
+      renderPlayer(movingDirection.sprite)
     } else {
       move(movingDirection)
     }
@@ -187,7 +180,7 @@ function move(direction: { direction: string; facing: { x: number; y: number }; 
     boardConfig.tileSize,
     boardConfig.tileSize
   )
-  replace()
+  replacer()
   playerLocation.x.value += direction.facing.x
   if (playerLocation.x.value < 0 || playerLocation.x.value === boardConfig.boardSize) {
     playerLocation.x.value -= direction.facing.x
@@ -196,8 +189,6 @@ function move(direction: { direction: string; facing: { x: number; y: number }; 
   if (playerLocation.y.value < 0 || playerLocation.y.value === boardConfig.boardSize) {
     playerLocation.y.value -= direction.facing.y
   }
-  /*  ctx.value.fillStyle = "black";
-  ctx.value.fillRect(boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize) */
   renderPlayer(playerSprite.src)
 }
 
@@ -227,9 +218,15 @@ function place(block: string) {
   }
 }
 
-function renderPlayer(sprite: string){
-  playerSprite.onload = function(){
-    ctx.value.drawImage(playerSprite, boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
+function renderPlayer(sprite: string) {
+  playerSprite.onload = function () {
+    ctx.value.drawImage(
+      playerSprite, 
+      boardConfig.tileSize * playerLocation.x.value, 
+      boardConfig.tileSize * playerLocation.y.value, 
+      boardConfig.tileSize, 
+      boardConfig.tileSize
+    )
   };
   playerSprite.src = sprite
 }
