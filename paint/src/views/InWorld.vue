@@ -14,6 +14,37 @@ const params = route.params
 const sessionStore = useSessionStore()
 
 onMounted(async () => {
+  canvas.value = document.getElementById('canvas')
+  ctx.value = canvas.value.getContext('2d')
+  canvas.value.height = boardConfig.boardSize * boardConfig.tileSize
+  canvas.value.width = boardConfig.boardSize * boardConfig.tileSize
+  ctx.value.fillStyle = 'white'
+  ctx.value.fillRect(0, 0, canvas.value.height, canvas.value.width)
+  /*  ctx.value.fillStyle = 'black'
+  ctx.value.fillRect(
+    boardConfig.tileSize * playerLocation.x.value,
+    boardConfig.tileSize * playerLocation.y.value,
+    boardConfig.tileSize,
+    boardConfig.tileSize
+  ) */
+  window.addEventListener('keydown', function (keydown) {
+    mover(keydown)
+  })
+  window.addEventListener('keydown', function (keydown: KeyboardEvent) {
+    const keyPressed = keyPresses.find((c) => c.key === keydown.code)
+    if (keyPressed != undefined) {
+      place(keyPressed.color)
+    }
+  })
+  window.addEventListener(
+    'keydown',
+    function (e) {
+      if (['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].indexOf(e.code) > -1) {
+        e.preventDefault()
+      }
+    },
+    false
+  )
   try {
     const { data, error } = await supabase.from('worlds').select('data').eq('id', params.id)
     if (error) throw error
@@ -24,6 +55,13 @@ onMounted(async () => {
     placedStuff.value.forEach((_item) => {
       replaceBoard()
     })
+    ctx.value.drawImage(
+      playerSprite,
+      boardConfig.tileSize * playerLocation.x.value,
+      boardConfig.tileSize * playerLocation.y.value,
+      boardConfig.tileSize,
+      boardConfig.tileSize
+    )
   } catch (error) {
     console.log(error)
   }
@@ -122,27 +160,17 @@ onMounted(() => {
   canvas.value = document.getElementById('canvas')
   ctx.value = canvas.value.getContext('2d')
   canvas.value.height = boardConfig.boardSize * boardConfig.tileSize
-  canvas.value.width = boardConfig.boardSize * boardConfig.tileSize 
-  const grass = document.getElementById("block-grass");
-  //let x = 0
-  // do{
-  //   ctx.value.drawImage(grass, x, y, boardConfig.tileSize, boardConfig.tileSize);
-  //   x+=boardConfig.tileSize
-  // }
-  // while(x<boardConfig.boardSize*boardConfig.tileSize)
-  
-  let ex = 0
-  let y = 0
-
-  for(let i=0; i<=(boardConfig.tileSize)*(boardConfig.boardSize); i++){
-    ctx.value.drawImage(grass, ex, y, boardConfig.tileSize, boardConfig.tileSize);
-    y+=boardConfig.tileSize
-      if(i%(boardConfig.tileSize) === 0 && i>0){
-        y=0
-        ex+=boardConfig.tileSize
-      }
-    }
-
+  canvas.value.width = boardConfig.boardSize * boardConfig.tileSize
+  ctx.value.fillStyle = 'white'
+  ctx.value.fillRect(0, 0, canvas.value.height, canvas.value.width)
+  renderPlayer(playerSprite.src)
+  /*  ctx.value.fillStyle = 'black'
+  ctx.value.fillRect(
+    boardConfig.tileSize * playerLocation.x.value,
+    boardConfig.tileSize * playerLocation.y.value,
+    boardConfig.tileSize,
+    boardConfig.tileSize
+  ) */
   window.addEventListener('keydown', function (keydown) {
     mover(keydown)
   })
@@ -190,13 +218,20 @@ function rplace(x: number, y: number, block: string) {
 
 let currentDirection = 'ArrowLeft'
 
-
- function mover(key: KeyboardEvent) {
+function mover(key: KeyboardEvent) {
   let movingDirection = directions.find((direction) => direction.direction === key.code)
   if (movingDirection != undefined) {
     if (currentDirection != movingDirection.direction) {
       currentDirection = movingDirection.direction
-     renderPlayer(movingDirection.sprite)
+      playerSprite.src = movingDirection.sprite
+      ctx.value.drawImage(
+        playerSprite,
+        boardConfig.tileSize * playerLocation.x.value,
+        boardConfig.tileSize * playerLocation.y.value,
+        boardConfig.tileSize,
+        boardConfig.tileSize
+      )
+      console.log(playerSprite)
     } else {
       move(movingDirection)
     }
@@ -219,7 +254,13 @@ function move(direction: { direction: string; facing: { x: number; y: number }; 
   }
   /*  ctx.value.fillStyle = "black";
   ctx.value.fillRect(boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize) */
-  renderPlayer(playerSprite.src)
+  ctx.value.drawImage(
+    playerSprite,
+    boardConfig.tileSize * playerLocation.x.value,
+    boardConfig.tileSize * playerLocation.y.value,
+    boardConfig.tileSize,
+    boardConfig.tileSize
+  )
 }
 
 function place(block: string) {
