@@ -4,6 +4,7 @@ import type { boardDisplay, playerPos, data } from 'index.d.ts'
 import { supabase } from '@/lib/supabaseClient'
 import { useRoute, useRouter } from 'vue-router'
 import { useSessionStore } from '@/stores/user'
+import { beforeEach } from 'node:test'
 
 const router = useRouter()
 const route = useRoute()
@@ -89,40 +90,66 @@ const directions: { direction: string; facing: { x: number; y: number }; sprite:
   }
 ]
 
-const keyPresses: { key: string; color: string }[] = [
+const keyPresses: { key: string; block: string }[] = [
   {
     key: 'KeyX',
-    color: 'White'
+    block: 'White'
   },
   {
     key: 'Digit1',
-    color: 'Green'
+    block: 'block-cobblestone'
   },
   {
     key: 'Digit2',
-    color: 'Red'
+    block: 'block-oakWood'
+  },
+  {
+    key: 'Digit3',
+    block: 'block-dirt'
   }
 ]
 let playerSprite = new Image()
 playerSprite.src = '/left.jpg'
 
+// let grass = new Image()
+// grass.src = '/grass.jpg'
+// grass.style.width = '25px'
+// grass.style.height = '25px'
+// console.log(grass)
 
 
 onMounted(() => {
   canvas.value = document.getElementById('canvas')
   ctx.value = canvas.value.getContext('2d')
   canvas.value.height = boardConfig.boardSize * boardConfig.tileSize
-  canvas.value.width = boardConfig.boardSize * boardConfig.tileSize
-  ctx.value.fillStyle = 'white'
-  ctx.value.fillRect(0, 0, canvas.value.height, canvas.value.width)
-  renderPlayer(playerSprite.src)
+  canvas.value.width = boardConfig.boardSize * boardConfig.tileSize 
+  const grass = document.getElementById("block-grass");
+  //let x = 0
+  // do{
+  //   ctx.value.drawImage(grass, x, y, boardConfig.tileSize, boardConfig.tileSize);
+  //   x+=boardConfig.tileSize
+  // }
+  // while(x<boardConfig.boardSize*boardConfig.tileSize)
+  
+  let ex = 0
+  let y = 0
+
+  for(let i=0; i<=(boardConfig.tileSize)*(boardConfig.boardSize); i++){
+    ctx.value.drawImage(grass, ex, y, boardConfig.tileSize, boardConfig.tileSize);
+    y+=boardConfig.tileSize
+      if(i%(boardConfig.tileSize) === 0 && i>0){
+        y=0
+        ex+=boardConfig.tileSize
+      }
+    }
+
   window.addEventListener('keydown', function (keydown) {
     mover(keydown)
   })
   window.addEventListener('keydown', function (keydown: KeyboardEvent) {
     const keyPressed = keyPresses.find((c) => c.key === keydown.code)
     if (keyPressed != undefined) {
-      place(keyPressed.color)
+      place(keyPressed.block)
     }
   })
   window.addEventListener(
@@ -149,14 +176,16 @@ function replace() {
     rplace(replacing.x, replacing.y, replacing.block)
   }
 }
+
 function rplace(x: number, y: number, block: string) {
-  ctx.value.fillStyle = block
-  ctx.value.fillRect(
-    boardConfig.tileSize * x,
-    boardConfig.tileSize * y,
-    boardConfig.tileSize,
-    boardConfig.tileSize
-  )
+  ctx.value.drawImage(document.getElementById(block), x * boardConfig.tileSize, y * boardConfig.tileSize, boardConfig.tileSize, boardConfig.tileSize)
+  // ctx.value.fillStyle = block
+  // ctx.value.fillRect(
+  //   boardConfig.tileSize * x,
+  //   boardConfig.tileSize * y,
+  //   boardConfig.tileSize,
+  //   boardConfig.tileSize
+  // )
 }
 
 let currentDirection = 'ArrowLeft'
@@ -174,14 +203,11 @@ let currentDirection = 'ArrowLeft'
   }
 }
 
+
 function move(direction: { direction: string; facing: { x: number; y: number }; sprite: string }) {
-  ctx.value.fillStyle = 'white'
-  ctx.value.fillRect(
-    boardConfig.tileSize * playerLocation.x.value,
-    boardConfig.tileSize * playerLocation.y.value,
-    boardConfig.tileSize,
-    boardConfig.tileSize
-  )
+  const grass = document.getElementById('block-grass')
+  ctx.value.fillStyle = ctx.value.drawImage(grass, playerLocation.x.value*boardConfig.tileSize, playerLocation.y.value*boardConfig.tileSize, boardConfig.tileSize, boardConfig.tileSize);
+
   replace()
   playerLocation.x.value += direction.facing.x
   if (playerLocation.x.value < 0 || playerLocation.x.value === boardConfig.boardSize) {
@@ -199,21 +225,24 @@ function move(direction: { direction: string; facing: { x: number; y: number }; 
 function place(block: string) {
   let placingDirection = directions.find((direction) => direction.direction === currentDirection)
   if (placingDirection != undefined) {
-    ctx.value.fillStyle = `${block}`
     let x = playerLocation.x.value + placingDirection.facing.x
     let y = playerLocation.y.value + placingDirection.facing.y
+    //ctx.value.fillStyle = `${block}`
+    ctx.value.drawImage(document.getElementById(block), boardConfig.tileSize * x, boardConfig.tileSize * y, boardConfig.tileSize, boardConfig.tileSize)
     if (placedStuff.value.find((block) => block.x === x && block.y === y)) {
       placedStuff.value.splice(
         placedStuff.value.findIndex((block) => block.x === x && block.y === y),
         1
       )
     }
-    ctx.value.fillRect(
-      boardConfig.tileSize * x,
-      boardConfig.tileSize * y,
-      boardConfig.tileSize,
-      boardConfig.tileSize
-    )
+    // ctx.value.fillRect(
+    //   boardConfig.tileSize * x,
+    //   boardConfig.tileSize * y,
+    //   boardConfig.tileSize,
+    //   boardConfig.tileSize
+    // ) 
+
+    console.log(block)
     placedStuff.value.push({
       x: x,
       y: y,
@@ -234,6 +263,10 @@ function renderPlayer(sprite: string){
   <div class="body">
     <button class="exit" @click="saveExit(gameData)">Exit And Save</button>
     <canvas id="canvas"></canvas>
+    <img src="/grass.jpg" id="block-grass">
+    <img src="/oakWood.jpg" id="block-oakWood">
+    <img src="/cobblestone.png" id="block-cobblestone">
+    <img src="/dirt.jpg" id="block-dirt">
   </div>
 </template>
 
@@ -244,5 +277,10 @@ function renderPlayer(sprite: string){
 
 .body {
   margin-top: 80px;
+}
+
+img {
+  width: 20px;
+  height: 20px
 }
 </style>
