@@ -20,9 +20,11 @@ onMounted(async () => {
     placedStuff.value = data[0].data.placedBLocks as any
     boardConfig = (data[0].data.worldsize as any).boardConfig
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    renderGrass()
     placedStuff.value.forEach((_item) => {
       replaceBoard()
     })
+    renderPlayer(playerSprite.src)
   } catch (error) {
     console.log(error)
   }
@@ -89,30 +91,33 @@ const directions: { direction: string; facing: { x: number; y: number }; sprite:
   }
 ]
 
-const keyPresses: { key: string; color: string }[] = [
+const keyPresses: { key: string; block: string }[] = [
   {
     key: 'KeyX',
-    color: 'White'
+    block: 'White'
   },
   {
     key: 'Digit1',
-    color: 'Green'
+    block: 'Green'
   },
   {
     key: 'Digit2',
-    color: 'Red'
+    block: '/apple-touch-icon.png'
   }
 ]
 let playerSprite = new Image()
 playerSprite.src = '/left.jpg'
+let grass = new Image()
+grass.src = '/grass.png'
+let blockX = new Image()
 
 onMounted(() => {
   canvas.value = document.getElementById('canvas')
   ctx.value = canvas.value.getContext('2d')
   canvas.value.height = boardConfig.boardSize * boardConfig.tileSize
   canvas.value.width = boardConfig.boardSize * boardConfig.tileSize
-  ctx.value.fillStyle = 'white'
-  ctx.value.fillRect(0, 0, canvas.value.height, canvas.value.width)
+ /*  ctx.value.fillStyle = 'white'
+  ctx.value.fillRect(0, 0, canvas.value.height, canvas.value.width) */
   renderPlayer(playerSprite.src)
   window.addEventListener('keydown', function (keydown) {
     mover(keydown)
@@ -120,7 +125,7 @@ onMounted(() => {
   window.addEventListener('keydown', function (keydown: KeyboardEvent) {
     const keyPressed = keyPresses.find((c) => c.key === keydown.code)
     if (keyPressed != undefined) {
-      place(keyPressed.color)
+      place(keyPressed.block)
     }
   })
   window.addEventListener(
@@ -173,9 +178,16 @@ function mover(key: KeyboardEvent) {
 }
 
 function move(direction: { direction: string; facing: { x: number; y: number }; sprite: string }) {
-  ctx.value.fillStyle = 'white'
+/*   ctx.value.fillStyle = 'white'
   ctx.value.fillRect(
     boardConfig.tileSize * playerLocation.x.value,
+    boardConfig.tileSize * playerLocation.y.value,
+    boardConfig.tileSize,
+    boardConfig.tileSize
+  ) */
+  ctx.value.drawImage(
+  grass,
+  boardConfig.tileSize * playerLocation.x.value,
     boardConfig.tileSize * playerLocation.y.value,
     boardConfig.tileSize,
     boardConfig.tileSize
@@ -195,7 +207,8 @@ function move(direction: { direction: string; facing: { x: number; y: number }; 
 function place(block: string) {
   let placingDirection = directions.find((direction) => direction.direction === currentDirection)
   if (placingDirection != undefined) {
-    ctx.value.fillStyle = `${block}`
+    blockX.src = `${block}`
+   // ctx.value.fillStyle = `${block}`
     let x = playerLocation.x.value + placingDirection.facing.x
     let y = playerLocation.y.value + placingDirection.facing.y
     if (placedStuff.value.find((block) => block.x === x && block.y === y)) {
@@ -204,7 +217,8 @@ function place(block: string) {
         1
       )
     }
-    ctx.value.fillRect(
+    ctx.value.drawImage(
+      blockX,
       boardConfig.tileSize * x,
       boardConfig.tileSize * y,
       boardConfig.tileSize,
@@ -230,6 +244,20 @@ function renderPlayer(sprite: string) {
   };
   playerSprite.src = sprite
 }
+
+function renderGrass(){
+  let x = 0
+  let y = 0
+  for(let i=0; i<=(boardConfig.tileSize)*(boardConfig.boardSize); i++){
+    ctx.value.drawImage(grass, x, y, boardConfig.tileSize, boardConfig.tileSize);
+    y+=boardConfig.tileSize
+      if(i%(boardConfig.tileSize) === 0 && i>0){
+        y=0
+        x+=boardConfig.tileSize
+      }
+    }
+}
+
 </script>
 
 <template>
