@@ -6,6 +6,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useSessionStore } from '@/stores/user'
 import { beforeEach } from 'node:test'
 
+
 const router = useRouter()
 const route = useRoute()
 const canvas = ref()
@@ -13,38 +14,8 @@ const ctx = ref()
 const params = route.params
 const sessionStore = useSessionStore()
 
+
 onMounted(async () => {
-  canvas.value = document.getElementById('canvas')
-  ctx.value = canvas.value.getContext('2d')
-  canvas.value.height = boardConfig.boardSize * boardConfig.tileSize
-  canvas.value.width = boardConfig.boardSize * boardConfig.tileSize
-  ctx.value.fillStyle = 'white'
-  ctx.value.fillRect(0, 0, canvas.value.height, canvas.value.width)
-  /*  ctx.value.fillStyle = 'black'
-  ctx.value.fillRect(
-    boardConfig.tileSize * playerLocation.x.value,
-    boardConfig.tileSize * playerLocation.y.value,
-    boardConfig.tileSize,
-    boardConfig.tileSize
-  ) */
-  window.addEventListener('keydown', function (keydown) {
-    mover(keydown)
-  })
-  window.addEventListener('keydown', function (keydown: KeyboardEvent) {
-    const keyPressed = keyPresses.find((c) => c.key === keydown.code)
-    if (keyPressed != undefined) {
-      place(keyPressed.block)
-    }
-  })
-  window.addEventListener(
-    'keydown',
-    function (e) {
-      if (['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].indexOf(e.code) > -1) {
-        e.preventDefault()
-      }
-    },
-    false
-  )
   try {
     const { data, error } = await supabase.from('worlds').select('data').eq('id', params.id)
     if (error) throw error
@@ -55,17 +26,11 @@ onMounted(async () => {
     placedStuff.value.forEach((_item) => {
       replaceBoard()
     })
-    ctx.value.drawImage(
-      playerSprite,
-      boardConfig.tileSize * playerLocation.x.value,
-      boardConfig.tileSize * playerLocation.y.value,
-      boardConfig.tileSize,
-      boardConfig.tileSize
-    )
   } catch (error) {
     console.log(error)
   }
 })
+
 
 async function saveExit(saveData: any) {
   try {
@@ -128,6 +93,7 @@ const directions: { direction: string; facing: { x: number; y: number }; sprite:
   }
 ]
 
+
 const keyPresses: { key: string; block: string }[] = [
   {
     key: 'KeyX',
@@ -149,6 +115,7 @@ const keyPresses: { key: string; block: string }[] = [
 let playerSprite = new Image()
 playerSprite.src = '/left.jpg'
 
+
 // let grass = new Image()
 // grass.src = '/grass.jpg'
 // grass.style.width = '25px'
@@ -156,21 +123,35 @@ playerSprite.src = '/left.jpg'
 // console.log(grass)
 
 
+
+
 onMounted(() => {
   canvas.value = document.getElementById('canvas')
   ctx.value = canvas.value.getContext('2d')
   canvas.value.height = boardConfig.boardSize * boardConfig.tileSize
   canvas.value.width = boardConfig.boardSize * boardConfig.tileSize
-  ctx.value.fillStyle = 'white'
-  ctx.value.fillRect(0, 0, canvas.value.height, canvas.value.width)
-  renderPlayer(playerSprite.src)
-  /*  ctx.value.fillStyle = 'black'
-  ctx.value.fillRect(
-    boardConfig.tileSize * playerLocation.x.value,
-    boardConfig.tileSize * playerLocation.y.value,
-    boardConfig.tileSize,
-    boardConfig.tileSize
-  ) */
+  const grass = document.getElementById("block-grass");
+  //let x = 0
+  // do{
+  //   ctx.value.drawImage(grass, x, y, boardConfig.tileSize, boardConfig.tileSize);
+  //   x+=boardConfig.tileSize
+  // }
+  // while(x<boardConfig.boardSize*boardConfig.tileSize)
+ 
+  let ex = 0
+  let y = 0
+
+
+  for(let i=0; i<=(boardConfig.tileSize)*(boardConfig.boardSize); i++){
+    ctx.value.drawImage(grass, ex, y, boardConfig.tileSize, boardConfig.tileSize);
+    y+=boardConfig.tileSize
+      if(i%(boardConfig.tileSize) === 0 && i>0){
+        y=0
+        ex+=boardConfig.tileSize
+      }
+    }
+
+
   window.addEventListener('keydown', function (keydown) {
     mover(keydown)
   })
@@ -196,6 +177,7 @@ function replaceBoard() {
   }
 }
 
+
 function replace() {
   const replacing = placedStuff.value.find(
     (block) => block.x === playerLocation.x.value && block.y === playerLocation.y.value
@@ -204,6 +186,7 @@ function replace() {
     rplace(replacing.x, replacing.y, replacing.block)
   }
 }
+
 
 function rplace(x: number, y: number, block: string) {
   ctx.value.drawImage(document.getElementById(block), x * boardConfig.tileSize, y * boardConfig.tileSize, boardConfig.tileSize, boardConfig.tileSize)
@@ -216,22 +199,18 @@ function rplace(x: number, y: number, block: string) {
   // )
 }
 
+
 let currentDirection = 'ArrowLeft'
 
-function mover(key: KeyboardEvent) {
+
+
+
+ function mover(key: KeyboardEvent) {
   let movingDirection = directions.find((direction) => direction.direction === key.code)
   if (movingDirection != undefined) {
     if (currentDirection != movingDirection.direction) {
       currentDirection = movingDirection.direction
-      playerSprite.src = movingDirection.sprite
-      ctx.value.drawImage(
-        playerSprite,
-        boardConfig.tileSize * playerLocation.x.value,
-        boardConfig.tileSize * playerLocation.y.value,
-        boardConfig.tileSize,
-        boardConfig.tileSize
-      )
-      console.log(playerSprite)
+     renderPlayer(movingDirection.sprite)
     } else {
       move(movingDirection)
     }
@@ -239,9 +218,12 @@ function mover(key: KeyboardEvent) {
 }
 
 
+
+
 function move(direction: { direction: string; facing: { x: number; y: number }; sprite: string }) {
   const grass = document.getElementById('block-grass')
   ctx.value.fillStyle = ctx.value.drawImage(grass, playerLocation.x.value*boardConfig.tileSize, playerLocation.y.value*boardConfig.tileSize, boardConfig.tileSize, boardConfig.tileSize);
+
 
   replace()
   playerLocation.x.value += direction.facing.x
@@ -254,42 +236,49 @@ function move(direction: { direction: string; facing: { x: number; y: number }; 
   }
   /*  ctx.value.fillStyle = "black";
   ctx.value.fillRect(boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize) */
-  ctx.value.drawImage(
-    playerSprite,
-    boardConfig.tileSize * playerLocation.x.value,
-    boardConfig.tileSize * playerLocation.y.value,
-    boardConfig.tileSize,
-    boardConfig.tileSize
-  )
+  renderPlayer(playerSprite.src)
 }
+
 
 function place(block: string) {
-  ctx.value.fillStyle = `${block}`;
-  let x = playerLocation.x.value
-  let y = playerLocation.y.value
-  ctx.value.fillRect(boardConfig.rows * (x), boardConfig.rows * (y), boardConfig.tileSize, boardConfig.tileSize)
-  placedStuff.push({
-    x: (x),
-    y: (y),
-    block: `${block}`
-  })
-}
+  let placingDirection = directions.find((direction) => direction.direction === currentDirection)
+  if (placingDirection != undefined) {
+    let x = playerLocation.x.value + placingDirection.facing.x
+    let y = playerLocation.y.value + placingDirection.facing.y
+    //ctx.value.fillStyle = `${block}`
+    ctx.value.drawImage(document.getElementById(block), boardConfig.tileSize * x, boardConfig.tileSize * y, boardConfig.tileSize, boardConfig.tileSize)
+    if (placedStuff.value.find((block) => block.x === x && block.y === y)) {
+      placedStuff.value.splice(
+        placedStuff.value.findIndex((block) => block.x === x && block.y === y),
+        1
+      )
+    }
+    // ctx.value.fillRect(
+    //   boardConfig.tileSize * x,
+    //   boardConfig.tileSize * y,
+    //   boardConfig.tileSize,
+    //   boardConfig.tileSize
+    // )
 
-function mover(key: KeyboardEvent) {
-  if (key.code === "ArrowLeft") {
-    moveLeft()
-  } else if (key.code === "ArrowRight") {
-    moveRight()
-  } else if (key.code === "ArrowUp") {
-    moveUp()
-  } else if (key.code === "ArrowDown") {
-    moveDown()
+
+    console.log(block)
+    placedStuff.value.push({
+      x: x,
+      y: y,
+      block: `${block}`
+    })
   }
-
 }
 
 
+function renderPlayer(sprite: string){
+  playerSprite.onload = function(){
+    ctx.value.drawImage(playerSprite, boardConfig.tileSize * playerLocation.x.value, boardConfig.tileSize * playerLocation.y.value, boardConfig.tileSize, boardConfig.tileSize)
+  };
+  playerSprite.src = sprite
+}
 </script>
+
 
 <template>
   <div class="body">
@@ -302,17 +291,23 @@ function mover(key: KeyboardEvent) {
   </div>
 </template>
 
+
 <style lang="scss" scoped>
 #canvas {
   border: 1px solid black;
 }
 
+
 .body {
   margin-top: 80px;
 }
+
 
 img {
   width: 20px;
   height: 20px
 }
 </style>
+
+
+
