@@ -231,7 +231,7 @@ function place(block: string) {
     let x = playerLocation.x.value + placingDirection.facing.x
     let y = playerLocation.y.value + placingDirection.facing.y
     //ctx.value.fillStyle = `${block}`
-    ctx.value.drawImage(document.getElementById(block), boardConfig.tileSize * x, boardConfig.tileSize * y, boardConfig.tileSize, boardConfig.tileSize)
+    ctx.value.drawImage(block, boardConfig.tileSize * x, boardConfig.tileSize * y, boardConfig.tileSize, boardConfig.tileSize)
     if (placedStuff.value.find((block) => block.x === x && block.y === y)) {
       placedStuff.value.splice(
         placedStuff.value.findIndex((block) => block.x === x && block.y === y),

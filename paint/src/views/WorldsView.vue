@@ -2,9 +2,10 @@
   <div class="body" v-if="sessionStore.expires > Math.floor(Date.now() / 1000)">
     <button @click="toggleCreateScreen()">create a world</button>
     <CreateWorld v-show="showCreate" @close="toggleCreateScreen" />
-    <h1>{{ worlds }}</h1>
+    <h1>{{ worlds }}
+    {{ namedWorlds }}</h1>
     <div v-if="hasWorlds === true">
-      <div class="world-container" v-for="world in (worlds as any).worlds_own" :key="world">
+      <div class="world-container" v-for="world in worlds" :key="world">
         <h1 @click="enterWorld(world)">
           {{ world }}
         </h1>
@@ -34,7 +35,8 @@ import router from '@/router'
 
 const sessionStore = useSessionStore()
 const showCreate = ref(false)
-const worlds = ref({})
+const worlds = ref(new Array())
+const namedWorlds = ref(new Array())
 let hasWorlds = false
 
 onMounted(async () => {
@@ -96,13 +98,30 @@ async function getWorlds() {
       .select('worlds_own')
       .eq('id', sessionStore.userID) //get worlds
     if (error) throw error
-    worlds.value = data[0]
-    if ((worlds.value as any).worlds_own[0] !== undefined) {
+    ;
+    worlds.value = data[0].worlds_own
+    
+    
+    worlds.value.forEach(async (world: any) => {
+      let name = await worldName(world)
+      namedWorlds.value.push({ worldID: world, worldName: name![0] })
+    })
+    if (worlds.value as any !== undefined) {
       hasWorlds = true
     } else {
       hasWorlds = false
     }
     console.log(worlds)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+async function worldName(id: UUID) {
+  try {
+    const { data, error } = await supabase.from('worlds').select('name').eq('id', id)
+    if (error) throw error
+    return data
   } catch (error) {
     console.log(error)
   }
