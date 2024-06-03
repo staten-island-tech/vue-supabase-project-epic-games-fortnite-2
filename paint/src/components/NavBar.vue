@@ -7,7 +7,7 @@
       <router-link to="/login" class="router-link-active router-link-exact-active" @click="logOut">Log Out</router-link>
       <router-link to="/worlds">Worlds</router-link>
     </div>
-    <h1 class="title">Minecraft: Walmart Edition</h1>
+    <h1 class="title">Minecraft: Wish dot com Edition</h1>
   </nav>
 </template>
 
