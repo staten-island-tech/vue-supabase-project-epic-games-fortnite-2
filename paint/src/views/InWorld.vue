@@ -153,8 +153,9 @@ function replacer() {
   }
 }
 function replace(x: number, y: number, block: string) {
-  ctx.value.fillStyle = block
-  ctx.value.fillRect(
+  blockX.src = block
+  ctx.value.drawImage(
+    blockX,
     boardConfig.tileSize * x,
     boardConfig.tileSize * y,
     boardConfig.tileSize,
