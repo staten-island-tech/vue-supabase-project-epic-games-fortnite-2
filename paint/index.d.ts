@@ -42,7 +42,7 @@ export type Database = {
           updated_at: string | null
           username: string | null
           website: string | null
-          worlds_own: string[] | null
+          worlds_own: string[]
         }
         Insert: {
           avatar_url?: string | null

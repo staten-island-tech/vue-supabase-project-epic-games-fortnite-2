@@ -4,6 +4,8 @@ import type { boardDisplay, playerPos, data } from 'index.d.ts'
 import { supabase } from '@/lib/supabaseClient'
 import { useRoute, useRouter } from 'vue-router'
 import { useSessionStore } from '@/stores/user'
+import { beforeEach } from 'node:test'
+
 
 const router = useRouter()
 const route = useRoute()
@@ -11,6 +13,7 @@ const canvas = ref()
 const ctx = ref()
 const params = route.params
 const sessionStore = useSessionStore()
+
 
 onMounted(async () => {
   try {
@@ -26,6 +29,7 @@ onMounted(async () => {
     console.log(error)
   }
 })
+
 
 async function saveExit(saveData: any) {
   try {
@@ -108,6 +112,16 @@ let grass = new Image()
 grass.src = '/grass.png'
 let blockX = new Image()
 
+
+// let grass = new Image()
+// grass.src = '/grass.jpg'
+// grass.style.width = '25px'
+// grass.style.height = '25px'
+// console.log(grass)
+
+
+
+
 onMounted(() => {
   canvas.value = document.getElementById('canvas')
   ctx.value = canvas.value.getContext('2d')
@@ -158,6 +172,7 @@ function replace(x: number, y: number, block: string) {
   )
 }
 
+
 let currentDirection = 'ArrowLeft'
 
 
@@ -172,6 +187,9 @@ function mover(key: KeyboardEvent) {
     }
   }
 }
+
+
+
 
 function move(direction: { direction: string; facing: { x: number; y: number }; sprite: string }) {
 /*   ctx.value.fillStyle = 'white'
@@ -200,6 +218,7 @@ function move(direction: { direction: string; facing: { x: number; y: number }; 
   renderPlayer(playerSprite.src)
 }
 
+
 function place(block: string) {
   let placingDirection = directions.find((direction) => direction.direction === currentDirection)
   if (placingDirection != undefined) {
@@ -207,6 +226,8 @@ function place(block: string) {
    // ctx.value.fillStyle = `${block}`
     let x = playerLocation.x.value + placingDirection.facing.x
     let y = playerLocation.y.value + placingDirection.facing.y
+    //ctx.value.fillStyle = `${block}`
+    ctx.value.drawImage(block, boardConfig.tileSize * x, boardConfig.tileSize * y, boardConfig.tileSize, boardConfig.tileSize)
     if (placedStuff.value.find((block) => block.x === x && block.y === y)) {
       placedStuff.value.splice(
         placedStuff.value.findIndex((block) => block.x === x && block.y === y),
@@ -256,19 +277,35 @@ function renderGrass(){
 
 </script>
 
+
 <template>
   <div class="body">
     <button class="exit" @click="saveExit(gameData)">Exit And Save</button>
     <canvas id="canvas"></canvas>
+    <img src="/grass.jpg" id="block-grass">
+    <img src="/oakWood.jpg" id="block-oakWood">
+    <img src="/cobblestone.png" id="block-cobblestone">
+    <img src="/dirt.jpg" id="block-dirt">
   </div>
 </template>
+
 
 <style lang="scss" scoped>
 #canvas {
   border: 1px solid black;
 }
 
+
 .body {
   margin-top: 80px;
 }
+
+
+img {
+  width: 20px;
+  height: 20px
+}
 </style>
+
+
+
