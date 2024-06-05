@@ -123,6 +123,9 @@ let blockX = new Image()
 
 
 onMounted(() => {
+  if(sessionStore.expires !> Math.floor(Date.now() / 1000)) {
+    console.log('not logged in')
+  }
   canvas.value = document.getElementById('canvas')
   ctx.value = canvas.value.getContext('2d')
   canvas.value.height = boardConfig.boardSize * boardConfig.tileSize
@@ -220,15 +223,12 @@ function move(direction: { direction: string; facing: { x: number; y: number }; 
 
 
 function place(block: string) {
-  console.log(block)
   let placingDirection = directions.find((direction) => direction.direction === currentDirection)
   if (placingDirection != undefined) {
     blockX.src = `${block}`
    // ctx.value.fillStyle = `${block}`
     let x = playerLocation.x.value + placingDirection.facing.x
     let y = playerLocation.y.value + placingDirection.facing.y
-    //ctx.value.fillStyle = `${block}`
-    ctx.value.drawImage(block, boardConfig.tileSize * x, boardConfig.tileSize * y, boardConfig.tileSize, boardConfig.tileSize)
     if (placedStuff.value.find((block) => block.x === x && block.y === y)) {
       placedStuff.value.splice(
         placedStuff.value.findIndex((block) => block.x === x && block.y === y),
@@ -249,6 +249,7 @@ function place(block: string) {
     })
   }
 }
+
 
 function renderPlayer(sprite: string) {
   playerSprite.onload = function () {
@@ -280,13 +281,15 @@ function renderGrass(){
 
 
 <template>
-  <div class="body">
+  <div class="body" v-if="sessionStore.expires > Math.floor(Date.now() / 1000)">
     <button class="exit" @click="saveExit(gameData)">Exit And Save</button>
     <canvas id="canvas"></canvas>
     <img src="/grass.jpg" id="block-grass">
     <img src="/oakWood.jpg" id="block-oakWood">
     <img src="/cobblestone.png" id="block-cobblestone">
     <img src="/dirt.jpg" id="block-dirt">
+  </div><div v-else>
+    Please <router-link to="/login">log in</router-link> first to access worlds!
   </div>
 </template>
 

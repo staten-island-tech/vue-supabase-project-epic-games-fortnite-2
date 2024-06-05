@@ -77,7 +77,7 @@ onMounted(async () => {
       {
         event: '*',
         schema: 'public',
-        table: '*'
+        table: 'profiles'
       },
       (payload) => {
         console.log(payload)
@@ -108,17 +108,15 @@ async function enterWorld(world: UUID) {
 }
 
 async function getWorlds() {
-  namedWorlds.value = []
   try {
     const { data, error } = await supabase
       .from('profiles')
       .select('worlds_own')
       .eq('id', sessionStore.userID) //get worlds
-    if (error) throw error
-    ;
+    if (error) throw error;
     worlds.value = data[0].worlds_own
     
-    
+    namedWorlds.value = []
     worlds.value.forEach(async (world: any) => {
       let name = await worldName(world)
       namedWorlds.value.push({ worldID: world, worldName: name![0].name })
