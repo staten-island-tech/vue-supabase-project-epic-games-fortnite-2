@@ -1,27 +1,24 @@
 <template>
-  <div id="outer">
-    <div class="body">
-      <form class="row flex-center flex" @submit.prevent="signUp(email, pass)">
-        <div class="col-6 form-widget">
-          <h1 class="header">Register</h1>
-          <div>
-            <input
-              class="inputField"
-              required
-              type="email"
-              placeholder="Your email"
-              v-model="email"
-            />
-            <input type="password" required placeholder="password" v-model="pass" />
-            <p>Make sure your password has at least 6 characters!</p>
-          </div>
-          <div>
-            <input type="submit" class="button block" :value="'Register'" />
-          </div>
+  <div class="body">
+    <form class="row flex-center flex" @submit.prevent="signUp(email, pass)">
+      <div class="col-6 form-widget">
+        <h1 class="header">Register</h1>
+        <div>
+          <input
+            class="inputField"
+            required
+            type="email"
+            placeholder="Your email"
+            v-model="email"
+          />
+          <input type="password" required placeholder="password" v-model="pass" />
+          <p>make sure your password has at least 8 characters</p>
         </div>
-      </form>
-      <p>Already have an account? <router-link to="/login">Log in here!</router-link></p>
-    </div>
+        <div>
+          <input type="submit" class="button block" :value="'Register'" />
+        </div>
+      </div>
+    </form>
   </div>
 </template>
 
@@ -60,15 +57,5 @@ const signUp = async function (email: string, password: string) {
 
 <style scoped>
 .body {
-  margin-top: 80px;
-  margin-left: auto;
-  margin-right: auto;
-}
-#outer {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-}
-</style>
+  margin-top: 80px;;
+}</style>
