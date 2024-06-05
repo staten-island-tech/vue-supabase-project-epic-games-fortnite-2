@@ -139,7 +139,9 @@ onMounted(() => {
   )
 })
 function replaceBoard() {
+  for (let i = 0; i < placedStuff.value.length; i++) {
     placedStuff.value.forEach((block) => replace(block.x, block.y, block.block))
+  }
 }
 
 function replacer() {
@@ -151,9 +153,8 @@ function replacer() {
   }
 }
 function replace(x: number, y: number, block: string) {
-  blockX.src = block
-  ctx.value.drawImage(
-    blockX,
+  ctx.value.fillStyle = block
+  ctx.value.fillRect(
     boardConfig.tileSize * x,
     boardConfig.tileSize * y,
     boardConfig.tileSize,
