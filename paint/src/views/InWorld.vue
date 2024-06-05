@@ -220,6 +220,7 @@ function move(direction: { direction: string; facing: { x: number; y: number }; 
 
 
 function place(block: string) {
+  console.log(block)
   let placingDirection = directions.find((direction) => direction.direction === currentDirection)
   if (placingDirection != undefined) {
     blockX.src = `${block}`
