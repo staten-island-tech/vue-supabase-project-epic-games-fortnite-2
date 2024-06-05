@@ -21,7 +21,9 @@ onMounted(async () => {
     boardConfig = (data[0].data.worldsize as any).boardConfig
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     renderGrass()
-    replaceBoard()
+    placedStuff.value.forEach((_item) => {
+      replaceBoard()
+    })
     renderPlayer(playerSprite.src)
   } catch (error) {
     console.log(error)
@@ -114,6 +116,9 @@ onMounted(() => {
   ctx.value = canvas.value.getContext('2d')
   canvas.value.height = boardConfig.boardSize * boardConfig.tileSize
   canvas.value.width = boardConfig.boardSize * boardConfig.tileSize
+ /*  ctx.value.fillStyle = 'white'
+  ctx.value.fillRect(0, 0, canvas.value.height, canvas.value.width) */
+  renderPlayer(playerSprite.src)
   window.addEventListener('keydown', function (keydown) {
     mover(keydown)
   })
@@ -172,6 +177,13 @@ function mover(key: KeyboardEvent) {
 }
 
 function move(direction: { direction: string; facing: { x: number; y: number }; sprite: string }) {
+/*   ctx.value.fillStyle = 'white'
+  ctx.value.fillRect(
+    boardConfig.tileSize * playerLocation.x.value,
+    boardConfig.tileSize * playerLocation.y.value,
+    boardConfig.tileSize,
+    boardConfig.tileSize
+  ) */
   ctx.value.drawImage(
   grass,
   boardConfig.tileSize * playerLocation.x.value,
@@ -195,6 +207,7 @@ function place(block: string) {
   let placingDirection = directions.find((direction) => direction.direction === currentDirection)
   if (placingDirection != undefined) {
     blockX.src = `${block}`
+   // ctx.value.fillStyle = `${block}`
     let x = playerLocation.x.value + placingDirection.facing.x
     let y = playerLocation.y.value + placingDirection.facing.y
     if (placedStuff.value.find((block) => block.x === x && block.y === y)) {
