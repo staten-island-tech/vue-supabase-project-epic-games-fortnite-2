@@ -19,7 +19,6 @@ onMounted(async () => {
     gameData.value = data[0].data
     placedStuff.value = data[0].data.placedBLocks as any
     boardConfig = (data[0].data.worldsize as any).boardConfig
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     renderGrass()
     replaceBoard()
     renderPlayer(playerSprite.src)
