@@ -16,6 +16,31 @@ const sessionStore = useSessionStore()
 
 
 onMounted(async () => {
+  canvas.value = document.getElementById('canvas')
+  ctx.value = canvas.value.getContext('2d')
+  canvas.value.height = boardConfig.boardSize * boardConfig.tileSize
+  canvas.value.width = boardConfig.boardSize * boardConfig.tileSize
+ /*  ctx.value.fillStyle = 'white'
+  ctx.value.fillRect(0, 0, canvas.value.height, canvas.value.width) */
+  renderPlayer(playerSprite.src)
+  window.addEventListener('keydown', function (keydown) {
+    mover(keydown)
+  })
+  window.addEventListener('keydown', function (keydown: KeyboardEvent) {
+    const keyPressed = keyPresses.find((c) => c.key === keydown.code)
+    if (keyPressed != undefined) {
+      place(keyPressed.block)
+    }
+  })
+  window.addEventListener(
+    'keydown',
+    function (e) {
+      if (['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].indexOf(e.code) > -1) {
+        e.preventDefault()
+      }
+    },
+    false
+  )
   try {
     const { data, error } = await supabase.from('worlds').select('data').eq('id', params.id)
     if (error) throw error
@@ -119,39 +144,6 @@ let blockX = new Image()
 // grass.style.height = '25px'
 // console.log(grass)
 
-
-
-
-onMounted(() => {
-  if(sessionStore.expires !> Math.floor(Date.now() / 1000)) {
-    console.log('not logged in')
-  }
-  canvas.value = document.getElementById('canvas')
-  ctx.value = canvas.value.getContext('2d')
-  canvas.value.height = boardConfig.boardSize * boardConfig.tileSize
-  canvas.value.width = boardConfig.boardSize * boardConfig.tileSize
- /*  ctx.value.fillStyle = 'white'
-  ctx.value.fillRect(0, 0, canvas.value.height, canvas.value.width) */
-  renderPlayer(playerSprite.src)
-  window.addEventListener('keydown', function (keydown) {
-    mover(keydown)
-  })
-  window.addEventListener('keydown', function (keydown: KeyboardEvent) {
-    const keyPressed = keyPresses.find((c) => c.key === keydown.code)
-    if (keyPressed != undefined) {
-      place(keyPressed.block)
-    }
-  })
-  window.addEventListener(
-    'keydown',
-    function (e) {
-      if (['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].indexOf(e.code) > -1) {
-        e.preventDefault()
-      }
-    },
-    false
-  )
-})
 function replaceBoard() {
     placedStuff.value.forEach((block) => replace(block.x, block.y, block.block))
 }
