@@ -1,5 +1,5 @@
 <template>
-  <div class="body">
+  <div id="outer">
     <form class="row flex-center flex" @submit.prevent="signIn(email, pass)">
       <div class="col-6 form-widget">
         <h1 class="micro-5-charted-regular" id="head">log in</h1>
@@ -17,6 +17,7 @@
           <input type="submit" class="button block" :value="'Log In'" />
         </div>
       </div>
+      <p>Don't have an account yet? <router-link to="/register">Register here</router-link></p>
     </form>
   </div>
 </template>
@@ -66,4 +67,15 @@ const signIn = async function (email: string, pass: string) {
   font-size: 8rem;
 }
 
+.body {
+  margin-top: 80px;
+}
+
+#outer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
 </style>

@@ -1,16 +1,16 @@
 <template>
-  <div 
-  class="body"
-  v-if="sessionStore.expires > Math.floor(Date.now() / 1000)">
+  <div class="body" v-if="sessionStore.expires > Math.floor(Date.now() / 1000)">
     <button @click="toggleCreateScreen()">create a world</button>
     <CreateWorld v-show="showCreate" @close="toggleCreateScreen" />
-    <h1>{{ worlds }}</h1>
-    <div v-if="worlds[0] !== undefined">
-      <div class="world-container" v-for="world in worlds[0].worlds_own" :key="world">
-        <h1 @click="enterWorld(world)">
-          {{ world }} 
+    <h1>
+    {{ namedWorlds }}</h1>
+    <div v-if="hasWorlds === true">
+      <h3>Click to enter world: </h3>
+      <div class="world-container" v-for="world in namedWorlds" :key="world">
+        <h1 @click="enterWorld(world.worldID)">
+          Name: {{ world.worldName }}
         </h1>
-        <button @click="deleteWorld(world)">delete world</button>
+        <button class="enter-world" @click="deleteWorld(world.worldID)">delete world</button>
       </div>
     </div>
     <h1 v-else>no worlds :(</h1>
@@ -19,6 +19,27 @@
     Please <router-link to="/login">log in</router-link> first to access your worlds!
   </div>
 </template>
+
+<style scoped>
+.body {
+  margin-top: 100px;
+}
+
+.enter-world {
+  display: inline;
+  margin: auto auto;
+}
+
+.world-container {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+}
+
+h1 {
+  display: inline;
+}
+</style>
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
@@ -31,6 +52,8 @@ import router from '@/router'
 const sessionStore = useSessionStore()
 const showCreate = ref(false)
 const worlds = ref(new Array())
+const namedWorlds = ref(new Array())
+let hasWorlds = false
 
 onMounted(async () => {
   if (sessionStore.expires < Math.floor(Date.now() / 1000)) {
@@ -54,7 +77,7 @@ onMounted(async () => {
       {
         event: '*',
         schema: 'public',
-        table: '*'
+        table: 'profiles'
       },
       (payload) => {
         console.log(payload)
@@ -86,10 +109,34 @@ async function enterWorld(world: UUID) {
 
 async function getWorlds() {
   try {
-    const { data, error } = await supabase.from('profiles').select('worlds_own').eq('id', sessionStore.userID) //get worlds
-    if (error) throw error
-    worlds.value = data
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('worlds_own')
+      .eq('id', sessionStore.userID) //get worlds
+    if (error) throw error;
+    worlds.value = data[0].worlds_own
+    
+    namedWorlds.value = []
+    worlds.value.forEach(async (world: any) => {
+      let name = await worldName(world)
+      namedWorlds.value.push({ worldID: world, worldName: name![0].name })
+    })
+    if (worlds.value as any !== undefined) {
+      hasWorlds = true
+    } else {
+      hasWorlds = false
+    }
     console.log(worlds)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+async function worldName(id: UUID) {
+  try {
+    const { data, error } = await supabase.from('worlds').select('name').eq('id', id)
+    if (error) throw error
+    return data
   } catch (error) {
     console.log(error)
   }
@@ -116,8 +163,3 @@ async function deleteWorld(world: UUID) {
   }
 }
 </script>
-
-<style scoped>
-.body {
-  margin-top: 80px;
-}</style>

@@ -4,6 +4,8 @@ import type { boardDisplay, playerPos, data } from 'index.d.ts'
 import { supabase } from '@/lib/supabaseClient'
 import { useRoute, useRouter } from 'vue-router'
 import { useSessionStore } from '@/stores/user'
+import { beforeEach } from 'node:test'
+
 
 const router = useRouter()
 const route = useRoute()
@@ -12,14 +14,39 @@ const ctx = ref()
 const params = route.params
 const sessionStore = useSessionStore()
 
+
 onMounted(async () => {
+  canvas.value = document.getElementById('canvas')
+  ctx.value = canvas.value.getContext('2d')
+  canvas.value.height = boardConfig.boardSize * boardConfig.tileSize
+  canvas.value.width = boardConfig.boardSize * boardConfig.tileSize
+ /*  ctx.value.fillStyle = 'white'
+  ctx.value.fillRect(0, 0, canvas.value.height, canvas.value.width) */
+  renderPlayer(playerSprite.src)
+  window.addEventListener('keydown', function (keydown) {
+    mover(keydown)
+  })
+  window.addEventListener('keydown', function (keydown: KeyboardEvent) {
+    const keyPressed = keyPresses.find((c) => c.key === keydown.code)
+    if (keyPressed != undefined) {
+      place(keyPressed.block)
+    }
+  })
+  window.addEventListener(
+    'keydown',
+    function (e) {
+      if (['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].indexOf(e.code) > -1) {
+        e.preventDefault()
+      }
+    },
+    false
+  )
   try {
     const { data, error } = await supabase.from('worlds').select('data').eq('id', params.id)
     if (error) throw error
     gameData.value = data[0].data
     placedStuff.value = data[0].data.placedBLocks as any
     boardConfig = (data[0].data.worldsize as any).boardConfig
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     renderGrass()
     placedStuff.value.forEach((_item) => {
       replaceBoard()
@@ -29,6 +56,7 @@ onMounted(async () => {
     console.log(error)
   }
 })
+
 
 async function saveExit(saveData: any) {
   try {
@@ -156,33 +184,13 @@ let grass = new Image()
 grass.src = '/grass.png'
 let blockX = new Image()
 
-onMounted(() => {
-  canvas.value = document.getElementById('canvas')
-  ctx.value = canvas.value.getContext('2d')
-  canvas.value.height = boardConfig.boardSize * boardConfig.tileSize
-  canvas.value.width = boardConfig.boardSize * boardConfig.tileSize
- /*  ctx.value.fillStyle = 'white'
-  ctx.value.fillRect(0, 0, canvas.value.height, canvas.value.width) */
-  renderPlayer(playerSprite.src)
-  window.addEventListener('keydown', function (keydown) {
-    mover(keydown)
-  })
-  window.addEventListener('keydown', function (keydown: KeyboardEvent) {
-    const keyPressed = keyPresses.find((c) => c.key === keydown.code)
-    if (keyPressed != undefined) {
-      place(keyPressed.block)
-    }
-  })
-  window.addEventListener(
-    'keydown',
-    function (e) {
-      if (['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].indexOf(e.code) > -1) {
-        e.preventDefault()
-      }
-    },
-    false
-  )
-})
+
+// let grass = new Image()
+// grass.src = '/grass.jpg'
+// grass.style.width = '25px'
+// grass.style.height = '25px'
+// console.log(grass)
+
 function replaceBoard() {
   for (let i = 0; i < placedStuff.value.length; i++) {
     placedStuff.value.forEach((block) => replace(block.x, block.y, block.block))
@@ -208,6 +216,7 @@ function replace(x: number, y: number, block: string) {
   )
 }
 
+
 let currentDirection = 'ArrowLeft'
 
 
@@ -222,6 +231,9 @@ function mover(key: KeyboardEvent) {
     }
   }
 }
+
+
+
 
 function move(direction: { direction: string; facing: { x: number; y: number }; sprite: string }) {
 /*   ctx.value.fillStyle = 'white'
@@ -249,6 +261,7 @@ function move(direction: { direction: string; facing: { x: number; y: number }; 
   }
   renderPlayer(playerSprite.src)
 }
+
 
 function place(block: string) {
   let placingDirection = directions.find((direction) => direction.direction === currentDirection)
@@ -278,6 +291,7 @@ function place(block: string) {
   }
 }
 
+
 function renderPlayer(sprite: string) {
   playerSprite.onload = function () {
     ctx.value.drawImage(
@@ -306,16 +320,23 @@ function renderGrass(){
 
 </script>
 
+
 <template>
-  <div class="body">
+  <div class="body" v-if="sessionStore.expires > Math.floor(Date.now() / 1000)">
     <h2>it's not broken we swear it's just loading</h2>
     <div class="key" v-for="color in keyPresses">
-      <li><img :src="color.block" class="colors"> - {{ color.key }}</li>
-    </div>
+      <li><img :src="color.block" class="colors"> - {{ color.key }}</li></div>
     <button class="exit" @click="saveExit(gameData)">Exit And Save</button>
     <canvas id="canvas"></canvas>
+    <img src="/grass.jpg" id="block-grass">
+    <img src="/oakWood.jpg" id="block-oakWood">
+    <img src="/cobblestone.png" id="block-cobblestone">
+    <img src="/dirt.jpg" id="block-dirt">
+  </div><div v-else>
+    Please <router-link to="/login">log in</router-link> first to access worlds!
   </div>
 </template>
+
 
 <style lang="scss" scoped>
 #canvas {
@@ -330,4 +351,13 @@ function renderGrass(){
 .body {
   margin-top: 80px;
 }
+
+
+img {
+  width: 20px;
+  height: 20px
+}
 </style>
+
+
+
