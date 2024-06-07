@@ -312,7 +312,7 @@ function renderGrass(){
     <div class="key" v-for="color in keyPresses">
       <li><img :src="color.block" class="colors"> - {{ color.key }}</li>
     </div>
-    <button class="exit" @click="saveExit(gameData)">Exit And Save</button>
+    <button class="exit, buttonblock" @click="saveExit(gameData)">Exit And Save</button>
     <canvas id="canvas"></canvas>
   </div>
 </template>
@@ -329,5 +329,33 @@ function renderGrass(){
 
 .body {
   margin-top: 80px;
+}
+.buttonblock {
+  background-color: #FFFFFF;
+  border: 1px solid rgb(209,213,219);
+  border-radius: .5rem;
+  box-sizing: border-box;
+  color: hsla(160, 100%, 37%, 1);
+  line-height: 1.25rem;
+  text-align: center;
+  text-decoration: none #d1dbd6 solid;
+  text-decoration-thickness: auto;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.buttonblock:hover {
+  background-color: hsla(160, 100%, 37%, 0.2);
+}
+
+.buttonblock:focus {
+  outline: 1px solid transparent;
+  outline-offset: 1px;
+}
+
+.buttonblock:focus-visible {
+  box-shadow: none;
 }
 </style>

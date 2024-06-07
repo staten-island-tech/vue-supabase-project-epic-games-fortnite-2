@@ -2,7 +2,7 @@
   <div 
   class="body"
   v-if="sessionStore.expires > Math.floor(Date.now() / 1000)">
-    <button @click="toggleCreateScreen()">create a world</button>
+    <button @click="toggleCreateScreen()" class="buttonblock">create a world</button>
     <CreateWorld v-show="showCreate" @close="toggleCreateScreen" />
     <h1>{{ worlds }}</h1>
     <div v-if="worlds[0] !== undefined">
@@ -10,7 +10,7 @@
         <h1 @click="enterWorld(world)">
           {{ world }} 
         </h1>
-        <button @click="deleteWorld(world)">delete world</button>
+        <button @click="deleteWorld(world)" class="buttonblock">delete world</button>
       </div>
     </div>
     <h1 v-else>no worlds :(</h1>
@@ -120,4 +120,33 @@ async function deleteWorld(world: UUID) {
 <style scoped>
 .body {
   margin-top: 80px;
+
+  .buttonblock {
+  background-color: #FFFFFF;
+  border: 1px solid rgb(209,213,219);
+  border-radius: .5rem;
+  box-sizing: border-box;
+  color: hsla(160, 100%, 37%, 1);
+  line-height: 1.25rem;
+  text-align: center;
+  text-decoration: none #d1dbd6 solid;
+  text-decoration-thickness: auto;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.buttonblock:hover {
+  background-color: hsla(160, 100%, 37%, 0.2);
+}
+
+.buttonblock:focus {
+  outline: 1px solid transparent;
+  outline-offset: 1px;
+}
+
+.buttonblock:focus-visible {
+  box-shadow: none;
+}
 }</style>
