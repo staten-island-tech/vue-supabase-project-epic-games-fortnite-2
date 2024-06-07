@@ -59,6 +59,26 @@ const images: {image: string; artist: string}[] = [
         image: '/waifu/ryoReal.jpg',
         artist: 'eeee',
     },
+    {
+        image: '/waifu/exuSpooky.jpg',
+        artist: 'eeee',
+    },
+    {
+        image:'/waifu/exuPersonacore.jpg',
+        artist: 'eeee'
+    },
+    {
+        image:'/waifu/exuSpooky2.jpg',
+        artist: 'eeee'
+    },
+    {
+        image:'/waifu/exuPocky.jpg',
+        artist: 'eeee'
+    },
+    {
+        image:'/waifu/exuBusiness.jpg',
+        artist: 'eeee'
+    },
 ]; //fix this strings later :skull:
 //for loop -> push each thing to the array thing
 // images.push('hi')
