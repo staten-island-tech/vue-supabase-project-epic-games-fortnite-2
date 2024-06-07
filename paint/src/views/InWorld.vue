@@ -21,7 +21,9 @@ onMounted(async () => {
     boardConfig = (data[0].data.worldsize as any).boardConfig
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     renderGrass()
-    replaceBoard()
+    placedStuff.value.forEach((_item) => {
+      replaceBoard()
+    })
     renderPlayer(playerSprite.src)
   } catch (error) {
     console.log(error)
@@ -182,7 +184,9 @@ onMounted(() => {
   )
 })
 function replaceBoard() {
+  for (let i = 0; i < placedStuff.value.length; i++) {
     placedStuff.value.forEach((block) => replace(block.x, block.y, block.block))
+  }
 }
 
 function replacer() {
