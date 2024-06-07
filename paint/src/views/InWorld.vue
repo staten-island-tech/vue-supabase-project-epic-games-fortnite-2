@@ -325,8 +325,9 @@ function renderGrass(){
   <div class="body" v-if="sessionStore.expires > Math.floor(Date.now() / 1000)">
     <h2>it's not broken we swear it's just loading</h2>
     <div class="key" v-for="color in keyPresses">
-      <li><img :src="color.block" class="colors"> - {{ color.key }}</li></div>
-    <button class="exit" @click="saveExit(gameData)">Exit And Save</button>
+      <li><img :src="color.block" class="colors"> - {{ color.key }}</li>
+    </div>
+    <button class="exit, buttonblock" @click="saveExit(gameData)">Exit And Save</button>
     <canvas id="canvas"></canvas>
     <img src="/grass.jpg" id="block-grass">
     <img src="/oakWood.jpg" id="block-oakWood">
@@ -351,11 +352,33 @@ function renderGrass(){
 .body {
   margin-top: 80px;
 }
+.buttonblock {
+  background-color: #FFFFFF;
+  border: 1px solid rgb(209,213,219);
+  border-radius: .5rem;
+  box-sizing: border-box;
+  color: hsla(160, 100%, 37%, 1);
+  line-height: 1.25rem;
+  text-align: center;
+  text-decoration: none #d1dbd6 solid;
+  text-decoration-thickness: auto;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
 
+.buttonblock:hover {
+  background-color: hsla(160, 100%, 37%, 0.2);
+}
 
-img {
-  width: 20px;
-  height: 20px
+.buttonblock:focus {
+  outline: 1px solid transparent;
+  outline-offset: 1px;
+}
+
+.buttonblock:focus-visible {
+  box-shadow: none;
 }
 </style>
 
