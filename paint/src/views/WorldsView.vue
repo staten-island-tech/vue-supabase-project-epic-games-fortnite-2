@@ -4,18 +4,19 @@
   v-if="sessionStore.expires > Math.floor(Date.now() / 1000)">
     <button @click="toggleCreateScreen()" class="buttonblock">create a world</button>
     <CreateWorld v-show="showCreate" @close="toggleCreateScreen" />
-    <h1>
-    {{ namedWorlds }}</h1>
+    <button class="buttonblock" @click="getWorlds()">Load worlds</button>
+    <!-- <h1>
+    {{ namedWorlds }}</h1> -->
     <div v-if="hasWorlds === true">
       <h3>Click to enter world: </h3>
       <div class="world-container" v-for="world in namedWorlds" :key="world">
         <h1 @click="enterWorld(world.worldID)">
           Name: {{ world.worldName }}
         </h1>
-        <button @click="deleteWorld(world)" class="buttonblock">delete world</button>
+        <button @click="deleteWorld(world.worldID)" class="buttonblock">delete world</button>
       </div>
     </div>
-    <h1 v-else>no worlds :(</h1>
+    <h1 v-else>no worlds </h1>
   </div>
   <div v-else>
     Please <router-link to="/login">log in</router-link> first to access your worlds!
@@ -122,8 +123,9 @@ async function getWorlds() {
     worlds.value.forEach(async (world: any) => {
       let name = await worldName(world)
       namedWorlds.value.push({ worldID: world, worldName: name![0].name })
+      hasWorlds = true
     })
-    if (worlds.value as any !== undefined) {
+    if (worlds.value.length > 1) {
       hasWorlds = true
     } else {
       hasWorlds = false

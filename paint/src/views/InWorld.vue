@@ -329,10 +329,10 @@ function renderGrass(){
     </div>
     <button class="exit, buttonblock" @click="saveExit(gameData)">Exit And Save</button>
     <canvas id="canvas"></canvas>
-    <img src="/grass.jpg" id="block-grass">
+    <!-- <img src="/grass.jpg" id="block-grass">
     <img src="/oakWood.jpg" id="block-oakWood">
     <img src="/cobblestone.png" id="block-cobblestone">
-    <img src="/dirt.jpg" id="block-dirt">
+    <img src="/dirt.jpg" id="block-dirt"> -->
   </div><div v-else>
     Please <router-link to="/login">log in</router-link> first to access worlds!
   </div>
