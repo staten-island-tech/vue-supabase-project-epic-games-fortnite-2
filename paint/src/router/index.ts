@@ -3,6 +3,7 @@ import UserLogin from '@/views/UserLogin.vue'
 import UserRegister from '@/views/UserRegister.vue'
 import WorldsView from '@/views/WorldsView.vue'
 import InWorld from '@/views/InWorld.vue'
+
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
