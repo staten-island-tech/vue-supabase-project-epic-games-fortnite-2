@@ -122,59 +122,59 @@ const directions: { direction: string; facing: { x: number; y: number }; sprite:
 const keyPresses: { key: string; block: string }[] = [
   {
     key: 'Digit1',
-    block: '/cobblestone.png'
+    block: '/blocks/cobblestone.png'
   },
   {
     key: 'Digit2',
-    block: '/oakWood.jpg'
+    block: '/blocks/oakWood.jpg'
   },
   {
     key: 'Digit3',
-    block: '/darkOakWood.jpg'
+    block: '/blocks/darkOakWood.jpg'
   },
   {
     key: 'Digit4',
-    block: '/dirt.jpg'
+    block: '/blocks/dirt.jpg'
   },
   {
     key: 'Digit5',
-    block: '/diamond.png'
+    block: '/blocks/diamond.png'
   },
   {
     key: 'Digit6',
-    block: '/stone.jpg'
+    block: '/blocks/stone.jpg'
   },
   {
     key: 'Digit7',
-    block: '/dirt.jpg'
+    block: '/blocks/LBteracotta.jpg'
+  },
+  {
+    key: 'Digit8',
+    block: '/blocks/redWool.jpg'
+  },
+  {
+    key: 'Digit9',
+    block: '/blocks/orangeWool.png'
   },
   {
     key: 'KeyQ',
-    block: '/redWool.jpg'
+    block: '/blocks/yellowWool.jpg'
   },
   {
     key: 'KeyW',
-    block: '/orangeWool.png'
+    block: '/blocks/greenWool.PNG'
   },
   {
     key: 'KeyE',
-    block: '/yellowWool.jpg'
+    block: '/blocks/blueWool.jpg'
   },
   {
     key: 'KeyR',
-    block: '/greenWool.PNG'
+    block: '/blocks/purpleWool.PNG'
   },
   {
-    key: 'KeyT',
-    block: '/blueWool.jpg'
-  },
-  {
-    key: 'KeyY',
-    block: '/purpleWool.PNG'
-  },
-  {
-    key: 'KeyX',
-    block: '/grass.png'
+    key: 'Digit0',
+    block: '/blocks/grass.png'
   },
   
 ]
@@ -236,16 +236,9 @@ function mover(key: KeyboardEvent) {
 
 
 function move(direction: { direction: string; facing: { x: number; y: number }; sprite: string }) {
-/*   ctx.value.fillStyle = 'white'
-  ctx.value.fillRect(
-    boardConfig.tileSize * playerLocation.x.value,
-    boardConfig.tileSize * playerLocation.y.value,
-    boardConfig.tileSize,
-    boardConfig.tileSize
-  ) */
   ctx.value.drawImage(
-  grass,
-  boardConfig.tileSize * playerLocation.x.value,
+    grass,
+    boardConfig.tileSize * playerLocation.x.value,
     boardConfig.tileSize * playerLocation.y.value,
     boardConfig.tileSize,
     boardConfig.tileSize
@@ -323,7 +316,7 @@ function renderGrass(){
 
 <template>
   <div class="body" v-if="sessionStore.expires > Math.floor(Date.now() / 1000)">
-    <h2>it's not broken we swear it's just loading</h2>
+    <h2>it's not broken we swear it's just loading if it takes too long exit and reload the world</h2>
     <div class="key" v-for="color in keyPresses">
       <li><img :src="color.block" class="colors"> - {{ color.key }}</li>
     </div>
@@ -379,6 +372,10 @@ function renderGrass(){
 
 .buttonblock:focus-visible {
   box-shadow: none;
+}
+
+.key{
+  list-style: none;
 }
 </style>
 
