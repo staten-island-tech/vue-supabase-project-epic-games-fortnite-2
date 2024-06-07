@@ -2,9 +2,9 @@
   <div 
   class="body"
   v-if="sessionStore.expires > Math.floor(Date.now() / 1000)">
-    <button @click="toggleCreateScreen()" class="buttonblock">create a world</button>
+    <button @click="toggleCreateScreen()" class="buttonblock">create/load world</button>
     <CreateWorld v-show="showCreate" @close="toggleCreateScreen" />
-    <button class="buttonblock" @click="getWorlds()">Load worlds</button>
+    <!-- <button class="buttonblock" @click="getWorlds()">Load worlds</button> -->
     <!-- <h1>
     {{ namedWorlds }}</h1> -->
     <div v-if="hasWorlds === true">
