@@ -93,17 +93,62 @@ const directions: { direction: string; facing: { x: number; y: number }; sprite:
 
 const keyPresses: { key: string; block: string }[] = [
   {
-    key: 'KeyX',
-    block: 'White'
-  },
-  {
     key: 'Digit1',
-    block: 'Green'
+    block: '/cobblestone.png'
   },
   {
     key: 'Digit2',
-    block: '/apple-touch-icon.png'
-  }
+    block: '/oakWood.jpg'
+  },
+  {
+    key: 'Digit3',
+    block: '/darkOakWood.jpg'
+  },
+  {
+    key: 'Digit4',
+    block: '/dirt.jpg'
+  },
+  {
+    key: 'Digit5',
+    block: '/diamond.png'
+  },
+  {
+    key: 'Digit6',
+    block: '/stone.jpg'
+  },
+  {
+    key: 'Digit7',
+    block: '/dirt.jpg'
+  },
+  {
+    key: 'KeyQ',
+    block: '/redWool.jpg'
+  },
+  {
+    key: 'KeyW',
+    block: '/orangeWool.png'
+  },
+  {
+    key: 'KeyE',
+    block: '/yellowWool.jpg'
+  },
+  {
+    key: 'KeyR',
+    block: '/greenWool.PNG'
+  },
+  {
+    key: 'KeyT',
+    block: '/blueWool.jpg'
+  },
+  {
+    key: 'KeyY',
+    block: '/purpleWool.PNG'
+  },
+  {
+    key: 'KeyX',
+    block: '/grass.png'
+  },
+  
 ]
 let playerSprite = new Image()
 playerSprite.src = '/left.jpg'
@@ -153,8 +198,9 @@ function replacer() {
   }
 }
 function replace(x: number, y: number, block: string) {
-  ctx.value.fillStyle = block
-  ctx.value.fillRect(
+  blockX.src = block
+  ctx.value.drawImage(
+    blockX,
     boardConfig.tileSize * x,
     boardConfig.tileSize * y,
     boardConfig.tileSize,
@@ -262,6 +308,10 @@ function renderGrass(){
 
 <template>
   <div class="body">
+    <h2>it's not broken we swear it's just loading</h2>
+    <div class="key" v-for="color in keyPresses">
+      <li><img :src="color.block" class="colors"> - {{ color.key }}</li>
+    </div>
     <button class="exit" @click="saveExit(gameData)">Exit And Save</button>
     <canvas id="canvas"></canvas>
   </div>
@@ -270,6 +320,11 @@ function renderGrass(){
 <style lang="scss" scoped>
 #canvas {
   border: 1px solid black;
+}
+
+.colors{
+  width: 2%;
+  height: 2%
 }
 
 .body {
