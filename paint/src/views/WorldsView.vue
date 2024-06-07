@@ -170,9 +170,9 @@ async function deleteWorld(world: UUID) {
 
 <style scoped>
 .body {
-  margin-top: 80px;
-
-  .buttonblock {
+  margin-top: 120px;
+}
+.buttonblock {
   background-color: #FFFFFF;
   border: 1px solid rgb(209,213,219);
   border-radius: .5rem;
@@ -200,4 +200,5 @@ async function deleteWorld(world: UUID) {
 .buttonblock:focus-visible {
   box-shadow: none;
 }
-}</style>
+
+</style>

@@ -55,7 +55,7 @@ const signIn = async function (email: string, pass: string) {
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Tiny5&display=swap');
   .body {
-    margin-top: 5rem;
+    margin-top: 8rem;
   }
   
   .tiny5-regular {
@@ -74,7 +74,9 @@ const signIn = async function (email: string, pass: string) {
 #head{
   font-size: 8rem;
 }
-
+#outer{
+  margin-top: 7rem;
+}
 .buttonblock {
   background-color: #FFFFFF;
   border: 1px solid rgb(209,213,219);
