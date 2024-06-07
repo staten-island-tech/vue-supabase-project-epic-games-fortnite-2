@@ -2,7 +2,7 @@
   <div class="body">
     <form class="row flex-center flex" @submit.prevent="signUp(email, pass)">
       <div class="col-6 form-widget">
-        <h1 class="header">Register</h1>
+        <h1 class="micro-5-charted-regular" id="head">register</h1>
         <div>
           <input
             class="inputField"
@@ -58,4 +58,14 @@ const signUp = async function (email: string, password: string) {
 <style scoped>
 .body {
   margin-top: 80px;;
-}</style>
+}
+.micro-5-charted-regular {
+  font-family: "Micro 5 Charted", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+#head{
+  font-size: 8rem;
+}
+</style>
